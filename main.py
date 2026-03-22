@@ -12,8 +12,9 @@ import time
 from config import FEEDS
 from database import init_db, is_duplicate, mark_as_sent, update_stats, get_today_stats, cleanup_old_articles
 from feeds import fetch_all_feeds, extract_content, truncate_content
-from translator import translate_article, clean_html
-from telegram_bot import send_article, send_digest, send_stats, send_error
+from translator import translate_article, translate_text, clean_html
+from telegram_bot import send_article, send_digest, send_stats, send_error, send_message
+from cve_monitor import get_new_cves, format_cve_message
 
 # --- Logging ---
 logging.basicConfig(
@@ -93,6 +94,41 @@ def process_articles():
         except Exception as e:
             errors += 1
             logger.error("Erreur envoi %s: %s", article["title"][:40], e)
+
+    # === CVE Monitor (NVD API) ===
+    logger.info("=" * 50)
+    logger.info("Verification des nouvelles CVE critiques")
+    logger.info("=" * 50)
+
+    try:
+        new_cves = get_new_cves(hours=6)
+        cve_sent = 0
+        for cve_data in new_cves:
+            cve_id = cve_data["cve_id"]
+            # Dedup CVE
+            if is_duplicate(cve_data["nvd_url"], cve_id):
+                duplicates += 1
+                continue
+
+            # Traduire la description en francais
+            desc_fr = translate_text(cve_data.get("description", ""), "en")
+            if desc_fr:
+                cve_data["description"] = desc_fr
+
+            message = format_cve_message(cve_data)
+            if send_message(message):
+                mark_as_sent(cve_data["nvd_url"], cve_id, "NVD", "cve")
+                cve_sent += 1
+                sent += 1
+                logger.info("CVE envoye: %s (CVSS %s)", cve_id, cve_data.get("cvss_score", "N/A"))
+                time.sleep(2)
+            else:
+                errors += 1
+
+        logger.info("CVE: %d nouvelles envoyees", cve_sent)
+    except Exception as e:
+        logger.error("Erreur CVE monitor: %s", e)
+        errors += 1
 
     # Mise a jour des stats
     update_stats(processed, sent, duplicates, errors, sources_active, sources_total)
