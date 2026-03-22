@@ -118,32 +118,9 @@ def parse_cve(vuln_item):
     }
 
 
-def format_cve_message(cve_data):
-    """Formate un CVE pour Telegram — lisible en 3 secondes."""
-    cve_id = escape(cve_data["cve_id"])
-    score = cve_data.get("cvss_score", "N/A")
-    severity = cve_data.get("cvss_severity", "N/A")
-    description = escape(cve_data.get("description", "Pas de description"))
-    nvd_url = cve_data["nvd_url"]
-
-    # Barre visuelle selon severite
-    if severity == "CRITICAL":
-        header = "\U0001f534\U0001f534\U0001f534 <b>CRITIQUE</b> \u2014 CVSS " + str(score)
-        bar = "\u2588" * 10
-    elif severity == "HIGH":
-        header = "\U0001f7e0\U0001f7e0 <b>HAUT</b> \u2014 CVSS " + str(score)
-        bar = "\u2588" * 7 + "\u2591" * 3
-    else:
-        header = "\U0001f7e1 <b>MOYEN</b> \u2014 CVSS " + str(score)
-        bar = "\u2588" * 5 + "\u2591" * 5
-
-    # Produits affectes
-    affected = cve_data.get("affected", [])
-    target = ", ".join(escape(a) for a in affected) if affected else "Non specifie"
-
-    # Extraire le type d'attaque de la description
-    attack_type = ""
-    desc_lower = description.lower()
+def _extract_attack_type(text):
+    """Detecte le type d'attaque dans un texte."""
+    text_lower = text.lower()
     attack_map = {
         "remote code execution": "\U0001f4bb Execution de code a distance",
         "buffer overflow": "\U0001f4a5 Debordement de tampon",
@@ -158,51 +135,102 @@ def format_cve_message(cve_data):
         "injection": "\U0001f489 Injection",
     }
     for pattern, label in attack_map.items():
-        if pattern in desc_lower:
-            attack_type = label
+        if pattern in text_lower:
+            return label
+    return ""
+
+
+def _extract_key_points_from_text(text):
+    """Extrait 2-3 points cles d'un texte."""
+    import re
+    if not text or len(text) < 50:
+        return []
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    sentences = [s.strip() for s in sentences if len(s.strip()) > 20]
+    if len(sentences) <= 2:
+        return []
+    points = []
+    for s in sentences:
+        if 30 < len(s) < 150:
+            if len(s) > 100:
+                dot = s.find(",", 50)
+                if dot > 0:
+                    s = s[:dot]
+            points.append(s)
+        if len(points) >= 3:
             break
+    return points
 
-    # Tronquer la description a 2 phrases max
-    if len(description) > 300:
-        # Couper a la 2eme phrase
-        first_dot = description.find(".", 0, 200)
-        if first_dot > 0:
-            second_dot = description.find(".", first_dot + 1, 350)
-            if second_dot > 0:
-                description = description[:second_dot + 1]
-            else:
-                description = description[:first_dot + 1]
-        else:
-            description = description[:300].rstrip() + "..."
 
+def format_cve_message(cve_data):
+    """Formate un CVE — meme format que les articles."""
+    cve_id = escape(cve_data["cve_id"])
+    score = cve_data.get("cvss_score", "N/A")
+    severity = cve_data.get("cvss_severity", "N/A")
+    description = escape(cve_data.get("description", "Pas de description"))
+    nvd_url = cve_data["nvd_url"]
     ref_url = cve_data.get("ref_url", "")
+
+    # Header
+    if severity == "CRITICAL":
+        header = "\U0001f534\U0001f534\U0001f534 <b>CRITIQUE</b> | \u26a0\ufe0f CVE"
+        bar = "\u2588" * 10
+    elif severity == "HIGH":
+        header = "\U0001f7e0\U0001f7e0 <b>HAUT</b> | \u26a0\ufe0f CVE"
+        bar = "\u2588" * 7 + "\u2591" * 3
+    else:
+        header = "\U0001f7e1 <b>MOYEN</b> | \u26a0\ufe0f CVE"
+        bar = "\u2588" * 5 + "\u2591" * 5
+
+    affected = cve_data.get("affected", [])
+    target = ", ".join(escape(a) for a in affected) if affected else "Non specifie"
+    attack_type = _extract_attack_type(description)
+
+    # Titre = CVE ID + CVSS + cible
+    title = f"{cve_id} (CVSS {score}) — {target}"
+
+    # Description detaillee
+    if len(description) > 600:
+        cut = description.find(".", 500)
+        if cut > 0 and cut < 700:
+            description = description[:cut + 1]
+        else:
+            description = description[:600].rstrip() + "..."
+
+    # Points cles
+    key_points = _extract_key_points_from_text(description)
+    # Ajouter infos structurees
+    if target != "Non specifie":
+        key_points.insert(0, f"Cible : {target}")
+    if attack_type:
+        key_points.insert(1, f"Type : {attack_type}")
+    key_points = key_points[:4]
 
     lines = [
         header,
         f"<code>{bar}</code>",
         "",
-        f"\U0001f3af <b>{cve_id}</b>",
+        f"\U0001f4f0 NVD",
         "",
-        f"\U0001f4e6 <b>Cible :</b> {target}",
+        f"<b>{title}</b>",
+        "",
+        f"\U0001f4d6 {description}",
     ]
 
-    if attack_type:
-        lines.append(f"\u2694\ufe0f <b>Attaque :</b> {attack_type}")
+    if key_points:
+        lines.append("")
+        lines.append("\U0001f511 <b>A retenir :</b>")
+        for p in key_points:
+            lines.append(f"\u2022 {p}")
 
-    lines.extend([
-        "",
-        f"\U0001f4dd {description}",
-        "",
-        f'\U0001f517 <a href="{escape(nvd_url)}">NVD</a>',
-    ])
-
-    if ref_url and ref_url != nvd_url:
-        lines[-1] += f' | <a href="{escape(ref_url)}">PoC / Details</a>'
-
-    # Lien NVD traduit en FR
+    # Liens
+    lines.append("")
     from urllib.parse import quote
     translate_nvd = f"https://translate.google.com/translate?sl=en&tl=fr&u={quote(nvd_url)}"
-    lines.append(f'\u27a1\ufe0f <a href="{escape(translate_nvd)}">Fiche NVD en FR</a>')
+    link_line = f'\u27a1\ufe0f <a href="{escape(translate_nvd)}">Lire en FR</a> | \U0001f517 <a href="{escape(nvd_url)}">Original EN</a>'
+    if ref_url and ref_url != nvd_url:
+        link_line += f' | <a href="{escape(ref_url)}">PoC</a>'
+    lines.append(link_line)
 
     return "\n".join(lines)
 
@@ -255,21 +283,35 @@ def format_kev_message(cve_data):
     affected = cve_data.get("affected", [])
     target = ", ".join(escape(a) for a in affected) if affected else "Non specifie"
 
+    title = f"{cve_id} — {target}"
+
+    if len(description) > 600:
+        cut = description.find(".", 500)
+        if cut > 0 and cut < 700:
+            description = description[:cut + 1]
+        else:
+            description = description[:600].rstrip() + "..."
+
     lines = [
-        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>EXPLOITATION ACTIVE</b>",
+        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f525 Exploitation Active",
         "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        f"\U0001f3af <b>{cve_id}</b>",
+        "\U0001f4f0 CISA KEV",
         "",
-        f"\U0001f4e6 <b>Cible :</b> {target}",
-        f"\u26a0\ufe0f <b>Statut :</b> Exploit utilise dans la nature",
+        f"<b>{title}</b>",
         "",
-        f"\U0001f4dd {description}",
+        f"\U0001f4d6 {description}",
         "",
-        f"\U0001f6e1\ufe0f <b>Action :</b> Patcher IMMEDIATEMENT",
+        "\U0001f511 <b>A retenir :</b>",
+        f"\u2022 Cible : {target}",
+        "\u2022 Exploit utilise dans la nature",
+        "\u2022 Action : Patcher IMMEDIATEMENT",
         "",
-        f'\U0001f517 <a href="{escape(nvd_url)}">NVD</a>',
     ]
+
+    from urllib.parse import quote
+    translate_nvd = f"https://translate.google.com/translate?sl=en&tl=fr&u={quote(nvd_url)}"
+    lines.append(f'\u27a1\ufe0f <a href="{escape(translate_nvd)}">Lire en FR</a> | \U0001f517 <a href="{escape(nvd_url)}">Original EN</a>')
 
     return "\n".join(lines)
 
