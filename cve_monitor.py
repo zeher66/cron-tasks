@@ -119,61 +119,85 @@ def parse_cve(vuln_item):
 
 
 def format_cve_message(cve_data):
-    """Formate un CVE pour Telegram."""
+    """Formate un CVE pour Telegram — lisible en 3 secondes."""
     cve_id = escape(cve_data["cve_id"])
     score = cve_data.get("cvss_score", "N/A")
     severity = cve_data.get("cvss_severity", "N/A")
     description = escape(cve_data.get("description", "Pas de description"))
     nvd_url = cve_data["nvd_url"]
 
-    # Emoji selon la severite
+    # Barre visuelle selon severite
     if severity == "CRITICAL":
-        emoji = "\U0001f534"  # 🔴
+        header = "\U0001f534\U0001f534\U0001f534 <b>CRITIQUE</b> \u2014 CVSS " + str(score)
+        bar = "\u2588" * 10
     elif severity == "HIGH":
-        emoji = "\U0001f7e0"  # 🟠
+        header = "\U0001f7e0\U0001f7e0 <b>HAUT</b> \u2014 CVSS " + str(score)
+        bar = "\u2588" * 7 + "\u2591" * 3
     else:
-        emoji = "\U0001f7e1"  # 🟡
-
-    # Tronquer la description
-    if len(description) > 500:
-        description = description[:500]
-        last_period = description.rfind(".")
-        if last_period > 250:
-            description = description[:last_period + 1]
-        else:
-            description = description.rstrip() + "..."
-
-    lines = [
-        f"{emoji} <b>CVE | {severity}</b> | CVSS {score}",
-        "",
-        f"\U0001f4cc <b>{cve_id}</b>",
-        "",
-        description,
-        "",
-    ]
+        header = "\U0001f7e1 <b>MOYEN</b> \u2014 CVSS " + str(score)
+        bar = "\u2588" * 5 + "\u2591" * 5
 
     # Produits affectes
     affected = cve_data.get("affected", [])
-    if affected:
-        lines.append(f"\U0001f4e6 <b>Affecte:</b> {', '.join(escape(a) for a in affected)}")
-        lines.append("")
+    target = ", ".join(escape(a) for a in affected) if affected else "Non specifie"
 
-    # Date
-    published = cve_data.get("published", "")
-    if published:
-        try:
-            dt = datetime.fromisoformat(published.replace("Z", "+00:00"))
-            lines.append(f"\U0001f4c5 {dt.strftime('%d/%m/%Y %H:%M UTC')}")
-        except (ValueError, TypeError):
-            pass
+    # Extraire le type d'attaque de la description
+    attack_type = ""
+    desc_lower = description.lower()
+    attack_map = {
+        "remote code execution": "\U0001f4bb Execution de code a distance",
+        "buffer overflow": "\U0001f4a5 Debordement de tampon",
+        "sql injection": "\U0001f489 Injection SQL",
+        "privilege escalation": "\u2b06\ufe0f Escalade de privileges",
+        "authentication bypass": "\U0001f513 Contournement d'authentification",
+        "denial of service": "\U0001f6ab Deni de service",
+        "cross-site scripting": "\U0001f310 XSS",
+        "information disclosure": "\U0001f441 Fuite d'information",
+        "debordement de tampon": "\U0001f4a5 Debordement de tampon",
+        "execution de code": "\U0001f4bb Execution de code",
+        "injection": "\U0001f489 Injection",
+    }
+    for pattern, label in attack_map.items():
+        if pattern in desc_lower:
+            attack_type = label
+            break
 
-    lines.append("")
-    lines.append(f'\U0001f517 <a href="{escape(nvd_url)}">Voir sur NVD</a>')
+    # Tronquer la description a 2 phrases max
+    if len(description) > 300:
+        # Couper a la 2eme phrase
+        first_dot = description.find(".", 0, 200)
+        if first_dot > 0:
+            second_dot = description.find(".", first_dot + 1, 350)
+            if second_dot > 0:
+                description = description[:second_dot + 1]
+            else:
+                description = description[:first_dot + 1]
+        else:
+            description = description[:300].rstrip() + "..."
 
-    # Reference externe si disponible
     ref_url = cve_data.get("ref_url", "")
+
+    lines = [
+        header,
+        f"<code>{bar}</code>",
+        "",
+        f"\U0001f3af <b>{cve_id}</b>",
+        "",
+        f"\U0001f4e6 <b>Cible :</b> {target}",
+    ]
+
+    if attack_type:
+        lines.append(f"\u2694\ufe0f <b>Attaque :</b> {attack_type}")
+
+    lines.extend([
+        "",
+        f"\U0001f4dd {description}",
+        "",
+        f'\U0001f517 <a href="{escape(nvd_url)}">NVD</a>',
+    ])
+
     if ref_url and ref_url != nvd_url:
-        lines.append(f'\U0001f4ce <a href="{escape(ref_url)}">Reference</a>')
+        lines[-1] += f' | <a href="{escape(ref_url)}">PoC / Details</a>'
 
     return "\n".join(lines)
 
@@ -219,26 +243,28 @@ def fetch_cisa_kev():
 
 
 def format_kev_message(cve_data):
-    """Formate un CVE CISA KEV pour Telegram."""
+    """Formate un CVE CISA KEV — exploitation active confirmee."""
     cve_id = escape(cve_data["cve_id"])
     description = escape(cve_data.get("description", ""))
     nvd_url = cve_data["nvd_url"]
     affected = cve_data.get("affected", [])
+    target = ", ".join(escape(a) for a in affected) if affected else "Non specifie"
 
     lines = [
-        "\U0001f6a8 <b>CISA KEV | EXPLOITATION ACTIVE</b>",
+        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>EXPLOITATION ACTIVE</b>",
+        "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        f"\U0001f4cc <b>{cve_id}</b>",
+        f"\U0001f3af <b>{cve_id}</b>",
         "",
-        description,
+        f"\U0001f4e6 <b>Cible :</b> {target}",
+        f"\u26a0\ufe0f <b>Statut :</b> Exploit utilise dans la nature",
         "",
+        f"\U0001f4dd {description}",
+        "",
+        f"\U0001f6e1\ufe0f <b>Action :</b> Patcher IMMEDIATEMENT",
+        "",
+        f'\U0001f517 <a href="{escape(nvd_url)}">NVD</a>',
     ]
-
-    if affected:
-        lines.append(f"\U0001f4e6 <b>Affecte:</b> {', '.join(escape(a) for a in affected)}")
-        lines.append("")
-
-    lines.append(f'\U0001f517 <a href="{escape(nvd_url)}">Voir sur NVD</a>')
 
     return "\n".join(lines)
 

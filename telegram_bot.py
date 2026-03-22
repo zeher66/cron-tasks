@@ -89,71 +89,66 @@ def split_message(text, max_length=4096):
 
 
 def format_article(article):
-    """Formate un article pour Telegram en HTML."""
-    severity_emoji = article.get("severity_emoji", "\U0001f535")
-    severity = article.get("severity", "info").upper()
+    """Formate un article pour Telegram — lisible en 3 secondes."""
+    severity = article.get("severity", "info")
     source = escape(article.get("source", "Inconnu"))
     url = article.get("url", "")
     category = article.get("category", "")
 
-    # Titre : traduit si disponible, sinon original
+    # Header avec barre visuelle
+    severity_headers = {
+        "critique": ("\U0001f534\U0001f534\U0001f534 <b>CRITIQUE</b>", "\u2588" * 10),
+        "important": ("\U0001f7e0\U0001f7e0 <b>IMPORTANT</b>", "\u2588" * 7 + "\u2591" * 3),
+        "moyen": ("\U0001f7e1 <b>MOYEN</b>", "\u2588" * 5 + "\u2591" * 5),
+        "info": ("\U0001f535 <b>INFO</b>", "\u2588" * 3 + "\u2591" * 7),
+    }
+    header, bar = severity_headers.get(severity, ("\U0001f535 <b>INFO</b>", "\u2591" * 10))
+
+    # Categorie tag
+    cat_tags = {
+        "alerte": "\u26a0\ufe0f Alerte",
+        "0day": "\u2622\ufe0f 0-Day",
+        "cyberattaque": "\U0001f4a5 Attaque",
+        "outil": "\U0001f527 Outil",
+        "veille_fr": "\U0001f1eb\U0001f1f7 FR",
+    }
+    cat_tag = cat_tags.get(category, "")
+
+    # Titre
     title = article.get("title_fr") or article.get("title", "Sans titre")
     title = escape(title)
 
-    # Contenu : traduit si disponible
+    # Contenu : 2 phrases max pour comprendre l'essentiel
     content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
     content = escape(content)
-
-    # Limiter la longueur du contenu
-    if len(content) > 800:
-        content = content[:800]
-        last_period = content.rfind(".")
-        if last_period > 400:
-            content = content[:last_period + 1]
+    if len(content) > 300:
+        first_dot = content.find(".", 0, 200)
+        if first_dot > 0:
+            second_dot = content.find(".", first_dot + 1, 350)
+            if second_dot > 0:
+                content = content[:second_dot + 1]
+            else:
+                content = content[:first_dot + 1]
         else:
-            content = content.rstrip() + "..."
+            content = content[:300].rstrip() + "..."
 
-    # Categorie en francais
-    cat_labels = {
-        "alerte": "\u26a0\ufe0f Alerte Securite",
-        "0day": "\u2622\ufe0f 0-Day / Exploit",
-        "cyberattaque": "\U0001f4a5 Cyberattaque",
-        "outil": "\U0001f527 Outil Cyber",
-        "veille_fr": "\U0001f1eb\U0001f1f7 Veille FR",
-    }
-    cat_label = cat_labels.get(category, category)
-
-    # Date de publication (heure de Paris)
-    pub_date = article.get("pub_date", "")
-    if pub_date:
-        try:
-            from datetime import datetime
-            from zoneinfo import ZoneInfo
-            dt = datetime.fromisoformat(pub_date)
-            dt_paris = dt.astimezone(ZoneInfo("Europe/Paris"))
-            pub_date = dt_paris.strftime("%d/%m/%Y %H:%M")
-        except (ValueError, TypeError):
-            pub_date = ""
-
-    # Construction du message
     lines = [
-        f"{severity_emoji} <b>{severity}</b> | {cat_label}",
+        f"{header} | {cat_tag}",
+        f"<code>{bar}</code>",
         "",
-        f"\U0001f4cc <b>{title}</b>",
+        f"\U0001f4f0 {source}",
         "",
+        f"<b>{title}</b>",
     ]
 
     if content:
-        lines.append(content)
         lines.append("")
+        lines.append(content)
 
-    lines.append(f"\U0001f4f0 Source: <b>{source}</b>")
-
-    if pub_date:
-        lines.append(f"\U0001f4c5 {pub_date}")
-
-    lines.append("")
-    lines.append(f'\U0001f517 <a href="{escape(url)}">Lire l\'article complet</a>')
+    lines.extend([
+        "",
+        f'\u27a1\ufe0f <a href="{escape(url)}">Lire</a>',
+    ])
 
     return "\n".join(lines)
 
@@ -243,15 +238,25 @@ def send_error(error_message):
 
 
 def format_critical_alert(article):
-    """Format special pour les alertes CRITICAL."""
+    """Format special pour les alertes CRITICAL — impossible a rater."""
     title = article.get("title_fr") or article.get("title", "Sans titre")
     title = escape(title)
     source = escape(article.get("source", "Inconnu"))
     url = article.get("url", "")
     content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
     content = escape(content)
-    if len(content) > 600:
-        content = content[:600].rstrip() + "..."
+
+    # 2 phrases max
+    if len(content) > 300:
+        first_dot = content.find(".", 0, 200)
+        if first_dot > 0:
+            second_dot = content.find(".", first_dot + 1, 350)
+            if second_dot > 0:
+                content = content[:second_dot + 1]
+            else:
+                content = content[:first_dot + 1]
+        else:
+            content = content[:300].rstrip() + "..."
 
     # Tag France
     france_tag = ""
@@ -260,17 +265,30 @@ def format_critical_alert(article):
     if any(kw in text_lower for kw in france_keywords):
         france_tag = " \U0001f1eb\U0001f1f7"
 
+    # Custom alert tag
+    custom_tag = ""
+    custom_matches = article.get("custom_alert", [])
+    if custom_matches:
+        custom_tag = f"\n\U0001f514 <b>Alerte custom :</b> {', '.join(escape(str(m)) for m in custom_matches[:3])}"
+
     lines = [
         "\U0001f6a8\U0001f6a8\U0001f6a8 <b>ALERTE CRITIQUE</b> \U0001f6a8\U0001f6a8\U0001f6a8",
+        "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        f"\U0001f4cc <b>{title}</b>{france_tag}",
+        f"\U0001f4f0 {source}",
+        "",
+        f"<b>{title}</b>{france_tag}",
         "",
         content,
         "",
-        f"\U0001f4f0 Source: <b>{source}</b>",
-        "",
-        f'\U0001f517 <a href="{escape(url)}">Lire l\'article complet</a>',
     ]
+
+    if custom_tag:
+        lines.append(custom_tag)
+        lines.append("")
+
+    lines.append(f'\u27a1\ufe0f <a href="{escape(url)}">Lire MAINTENANT</a>')
+
     return "\n".join(lines)
 
 
