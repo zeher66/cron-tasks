@@ -127,10 +127,10 @@ def format_article(article):
     pub_date = article.get("pub_date", "")
     if pub_date:
         try:
-            from datetime import datetime, timezone, timedelta
+            from datetime import datetime
+            from zoneinfo import ZoneInfo
             dt = datetime.fromisoformat(pub_date)
-            paris_offset = timedelta(hours=1)  # CET (UTC+1), CEST sera UTC+2
-            dt_paris = dt.astimezone(timezone(paris_offset))
+            dt_paris = dt.astimezone(ZoneInfo("Europe/Paris"))
             pub_date = dt_paris.strftime("%d/%m/%Y %H:%M")
         except (ValueError, TypeError):
             pub_date = ""
@@ -160,9 +160,10 @@ def format_article(article):
 
 def format_digest(articles):
     """Formate un digest de plusieurs articles."""
-    from datetime import datetime, timezone, timedelta
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
 
-    paris_tz = timezone(timedelta(hours=1))
+    paris_tz = ZoneInfo("Europe/Paris")
     now = datetime.now(paris_tz).strftime("%d/%m/%Y %H:%M Paris")
 
     lines = [

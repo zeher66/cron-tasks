@@ -34,7 +34,7 @@ from database import (
 from feeds import fetch_all_feeds, extract_content, truncate_content, get_dead_sources
 from translator import translate_article, translate_text, clean_html
 from telegram_bot import (
-    send_message, send_article, send_digest, send_stats, send_error,
+    send_message, send_stats, send_error,
     send_critical_alert, send_health_check, send_weekly_digest,
     format_article_with_france_tag,
 )
@@ -54,7 +54,8 @@ logger = logging.getLogger("cyber-veille")
 def _is_night_mode():
     """Verifie si on est en mode nuit (23h-7h Paris)."""
     from datetime import datetime, timezone, timedelta
-    paris_tz = timezone(timedelta(hours=1))
+    from zoneinfo import ZoneInfo
+    paris_tz = ZoneInfo("Europe/Paris")
     hour = datetime.now(paris_tz).hour
     if NIGHT_MODE_START > NIGHT_MODE_END:
         return hour >= NIGHT_MODE_START or hour < NIGHT_MODE_END
@@ -231,7 +232,8 @@ def process_articles():
 
     # === Actions horaires (basees sur l'heure de Paris) ===
     from datetime import datetime, timezone, timedelta
-    paris_tz = timezone(timedelta(hours=1))
+    from zoneinfo import ZoneInfo
+    paris_tz = ZoneInfo("Europe/Paris")
     now = datetime.now(paris_tz)
 
     # Health check quotidien (8h Paris)
