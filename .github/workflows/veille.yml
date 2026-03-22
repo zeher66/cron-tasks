@@ -49,7 +49,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          cp veille.db veille.db.bak
+          git fetch origin main
+          git reset --hard origin/main
+          cp veille.db.bak veille.db
           git add veille.db
-          git diff --staged --quiet || git commit -m "update: veille.db $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
+          git diff --staged --quiet || git commit -m "update: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M Paris')"
           git push

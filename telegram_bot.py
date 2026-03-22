@@ -123,13 +123,15 @@ def format_article(article):
     }
     cat_label = cat_labels.get(category, category)
 
-    # Date de publication
+    # Date de publication (heure de Paris)
     pub_date = article.get("pub_date", "")
     if pub_date:
         try:
-            from datetime import datetime
+            from datetime import datetime, timezone, timedelta
             dt = datetime.fromisoformat(pub_date)
-            pub_date = dt.strftime("%d/%m/%Y %H:%M")
+            paris_offset = timedelta(hours=1)  # CET (UTC+1), CEST sera UTC+2
+            dt_paris = dt.astimezone(timezone(paris_offset))
+            pub_date = dt_paris.strftime("%d/%m/%Y %H:%M")
         except (ValueError, TypeError):
             pub_date = ""
 
@@ -158,9 +160,10 @@ def format_article(article):
 
 def format_digest(articles):
     """Formate un digest de plusieurs articles."""
-    from datetime import datetime, timezone
+    from datetime import datetime, timezone, timedelta
 
-    now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
+    paris_tz = timezone(timedelta(hours=1))
+    now = datetime.now(paris_tz).strftime("%d/%m/%Y %H:%M Paris")
 
     lines = [
         f"\U0001f4cb <b>Digest Cyber Veille — {now}</b>",

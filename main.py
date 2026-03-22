@@ -173,9 +173,10 @@ def process_articles():
     logger.info("Sources actives: %d/%d", sources_active, sources_total)
     logger.info("-" * 50)
 
-    # Envoyer les stats si fin de journee (entre 22h et 23h UTC)
-    from datetime import datetime, timezone
-    now = datetime.now(timezone.utc)
+    # Envoyer les stats si fin de journee (22h heure de Paris = 21h UTC)
+    from datetime import datetime, timezone, timedelta
+    paris_tz = timezone(timedelta(hours=1))
+    now = datetime.now(paris_tz)
     if now.hour == 22:
         stats = get_today_stats()
         if stats:
