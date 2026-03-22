@@ -25,10 +25,11 @@ import os
 import sys
 import time
 
-from config import FEEDS
+from config import FEEDS, CUSTOM_ALERTS, NIGHT_MODE_START, NIGHT_MODE_END
 from database import (
     init_db, is_duplicate, mark_as_sent, update_stats,
     get_today_stats, get_week_stats, cleanup_old_articles, export_monthly_csv,
+    get_threat_trend,
 )
 from feeds import fetch_all_feeds, extract_content, truncate_content, get_dead_sources
 from translator import translate_article, translate_text, clean_html
@@ -48,6 +49,24 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 logger = logging.getLogger("cyber-veille")
+
+
+def _is_night_mode():
+    """Verifie si on est en mode nuit (23h-7h Paris)."""
+    from datetime import datetime, timezone, timedelta
+    paris_tz = timezone(timedelta(hours=1))
+    hour = datetime.now(paris_tz).hour
+    if NIGHT_MODE_START > NIGHT_MODE_END:
+        return hour >= NIGHT_MODE_START or hour < NIGHT_MODE_END
+    return NIGHT_MODE_START <= hour < NIGHT_MODE_END
+
+
+def _check_custom_alerts(text):
+    """Verifie si un texte contient un mot-cle custom. Retourne les mots trouves."""
+    if not CUSTOM_ALERTS or not text:
+        return []
+    text_lower = text.lower()
+    return [kw for kw in CUSTOM_ALERTS if kw.lower() in text_lower]
 
 
 def process_articles():
@@ -100,27 +119,46 @@ def process_articles():
         if is_relevant:
             article["stack_match"] = matched_techs
 
-        # Envoi : format special si CRITICAL, silencieux si INFO
+        # Custom alerts check
+        custom_matches = _check_custom_alerts(full_text)
+
+        # Envoi : format special si CRITICAL, silencieux si INFO ou mode nuit
         try:
             severity = article.get("severity", "info")
-            silent = severity in ("info",)  # INFO = silencieux
+            night = _is_night_mode()
 
-            if severity == "critique":
+            # Mode nuit : tout silencieux sauf CRITICAL et custom alerts
+            if night and severity != "critique" and not custom_matches:
+                silent = True
+            elif severity in ("info",):
+                silent = True
+            else:
+                silent = False
+
+            # Custom alert = forcer CRITICAL format
+            if custom_matches:
+                article["custom_alert"] = custom_matches
+                success = send_critical_alert(article)
+            elif severity == "critique":
                 success = send_critical_alert(article)
             else:
                 message = format_article_with_france_tag(article)
-                # Ajouter le tag stack ⚡ si pertinent
                 if is_relevant:
                     techs_str = ", ".join(matched_techs[:3])
-                    stack_line = f"\n\u26a1 <b>Stack:</b> {techs_str}"
-                    message += stack_line
+                    message += f"\n\u26a1 <b>Stack:</b> {techs_str}"
                 success = send_message(message, silent=silent)
 
             if success:
                 mark_as_sent(article["url"], article["title"], article["source"], article["category"])
                 sent += 1
-                stack_tag = " ⚡" if is_relevant else ""
-                logger.info("Envoye: [%s] %s%s", article["source"], article["title"][:60], stack_tag)
+                tags = ""
+                if is_relevant:
+                    tags += " ⚡"
+                if custom_matches:
+                    tags += " 🔔"
+                if night:
+                    tags += " 🌙"
+                logger.info("Envoye: [%s] %s%s", article["source"], article["title"][:60], tags)
                 time.sleep(2)
             else:
                 errors += 1
@@ -214,11 +252,25 @@ def process_articles():
             send_stats(stats)
             logger.info("Stats quotidiennes envoyees")
 
-    # Digest hebdomadaire (dimanche 10h Paris)
+    # Digest hebdomadaire + tendance (dimanche 10h Paris)
     if now.weekday() == 6 and now.hour == 10:
         logger.info("Envoi digest hebdomadaire")
         week_stats = get_week_stats()
         send_weekly_digest(week_stats)
+
+        # Tendance de menaces
+        trend = get_threat_trend()
+        if trend["this_week"] > 0 or trend["last_week"] > 0:
+            art_arrow = "\u2b06\ufe0f" if trend["article_trend"] > 0 else "\u2b07\ufe0f" if trend["article_trend"] < 0 else "\u27a1\ufe0f"
+            cve_arrow = "\u2b06\ufe0f" if trend["cve_trend"] > 0 else "\u2b07\ufe0f" if trend["cve_trend"] < 0 else "\u27a1\ufe0f"
+            trend_msg = (
+                f"\U0001f4c8 <b>Tendance des menaces</b>\n\n"
+                f"{art_arrow} Articles: {trend['this_week']} cette semaine vs {trend['last_week']} la precedente ({trend['article_trend']:+d}%)\n"
+                f"{cve_arrow} CVE: {trend['cve_this_week']} cette semaine vs {trend['cve_last_week']} la precedente ({trend['cve_trend']:+d}%)\n"
+            )
+            if abs(trend["article_trend"]) > 50:
+                trend_msg += f"\n\u26a0\ufe0f <b>Variation importante detectee !</b>"
+            send_message(trend_msg, disable_preview=True)
 
     # Threat Intel abuse.ch (toutes les 6h : 6h, 12h, 18h, 0h)
     if now.hour in (0, 6, 12, 18):

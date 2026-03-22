@@ -241,3 +241,71 @@ def export_monthly_csv():
         writer.writerow(row)
 
     return output.getvalue()
+
+
+def get_threat_trend():
+    """Compare cette semaine vs la precedente pour detecter les tendances."""
+    now = datetime.now(timezone.utc)
+    this_week_start = (now - timedelta(days=7)).strftime("%Y-%m-%d")
+    last_week_start = (now - timedelta(days=14)).strftime("%Y-%m-%d")
+    last_week_end = (now - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Articles cette semaine
+    cursor.execute(
+        "SELECT COUNT(*) FROM articles WHERE sent_at >= ?", (this_week_start,)
+    )
+    this_week = cursor.fetchone()[0] or 0
+
+    # Articles semaine derniere
+    cursor.execute(
+        "SELECT COUNT(*) FROM articles WHERE sent_at >= ? AND sent_at < ?",
+        (last_week_start, last_week_end)
+    )
+    last_week = cursor.fetchone()[0] or 0
+
+    # CVE critiques cette semaine
+    cursor.execute(
+        "SELECT COUNT(*) FROM articles WHERE sent_at >= ? AND category = 'cve'",
+        (this_week_start,)
+    )
+    cve_this_week = cursor.fetchone()[0] or 0
+
+    # CVE semaine derniere
+    cursor.execute(
+        "SELECT COUNT(*) FROM articles WHERE sent_at >= ? AND sent_at < ? AND category = 'cve'",
+        (last_week_start, last_week_end)
+    )
+    cve_last_week = cursor.fetchone()[0] or 0
+
+    # Categories cette semaine
+    cursor.execute(
+        "SELECT category, COUNT(*) FROM articles WHERE sent_at >= ? GROUP BY category ORDER BY COUNT(*) DESC",
+        (this_week_start,)
+    )
+    categories = cursor.fetchall()
+
+    conn.close()
+
+    # Calculer les tendances
+    if last_week > 0:
+        article_trend = round(((this_week - last_week) / last_week) * 100)
+    else:
+        article_trend = 100 if this_week > 0 else 0
+
+    if cve_last_week > 0:
+        cve_trend = round(((cve_this_week - cve_last_week) / cve_last_week) * 100)
+    else:
+        cve_trend = 100 if cve_this_week > 0 else 0
+
+    return {
+        "this_week": this_week,
+        "last_week": last_week,
+        "article_trend": article_trend,
+        "cve_this_week": cve_this_week,
+        "cve_last_week": cve_last_week,
+        "cve_trend": cve_trend,
+        "categories": categories,
+    }

@@ -291,3 +291,21 @@ MY_STACK = [
     # Langages
     "python", "javascript", "node.js",
 ]
+
+# --- Alertes mots-cles custom ---
+# Ajoute ici des mots-cles specifiques a ton environnement
+# Si un article mentionne un de ces mots, tu recois une ALERTE IMMEDIATE sonore
+CUSTOM_ALERTS = [
+    # Noms de domaine / entreprise (remplace par les tiens)
+    # "monentreprise.fr",
+    # "mondomaine.com",
+
+    # Produits specifiques que tu surveilles
+    # "fortigate 60f",
+    # "exchange 2019",
+]
+
+# --- Mode nuit ---
+# Entre ces heures (Paris), tout est silencieux SAUF les CRITICAL
+NIGHT_MODE_START = 23  # 23h Paris
+NIGHT_MODE_END = 7     # 7h Paris
