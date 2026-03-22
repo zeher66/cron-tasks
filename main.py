@@ -38,7 +38,7 @@ from telegram_bot import (
     format_article_with_france_tag,
 )
 from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_kev_message
-from threat_intel import format_abuse_ch_digest, format_github_trending
+from threat_intel import format_abuse_ch_digest, format_github_trending, fetch_new_pocs, format_poc_alert, check_stack_relevance
 
 # --- Logging ---
 logging.basicConfig(
@@ -94,18 +94,33 @@ def process_articles():
             logger.warning("Erreur traduction: %s", e)
             errors += 1
 
-        # Envoi : format special si CRITICAL
+        # Stack relevance check
+        full_text = (article.get("title", "") + " " + article.get("content", "") + " " + article.get("summary", ""))
+        is_relevant, matched_techs = check_stack_relevance(full_text)
+        if is_relevant:
+            article["stack_match"] = matched_techs
+
+        # Envoi : format special si CRITICAL, silencieux si INFO
         try:
-            if article.get("severity") == "critique":
+            severity = article.get("severity", "info")
+            silent = severity in ("info",)  # INFO = silencieux
+
+            if severity == "critique":
                 success = send_critical_alert(article)
             else:
                 message = format_article_with_france_tag(article)
-                success = send_message(message)
+                # Ajouter le tag stack ⚡ si pertinent
+                if is_relevant:
+                    techs_str = ", ".join(matched_techs[:3])
+                    stack_line = f"\n\u26a1 <b>Stack:</b> {techs_str}"
+                    message += stack_line
+                success = send_message(message, silent=silent)
 
             if success:
                 mark_as_sent(article["url"], article["title"], article["source"], article["category"])
                 sent += 1
-                logger.info("Envoye: [%s] %s", article["source"], article["title"][:60])
+                stack_tag = " ⚡" if is_relevant else ""
+                logger.info("Envoye: [%s] %s%s", article["source"], article["title"][:60], stack_tag)
                 time.sleep(2)
             else:
                 errors += 1
@@ -218,6 +233,43 @@ def process_articles():
         gh_msg = format_github_trending()
         if gh_msg:
             send_message(gh_msg, disable_preview=True)
+
+    # PoC Monitor (toutes les 4h : 8h, 12h, 16h, 20h)
+    if now.hour in (8, 12, 16, 20):
+        logger.info("PoC Monitor: verification nouveaux exploits")
+        pocs = fetch_new_pocs()
+        if pocs:
+            # Filtrer les PoC deja envoyes
+            new_pocs = []
+            for poc in pocs:
+                if not is_duplicate(poc["url"], poc["name"]):
+                    new_pocs.append(poc)
+                    mark_as_sent(poc["url"], poc["name"], "GitHub PoC", "poc")
+            if new_pocs:
+                poc_msg = format_poc_alert(new_pocs)
+                if poc_msg:
+                    # PoC concernant notre stack = sonore, sinon silencieux
+                    has_stack = any(p["concerns_my_stack"] for p in new_pocs)
+                    send_message(poc_msg, disable_preview=True, silent=not has_stack)
+
+    # Resume quotidien condense (21h Paris)
+    if now.hour == 21 and now.minute < 30:
+        logger.info("Envoi resume quotidien condense")
+        stats = get_today_stats()
+        if stats and stats.get("articles_sent", 0) > 0:
+            dead = get_dead_sources()
+            lines = [
+                f"\U0001f4cb <b>Resume du jour — {now.strftime('%d/%m/%Y')}</b>",
+                "",
+                f"\U0001f4e8 {stats['articles_sent']} articles envoyes",
+                f"\U0001f6ab {stats['duplicates_filtered']} doublons filtres",
+                f"\U0001f4e1 {stats['sources_active']}/{stats['sources_total']} sources actives",
+            ]
+            if stats['errors'] > 0:
+                lines.append(f"\u26a0\ufe0f {stats['errors']} erreurs")
+            if dead:
+                lines.append(f"\U0001f6d1 Sources down: {', '.join(dead[:3])}")
+            send_message("\n".join(lines), disable_preview=True, silent=True)
 
     # Export CSV hebdomadaire (dimanche 11h) + mensuel (1er du mois 7h)
     if now.weekday() == 6 and now.hour == 11:

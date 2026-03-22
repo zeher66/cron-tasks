@@ -38,7 +38,7 @@ def _send_request(method, data):
         return None
 
 
-def send_message(text, parse_mode="HTML", disable_preview=False):
+def send_message(text, parse_mode="HTML", disable_preview=False, silent=False):
     """Envoie un message sur le canal Telegram."""
     if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN == "YOUR_TOKEN_HERE":
         logger.error("Token Telegram non configure")
@@ -56,11 +56,11 @@ def send_message(text, parse_mode="HTML", disable_preview=False):
             "text": msg,
             "parse_mode": parse_mode,
             "disable_web_page_preview": disable_preview,
+            "disable_notification": silent,
         }
         result = _send_request("sendMessage", data)
         if result is None:
             return False
-        # Pause entre les messages pour eviter le rate limit
         if len(messages) > 1:
             time.sleep(1)
 

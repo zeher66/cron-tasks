@@ -270,3 +270,24 @@ TELEGRAM_MAX_LENGTH = 4096  # Limite Telegram
 REQUEST_TIMEOUT = 30  # Timeout HTTP en secondes
 TIMEZONE = "Europe/Paris"  # Fuseau horaire pour l'affichage
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+# --- Stack technique (pour marquer les CVE/articles qui te concernent avec ⚡) ---
+# Ajoute ici les technologies que tu utilises ou surveilles
+MY_STACK = [
+    # OS
+    "windows", "linux", "ubuntu", "debian", "kali",
+    # Web
+    "apache", "nginx", "php", "wordpress", "laravel",
+    # Infra
+    "docker", "kubernetes", "vmware", "esxi", "proxmox",
+    # Reseau
+    "cisco", "fortinet", "fortigate", "palo alto", "mikrotik",
+    # Cloud
+    "aws", "azure", "google cloud", "o365", "microsoft 365",
+    # Outils
+    "active directory", "exchange", "outlook", "teams",
+    # Base de donnees
+    "mysql", "postgresql", "mongodb", "redis",
+    # Langages
+    "python", "javascript", "node.js",
+]

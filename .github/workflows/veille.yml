@@ -62,3 +62,20 @@ jobs:
           git add -f export_*.csv 2>/dev/null || true
           git diff --staged --quiet || git commit -m "update: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M Paris')"
           git push
+
+      # 6. Backup DB hebdomadaire (dimanche)
+      - name: Weekly DB backup
+        if: github.event.schedule && contains('0 6 12 18', '') || true
+        run: |
+          DAY_OF_WEEK=$(date -u +%u)
+          HOUR=$(TZ='Europe/Paris' date +%H)
+          if [ "$DAY_OF_WEEK" = "7" ] && [ "$HOUR" = "10" ]; then
+            echo "Backup hebdomadaire de la DB"
+            git checkout -B backup
+            git add -f veille.db
+            git commit -m "backup: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d')" || true
+            git push origin backup --force
+            git checkout main
+          else
+            echo "Pas encore dimanche 10h, skip backup"
+          fi

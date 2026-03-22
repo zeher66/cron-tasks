@@ -1,11 +1,13 @@
 """
-Module Threat Intelligence: abuse.ch feeds + GitHub trending security repos.
+Module Threat Intelligence: abuse.ch feeds + GitHub trending security repos + PoC monitor.
 """
 
 import logging
 import requests
 from datetime import datetime, timedelta, timezone
 from html import escape
+
+from config import MY_STACK
 
 logger = logging.getLogger(__name__)
 
@@ -226,3 +228,93 @@ def format_github_trending():
         lines.append("")
 
     return "\n".join(lines)
+
+
+# === POC MONITOR ===
+
+def fetch_new_pocs():
+    """Surveille GitHub pour les nouveaux repos PoC (CVE-XXXX dans le nom)."""
+    try:
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        params = {
+            "q": f"CVE- in:name created:{today}",
+            "sort": "updated",
+            "order": "desc",
+            "per_page": 10,
+        }
+        response = requests.get(
+            "https://api.github.com/search/repositories",
+            params=params,
+            headers={
+                "User-Agent": UA,
+                "Accept": "application/vnd.github.v3+json",
+            },
+            timeout=15,
+        )
+        response.raise_for_status()
+        data = response.json()
+        repos = data.get("items", [])
+
+        results = []
+        for repo in repos:
+            name = repo.get("full_name", "")
+            desc = repo.get("description", "") or ""
+            stars = repo.get("stargazers_count", 0)
+
+            # Verifier si le PoC concerne notre stack
+            text_lower = (name + " " + desc).lower()
+            concerns_my_stack = any(tech.lower() in text_lower for tech in MY_STACK)
+
+            results.append({
+                "name": name,
+                "description": desc,
+                "stars": stars,
+                "url": repo.get("html_url", ""),
+                "language": repo.get("language", ""),
+                "concerns_my_stack": concerns_my_stack,
+            })
+
+        logger.info("PoC Monitor: %d nouveaux repos PoC", len(results))
+        return results
+    except Exception as e:
+        logger.error("Erreur PoC Monitor: %s", e)
+        return []
+
+
+def format_poc_alert(pocs):
+    """Formate les alertes PoC."""
+    if not pocs:
+        return None
+
+    lines = [
+        "\U0001f4a3 <b>PoC Monitor — Nouveaux Exploits Publics</b>",
+        "",
+    ]
+
+    for poc in pocs[:8]:
+        name = escape(poc["name"])
+        desc = escape((poc["description"] or "")[:80])
+        stars = poc["stars"]
+        url = poc["url"]
+        stack_tag = " \u26a1" if poc["concerns_my_stack"] else ""
+
+        lines.append(f"\u2022 <a href=\"{escape(url)}\">{name}</a> \u2b50{stars}{stack_tag}")
+        if desc:
+            lines.append(f"  {desc}")
+        lines.append("")
+
+    if any(p["concerns_my_stack"] for p in pocs):
+        lines.append("\u26a1 = <b>concerne votre stack technique</b>")
+
+    return "\n".join(lines)
+
+
+# === STACK FILTER ===
+
+def check_stack_relevance(text):
+    """Verifie si un texte concerne notre stack technique."""
+    if not text:
+        return False, []
+    text_lower = text.lower()
+    matched = [tech for tech in MY_STACK if tech.lower() in text_lower]
+    return bool(matched), matched
