@@ -239,3 +239,132 @@ def send_error(error_message):
     """Envoie un rapport d'erreur."""
     message = format_error(error_message)
     return send_message(message, disable_preview=True)
+
+
+def format_critical_alert(article):
+    """Format special pour les alertes CRITICAL."""
+    title = article.get("title_fr") or article.get("title", "Sans titre")
+    title = escape(title)
+    source = escape(article.get("source", "Inconnu"))
+    url = article.get("url", "")
+    content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
+    content = escape(content)
+    if len(content) > 600:
+        content = content[:600].rstrip() + "..."
+
+    # Tag France
+    france_tag = ""
+    text_lower = (title + " " + content).lower()
+    france_keywords = ["france", "français", "francais", "anssi", "cert-fr", "cnil", "rgpd", "paris", "french"]
+    if any(kw in text_lower for kw in france_keywords):
+        france_tag = " \U0001f1eb\U0001f1f7"
+
+    lines = [
+        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>ALERTE CRITIQUE</b> \U0001f6a8\U0001f6a8\U0001f6a8",
+        "",
+        f"\U0001f4cc <b>{title}</b>{france_tag}",
+        "",
+        content,
+        "",
+        f"\U0001f4f0 Source: <b>{source}</b>",
+        "",
+        f'\U0001f517 <a href="{escape(url)}">Lire l\'article complet</a>',
+    ]
+    return "\n".join(lines)
+
+
+def format_article_with_france_tag(article):
+    """Format article avec tag France si pertinent."""
+    message = format_article(article)
+
+    # Verifier si l'article mentionne la France
+    title = article.get("title_fr") or article.get("title", "")
+    content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
+    text_lower = (title + " " + content).lower()
+
+    france_keywords = ["france", "français", "francais", "anssi", "cert-fr", "cnil",
+                       "rgpd", "paris", "french", "hexagone", "tricolore"]
+    if any(kw in text_lower for kw in france_keywords):
+        message = message.replace("</b>\n\n\U0001f4cc", "</b> \U0001f1eb\U0001f1f7\n\n\U0001f4cc", 1)
+
+    return message
+
+
+def format_health_check(stats, dead_sources, sources_total):
+    """Formate le health check quotidien."""
+    from datetime import datetime, timezone, timedelta
+    paris_tz = timezone(timedelta(hours=1))
+    now = datetime.now(paris_tz).strftime("%d/%m/%Y")
+
+    lines = [
+        f"\u2705 <b>Bot actif — {now}</b>",
+        "",
+    ]
+
+    if stats:
+        lines.append(f"\u2022 Articles envoyes aujourd'hui : {stats.get('articles_sent', 0)}")
+        lines.append(f"\u2022 Doublons filtres : {stats.get('duplicates_filtered', 0)}")
+        lines.append(f"\u2022 Sources actives : {stats.get('sources_active', 0)}/{sources_total}")
+        lines.append(f"\u2022 Erreurs : {stats.get('errors', 0)}")
+    else:
+        lines.append(f"\u2022 Sources configurees : {sources_total}")
+
+    if dead_sources:
+        lines.append("")
+        lines.append(f"\u26a0\ufe0f <b>Sources en panne ({len(dead_sources)}) :</b>")
+        for src in dead_sources:
+            lines.append(f"  \u2022 {escape(src)}")
+
+    return "\n".join(lines)
+
+
+def format_weekly_digest(week_stats):
+    """Formate le digest hebdomadaire."""
+    from datetime import datetime, timezone, timedelta
+    paris_tz = timezone(timedelta(hours=1))
+    now = datetime.now(paris_tz).strftime("%d/%m/%Y")
+
+    lines = [
+        f"\U0001f4cb <b>Digest Hebdomadaire — Semaine du {now}</b>",
+        "",
+        f"\u2022 Articles envoyes : {week_stats.get('total_sent', 0)}",
+        f"\u2022 CVE critiques : {week_stats.get('critical_cves', 0)}",
+        f"\u2022 Sources actives : {week_stats.get('avg_sources', 0)}",
+        f"\u2022 Doublons filtres : {week_stats.get('total_duplicates', 0)}",
+        "",
+    ]
+
+    top_sources = week_stats.get("top_sources", [])
+    if top_sources:
+        lines.append("<b>Top sources :</b>")
+        for src, count in top_sources[:5]:
+            lines.append(f"  \u2022 {escape(src)} : {count} articles")
+        lines.append("")
+
+    top_categories = week_stats.get("top_categories", [])
+    if top_categories:
+        lines.append("<b>Categories :</b>")
+        cat_emojis = {"critique": "\U0001f534", "important": "\U0001f7e0", "moyen": "\U0001f7e1", "info": "\U0001f535"}
+        for cat, count in top_categories:
+            emoji = cat_emojis.get(cat, "")
+            lines.append(f"  {emoji} {escape(cat.capitalize())} : {count}")
+
+    return "\n".join(lines)
+
+
+def send_critical_alert(article):
+    """Envoie une alerte critique."""
+    message = format_critical_alert(article)
+    return send_message(message)
+
+
+def send_health_check(stats, dead_sources, sources_total):
+    """Envoie le health check."""
+    message = format_health_check(stats, dead_sources, sources_total)
+    return send_message(message, disable_preview=True)
+
+
+def send_weekly_digest(week_stats):
+    """Envoie le digest hebdomadaire."""
+    message = format_weekly_digest(week_stats)
+    return send_message(message, disable_preview=True)

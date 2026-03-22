@@ -50,9 +50,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           cp veille.db veille.db.bak
+          cp -f source_status.json source_status.json.bak 2>/dev/null || true
+          cp -f export_mensuel.csv export_mensuel.csv.bak 2>/dev/null || true
           git fetch origin main
           git reset --hard origin/main
           cp veille.db.bak veille.db
+          cp -f source_status.json.bak source_status.json 2>/dev/null || true
+          cp -f export_mensuel.csv.bak export_mensuel.csv 2>/dev/null || true
           git add veille.db
+          git add -f source_status.json 2>/dev/null || true
+          git add -f export_mensuel.csv 2>/dev/null || true
           git diff --staged --quiet || git commit -m "update: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M Paris')"
           git push
