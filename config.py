@@ -39,7 +39,7 @@ FEEDS = [
     },
     {
         "name": "CISA Alerts",
-        "url": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        "url": "https://www.cisa.gov/news.xml",
         "category": "alerte",
         "lang": "en",
         "frequency": 30,
@@ -130,8 +130,8 @@ FEEDS = [
         "emoji": "\U0001f535",
     },
     {
-        "name": "Naked Security (Sophos)",
-        "url": "https://nakedsecurity.sophos.com/feed/",
+        "name": "Sophos News",
+        "url": "https://news.sophos.com/en-us/feed/",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -156,8 +156,8 @@ FEEDS = [
 
     # === VEILLE FR (2h) ===
     {
-        "name": "Cybermalveillance.gouv.fr",
-        "url": "https://www.cybermalveillance.gouv.fr/feed/rss2",
+        "name": "IT Connect",
+        "url": "https://www.it-connect.fr/feed/",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
@@ -172,8 +172,8 @@ FEEDS = [
         "emoji": "\U0001f7e2",
     },
     {
-        "name": "Globalsecuritymag",
-        "url": "https://www.globalsecuritymag.fr/feeds/rss",
+        "name": "Securite Informatique Blog",
+        "url": "https://www.securite-informatique.gouv.fr/feed",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
