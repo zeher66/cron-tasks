@@ -14,7 +14,7 @@ from database import init_db, is_duplicate, mark_as_sent, update_stats, get_toda
 from feeds import fetch_all_feeds, extract_content, truncate_content
 from translator import translate_article, translate_text, clean_html
 from telegram_bot import send_article, send_digest, send_stats, send_error, send_message
-from cve_monitor import get_new_cves, format_cve_message
+from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_kev_message
 
 # --- Logging ---
 logging.basicConfig(
@@ -128,6 +128,40 @@ def process_articles():
         logger.info("CVE: %d nouvelles envoyees", cve_sent)
     except Exception as e:
         logger.error("Erreur CVE monitor: %s", e)
+        errors += 1
+
+    # === CISA KEV (Exploitations actives) ===
+    logger.info("=" * 50)
+    logger.info("Verification CISA KEV (exploitations actives)")
+    logger.info("=" * 50)
+
+    try:
+        kev_cves = get_kev_cves()
+        kev_sent = 0
+        for kev in kev_cves:
+            cve_id = kev["cve_id"]
+            if is_duplicate(kev["nvd_url"], cve_id):
+                duplicates += 1
+                continue
+
+            # Traduire en francais
+            desc_fr = translate_text(kev.get("description", ""), "en")
+            if desc_fr:
+                kev["description"] = desc_fr
+
+            message = format_kev_message(kev)
+            if send_message(message):
+                mark_as_sent(kev["nvd_url"], cve_id, "CISA KEV", "kev")
+                kev_sent += 1
+                sent += 1
+                logger.info("KEV envoye: %s", cve_id)
+                time.sleep(2)
+            else:
+                errors += 1
+
+        logger.info("CISA KEV: %d nouvelles envoyees", kev_sent)
+    except Exception as e:
+        logger.error("Erreur CISA KEV: %s", e)
         errors += 1
 
     # Mise a jour des stats

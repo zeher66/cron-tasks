@@ -178,6 +178,71 @@ def format_cve_message(cve_data):
     return "\n".join(lines)
 
 
+def fetch_cisa_kev():
+    """Recupere les CVE activement exploitees depuis le CISA KEV."""
+    kev_url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+    headers = {"User-Agent": USER_AGENT}
+
+    try:
+        response = requests.get(kev_url, headers=headers, timeout=REQUEST_TIMEOUT)
+        response.raise_for_status()
+        data = response.json()
+        vulnerabilities = data.get("vulnerabilities", [])
+
+        # Filtrer les CVE ajoutees dans les dernieres 48h
+        recent = []
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+        for vuln in vulnerabilities:
+            date_added = vuln.get("dateAdded", "")
+            try:
+                dt = datetime.strptime(date_added, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+                if dt >= cutoff:
+                    recent.append({
+                        "cve_id": vuln.get("cveID", ""),
+                        "description": vuln.get("shortDescription", ""),
+                        "cvss_score": "N/A",
+                        "cvss_severity": "CRITICAL",
+                        "affected": [f"{vuln.get('vendorProject', '')}/{vuln.get('product', '')}"],
+                        "ref_url": "",
+                        "nvd_url": f"https://nvd.nist.gov/vuln/detail/{vuln.get('cveID', '')}",
+                        "published": date_added,
+                        "kev": True,
+                    })
+            except (ValueError, TypeError):
+                continue
+
+        logger.info("CISA KEV: %d CVE activement exploitees recentes", len(recent))
+        return recent
+    except requests.RequestException as e:
+        logger.error("Erreur CISA KEV: %s", e)
+        return []
+
+
+def format_kev_message(cve_data):
+    """Formate un CVE CISA KEV pour Telegram."""
+    cve_id = escape(cve_data["cve_id"])
+    description = escape(cve_data.get("description", ""))
+    nvd_url = cve_data["nvd_url"]
+    affected = cve_data.get("affected", [])
+
+    lines = [
+        "\U0001f6a8 <b>CISA KEV | EXPLOITATION ACTIVE</b>",
+        "",
+        f"\U0001f4cc <b>{cve_id}</b>",
+        "",
+        description,
+        "",
+    ]
+
+    if affected:
+        lines.append(f"\U0001f4e6 <b>Affecte:</b> {', '.join(escape(a) for a in affected)}")
+        lines.append("")
+
+    lines.append(f'\U0001f517 <a href="{escape(nvd_url)}">Voir sur NVD</a>')
+
+    return "\n".join(lines)
+
+
 def get_new_cves(hours=6):
     """Recupere et formate les nouvelles CVE critiques et hautes."""
     all_cves = []
@@ -194,3 +259,8 @@ def get_new_cves(hours=6):
 
     logger.info("CVE trouvees: %d critiques, %d hautes", len(critical), len(high))
     return all_cves
+
+
+def get_kev_cves():
+    """Recupere les CVE CISA KEV recentes."""
+    return fetch_cisa_kev()

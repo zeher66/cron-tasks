@@ -38,8 +38,8 @@ FEEDS = [
         "emoji": "\U0001f534",
     },
     {
-        "name": "CISA Alerts",
-        "url": "https://www.cisa.gov/news.xml",
+        "name": "US-CERT NCAS",
+        "url": "https://us-cert.cisa.gov/ncas/alerts.xml",
         "category": "alerte",
         "lang": "en",
         "frequency": 30,
