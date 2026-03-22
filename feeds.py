@@ -1,5 +1,7 @@
+import re
 import feedparser
 import logging
+import requests
 from datetime import datetime, timedelta, timezone
 from time import mktime
 
@@ -119,6 +121,89 @@ def truncate_content(text, max_length=MAX_CONTENT_LENGTH):
     return truncated + "..."
 
 
+def _fix_xml(raw_text):
+    """Tente de reparer un XML malforme."""
+    if not raw_text:
+        return raw_text
+
+    # Supprimer les caracteres invalides XML
+    raw_text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', raw_text)
+
+    # Corriger les entites HTML non fermees (&amp manquant, etc.)
+    raw_text = re.sub(r'&(?!amp;|lt;|gt;|quot;|apos;|#)', '&amp;', raw_text)
+
+    # Supprimer les tags mal fermes courants
+    raw_text = re.sub(r'<br\s*>', '<br/>', raw_text)
+    raw_text = re.sub(r'<hr\s*>', '<hr/>', raw_text)
+    raw_text = re.sub(r'<img([^>]*?)(?<!/)>', r'<img\1/>', raw_text)
+
+    return raw_text
+
+
+def _fetch_and_fix(url):
+    """Telecharge un flux RSS et le repare si necessaire."""
+    headers = {"User-Agent": USER_AGENT}
+
+    try:
+        response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+        response.raise_for_status()
+        raw = response.text
+
+        # Essai 1 : parser tel quel
+        feed = feedparser.parse(raw)
+        if not feed.bozo or feed.entries:
+            return feed
+
+        # Essai 2 : reparer le XML et re-parser
+        logger.info("Tentative de reparation XML pour %s", url)
+        fixed = _fix_xml(raw)
+        feed = feedparser.parse(fixed)
+        if feed.entries:
+            logger.info("Reparation XML reussie pour %s", url)
+            return feed
+
+        # Essai 3 : extraire les liens avec regex en dernier recours
+        logger.info("Extraction regex pour %s", url)
+        entries = []
+        # Chercher les patterns <item>...</item> ou <entry>...</entry>
+        items = re.findall(r'<(?:item|entry)[\s>].*?</(?:item|entry)>', raw, re.DOTALL)
+        for item in items:
+            title_match = re.search(r'<title[^>]*>(.*?)</title>', item, re.DOTALL)
+            link_match = re.search(r'<link[^>]*(?:href=["\']([^"\']+)["\']|>(.*?)</link>)', item, re.DOTALL)
+            desc_match = re.search(r'<(?:description|summary|content)[^>]*>(.*?)</(?:description|summary|content)>', item, re.DOTALL)
+
+            title = title_match.group(1).strip() if title_match else ""
+            link = ""
+            if link_match:
+                link = (link_match.group(1) or link_match.group(2) or "").strip()
+            summary = desc_match.group(1).strip() if desc_match else ""
+
+            # Nettoyer CDATA
+            title = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', title)
+            link = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', link)
+            summary = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', summary)
+
+            if title and link:
+                entry = feedparser.FeedParserDict()
+                entry["title"] = title
+                entry["link"] = link
+                entry["summary"] = summary
+                entries.append(entry)
+
+        if entries:
+            logger.info("Extraction regex: %d articles trouves pour %s", len(entries), url)
+            feed = feedparser.FeedParserDict()
+            feed["entries"] = entries
+            feed["bozo"] = False
+            return feed
+
+        return feed
+    except requests.RequestException as e:
+        logger.warning("Erreur telechargement %s: %s", url, e)
+        # Fallback : laisser feedparser essayer directement
+        return feedparser.parse(url, agent=USER_AGENT)
+
+
 def fetch_feed(feed_config):
     """Scrape un flux RSS et retourne les nouveaux articles."""
     name = feed_config["name"]
@@ -130,13 +215,16 @@ def fetch_feed(feed_config):
     logger.info("Scraping: %s", name)
 
     try:
-        feed = feedparser.parse(url, agent=USER_AGENT)
+        feed = _fetch_and_fix(url)
     except Exception as e:
         logger.error("Erreur parsing flux %s: %s", name, e)
         return []
 
-    if feed.bozo and not feed.entries:
-        logger.warning("Flux invalide ou vide: %s (%s)", name, feed.bozo_exception)
+    if not hasattr(feed, 'entries') or not feed.entries:
+        if hasattr(feed, 'bozo') and feed.bozo:
+            logger.warning("Flux invalide meme apres reparation: %s", name)
+        else:
+            logger.info("Flux vide (pas de nouveaux articles): %s", name)
         return []
 
     articles = []
