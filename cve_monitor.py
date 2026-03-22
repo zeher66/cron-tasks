@@ -199,6 +199,11 @@ def format_cve_message(cve_data):
     if ref_url and ref_url != nvd_url:
         lines[-1] += f' | <a href="{escape(ref_url)}">PoC / Details</a>'
 
+    # Lien NVD traduit en FR
+    from urllib.parse import quote
+    translate_nvd = f"https://translate.google.com/translate?sl=en&tl=fr&u={quote(nvd_url)}"
+    lines.append(f'\u27a1\ufe0f <a href="{escape(translate_nvd)}">Fiche NVD en FR</a>')
+
     return "\n".join(lines)
 
 

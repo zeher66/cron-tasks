@@ -88,12 +88,19 @@ def split_message(text, max_length=4096):
     return parts
 
 
+def _google_translate_url(url):
+    """Genere un lien Google Translate pour un article anglais."""
+    from urllib.parse import quote
+    return f"https://translate.google.com/translate?sl=en&tl=fr&u={quote(url)}"
+
+
 def format_article(article):
-    """Formate un article pour Telegram — lisible en 3 secondes."""
+    """Formate un article pour Telegram — detail FR + resume + liens."""
     severity = article.get("severity", "info")
     source = escape(article.get("source", "Inconnu"))
     url = article.get("url", "")
     category = article.get("category", "")
+    lang = article.get("lang", "en")
 
     # Header avec barre visuelle
     severity_headers = {
@@ -114,23 +121,24 @@ def format_article(article):
     }
     cat_tag = cat_tags.get(category, "")
 
-    # Titre
+    # Titre traduit
     title = article.get("title_fr") or article.get("title", "Sans titre")
     title = escape(title)
 
-    # Contenu : 2 phrases max pour comprendre l'essentiel
-    content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
-    content = escape(content)
-    if len(content) > 300:
-        first_dot = content.find(".", 0, 200)
-        if first_dot > 0:
-            second_dot = content.find(".", first_dot + 1, 350)
-            if second_dot > 0:
-                content = content[:second_dot + 1]
-            else:
-                content = content[:first_dot + 1]
+    # Description detaillee en francais
+    detail = article.get("summary_fr") or article.get("content") or article.get("summary", "")
+    detail = escape(detail)
+
+    # Garder plus de texte pour le detail (4-5 phrases)
+    if len(detail) > 600:
+        cut = detail.find(".", 500)
+        if cut > 0 and cut < 700:
+            detail = detail[:cut + 1]
         else:
-            content = content[:300].rstrip() + "..."
+            detail = detail[:600].rstrip() + "..."
+
+    # Generer un resume en points cles (extraire les phrases cles)
+    summary_points = _extract_key_points(detail)
 
     lines = [
         f"{header} | {cat_tag}",
@@ -141,16 +149,56 @@ def format_article(article):
         f"<b>{title}</b>",
     ]
 
-    if content:
+    # Description detaillee
+    if detail:
         lines.append("")
-        lines.append(content)
+        lines.append(f"\U0001f4d6 {detail}")
 
-    lines.extend([
-        "",
-        f'\u27a1\ufe0f <a href="{escape(url)}">Lire</a>',
-    ])
+    # Resume en points cles
+    if summary_points:
+        lines.append("")
+        lines.append("\U0001f511 <b>A retenir :</b>")
+        for point in summary_points:
+            lines.append(f"\u2022 {point}")
+
+    # Liens
+    lines.append("")
+    if lang != "fr":
+        translate_url = _google_translate_url(url)
+        lines.append(f'\u27a1\ufe0f <a href="{escape(translate_url)}">Lire en FR</a> | \U0001f517 <a href="{escape(url)}">Original EN</a>')
+    else:
+        lines.append(f'\u27a1\ufe0f <a href="{escape(url)}">Lire l\'article</a>')
 
     return "\n".join(lines)
+
+
+def _extract_key_points(text):
+    """Extrait 2-4 points cles d'un texte."""
+    if not text or len(text) < 50:
+        return []
+
+    # Decouper en phrases
+    import re
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    sentences = [s.strip() for s in sentences if len(s.strip()) > 20]
+
+    if len(sentences) <= 2:
+        return []
+
+    # Garder les phrases les plus informatives (pas trop courtes, pas trop longues)
+    points = []
+    for s in sentences:
+        if len(s) > 30 and len(s) < 150:
+            # Raccourcir si besoin
+            if len(s) > 100:
+                dot = s.find(",", 50)
+                if dot > 0:
+                    s = s[:dot]
+            points.append(s)
+        if len(points) >= 3:
+            break
+
+    return points
 
 
 def format_digest(articles):
@@ -287,7 +335,13 @@ def format_critical_alert(article):
         lines.append(custom_tag)
         lines.append("")
 
-    lines.append(f'\u27a1\ufe0f <a href="{escape(url)}">Lire MAINTENANT</a>')
+    # Liens
+    lang = article.get("lang", "en")
+    if lang != "fr":
+        translate_url = _google_translate_url(url)
+        lines.append(f'\u27a1\ufe0f <a href="{escape(translate_url)}">Lire en FR</a> | \U0001f517 <a href="{escape(url)}">Original EN</a>')
+    else:
+        lines.append(f'\u27a1\ufe0f <a href="{escape(url)}">Lire MAINTENANT</a>')
 
     return "\n".join(lines)
 
