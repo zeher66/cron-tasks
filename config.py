@@ -131,7 +131,7 @@ FEEDS = [
     },
     {
         "name": "Packet Storm",
-        "url": "https://rss.packetstormsecurity.com/files/",
+        "url": "https://packetstormsecurity.com/feeds/overview",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -147,7 +147,7 @@ FEEDS = [
     },
     {
         "name": "Kali Linux Blog",
-        "url": "https://www.kali.org/blog/index.xml",
+        "url": "https://www.kali.org/blog/feed.xml",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -157,7 +157,7 @@ FEEDS = [
     # === VEILLE FR (2h) ===
     {
         "name": "ANSSI",
-        "url": "https://cyber.gouv.fr/feed/actualite/",
+        "url": "https://www.ssi.gouv.fr/feed/actualite/",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
@@ -172,8 +172,8 @@ FEEDS = [
         "emoji": "\U0001f7e2",
     },
     {
-        "name": "LeMagIT Cybersecurite",
-        "url": "https://www.lemagit.fr/rss/Cybersecurite.xml",
+        "name": "IT Connect",
+        "url": "https://www.it-connect.fr/feed/",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
@@ -218,4 +218,4 @@ MAX_ARTICLE_AGE_HOURS = 48  # Ignorer les articles plus vieux que 48h
 MAX_CONTENT_LENGTH = 500  # Longueur max du resume en caracteres
 TELEGRAM_MAX_LENGTH = 4096  # Limite Telegram
 REQUEST_TIMEOUT = 30  # Timeout HTTP en secondes
-USER_AGENT = "CyberVeille/1.0 (+https://github.com)"
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"

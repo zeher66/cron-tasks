@@ -81,7 +81,11 @@ def get_severity(title, summary, category):
 def extract_content(url):
     """Extrait le contenu complet d'un article depuis son URL."""
     try:
-        downloaded = fetch_url(url)
+        from trafilatura.settings import use_config
+        config = use_config()
+        config.set("DEFAULT", "USER_AGENTS", USER_AGENT)
+
+        downloaded = fetch_url(url, config=config)
         if downloaded is None:
             return None
         text = extract(
