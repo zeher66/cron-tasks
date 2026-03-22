@@ -116,6 +116,7 @@ def format_article(article):
     # Categorie en francais
     cat_labels = {
         "alerte": "\u26a0\ufe0f Alerte Securite",
+        "0day": "\u2622\ufe0f 0-Day / Exploit",
         "cyberattaque": "\U0001f4a5 Cyberattaque",
         "outil": "\U0001f527 Outil Cyber",
         "veille_fr": "\U0001f1eb\U0001f1f7 Veille FR",

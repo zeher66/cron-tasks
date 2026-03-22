@@ -54,6 +54,56 @@ FEEDS = [
         "emoji": "\U0001f534",
     },
 
+    # === 0DAY & EXPLOITS (30 min) ===
+    {
+        "name": "Google Project Zero",
+        "url": "https://googleprojectzero.blogspot.com/feeds/posts/default?alt=rss",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",  # ☢️
+    },
+    {
+        "name": "Zero Day Initiative",
+        "url": "https://www.zerodayinitiative.com/rss/published/",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",
+    },
+    {
+        "name": "Full Disclosure",
+        "url": "https://seclists.org/rss/fulldisclosure.rss",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",
+    },
+    {
+        "name": "Watchtowr Labs",
+        "url": "https://labs.watchtowr.com/rss/",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",
+    },
+    {
+        "name": "Qualys Threat Research",
+        "url": "https://blog.qualys.com/feed",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",
+    },
+    {
+        "name": "CERT/CC Vulnerability Notes",
+        "url": "https://www.kb.cert.org/vuls/atomfeed/",
+        "category": "0day",
+        "lang": "en",
+        "frequency": 30,
+        "emoji": "\u2622\ufe0f",
+    },
+
     # === CYBERATTAQUES & MENACES (2h) ===
     {
         "name": "The Hacker News",
