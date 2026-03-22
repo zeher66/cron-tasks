@@ -219,15 +219,26 @@ def process_articles():
         if gh_msg:
             send_message(gh_msg, disable_preview=True)
 
-    # Export CSV mensuel (1er du mois a 7h)
+    # Export CSV hebdomadaire (dimanche 11h) + mensuel (1er du mois 7h)
+    if now.weekday() == 6 and now.hour == 11:
+        logger.info("Export CSV hebdomadaire")
+        csv_data = export_monthly_csv()  # reutilise la meme fonction (30 derniers jours)
+        if csv_data:
+            week_label = now.strftime("%Y-W%W")
+            csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"export_semaine_{week_label}.csv")
+            with open(csv_path, "w", encoding="utf-8") as f:
+                f.write(csv_data)
+            logger.info("CSV hebdo exporte: %s", csv_path)
+
     if now.day == 1 and now.hour == 7:
         logger.info("Export CSV mensuel")
         csv_data = export_monthly_csv()
         if csv_data:
-            csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "export_mensuel.csv")
+            month_label = now.strftime("%Y-%m")
+            csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"export_mois_{month_label}.csv")
             with open(csv_path, "w", encoding="utf-8") as f:
                 f.write(csv_data)
-            logger.info("CSV exporte: %s", csv_path)
+            logger.info("CSV mensuel exporte: %s", csv_path)
 
     # Nettoyage (minuit)
     if now.hour == 0:

@@ -59,6 +59,6 @@ jobs:
           cp -f export_mensuel.csv.bak export_mensuel.csv 2>/dev/null || true
           git add veille.db
           git add -f source_status.json 2>/dev/null || true
-          git add -f export_mensuel.csv 2>/dev/null || true
+          git add -f export_*.csv 2>/dev/null || true
           git diff --staged --quiet || git commit -m "update: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M Paris')"
           git push
