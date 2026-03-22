@@ -130,8 +130,8 @@ FEEDS = [
         "emoji": "\U0001f535",
     },
     {
-        "name": "Packet Storm",
-        "url": "https://packetstormsecurity.com/feeds/overview",
+        "name": "Naked Security (Sophos)",
+        "url": "https://nakedsecurity.sophos.com/feed/",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -146,8 +146,8 @@ FEEDS = [
         "emoji": "\U0001f535",
     },
     {
-        "name": "Kali Linux Blog",
-        "url": "https://www.kali.org/blog/feed.xml",
+        "name": "SANS ISC",
+        "url": "https://isc.sans.edu/rssfeed.xml",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -156,8 +156,8 @@ FEEDS = [
 
     # === VEILLE FR (2h) ===
     {
-        "name": "ANSSI",
-        "url": "https://www.ssi.gouv.fr/feed/actualite/",
+        "name": "Cybermalveillance.gouv.fr",
+        "url": "https://www.cybermalveillance.gouv.fr/feed/rss2",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
@@ -172,8 +172,8 @@ FEEDS = [
         "emoji": "\U0001f7e2",
     },
     {
-        "name": "IT Connect",
-        "url": "https://www.it-connect.fr/feed/",
+        "name": "Globalsecuritymag",
+        "url": "https://www.globalsecuritymag.fr/feeds/rss",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
