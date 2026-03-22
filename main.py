@@ -298,13 +298,15 @@ def process_articles():
             for poc in pocs:
                 if not is_duplicate(poc["url"], poc["name"]):
                     new_pocs.append(poc)
-                    mark_as_sent(poc["url"], poc["name"], "GitHub PoC", "poc")
             if new_pocs:
                 poc_msg = format_poc_alert(new_pocs)
                 if poc_msg:
-                    # PoC concernant notre stack = sonore, sinon silencieux
                     has_stack = any(p["concerns_my_stack"] for p in new_pocs)
-                    send_message(poc_msg, disable_preview=True, silent=not has_stack)
+                    success = send_message(poc_msg, disable_preview=True, silent=not has_stack)
+                    # Marquer comme envoyes SEULEMENT apres envoi reussi
+                    if success:
+                        for poc in new_pocs:
+                            mark_as_sent(poc["url"], poc["name"], "GitHub PoC", "poc")
 
     # Resume quotidien condense (21h Paris)
     if now.hour == 21 and now.minute < 30:

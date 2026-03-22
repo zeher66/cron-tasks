@@ -259,18 +259,6 @@ def format_error(error_message):
     )
 
 
-def send_article(article):
-    """Envoie un article formate sur Telegram."""
-    message = format_article(article)
-    return send_message(message)
-
-
-def send_digest(articles):
-    """Envoie un digest d'articles."""
-    message = format_digest(articles)
-    return send_message(message, disable_preview=True)
-
-
 def send_stats(stats):
     """Envoie les statistiques quotidiennes."""
     message = format_stats(stats)
@@ -286,7 +274,7 @@ def send_error(error_message):
 
 
 def format_critical_alert(article):
-    """Format special pour les alertes CRITICAL — impossible a rater."""
+    """Format special pour les alertes CRITICAL — meme format unifie."""
     title = article.get("title_fr") or article.get("title", "Sans titre")
     title = escape(title)
     source = escape(article.get("source", "Inconnu"))
@@ -294,17 +282,13 @@ def format_critical_alert(article):
     content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
     content = escape(content)
 
-    # 2 phrases max
-    if len(content) > 300:
-        first_dot = content.find(".", 0, 200)
-        if first_dot > 0:
-            second_dot = content.find(".", first_dot + 1, 350)
-            if second_dot > 0:
-                content = content[:second_dot + 1]
-            else:
-                content = content[:first_dot + 1]
+    # Description detaillee (4-5 phrases)
+    if len(content) > 600:
+        cut = content.find(".", 500)
+        if cut > 0 and cut < 700:
+            content = content[:cut + 1]
         else:
-            content = content[:300].rstrip() + "..."
+            content = content[:600].rstrip() + "..."
 
     # Tag France
     france_tag = ""
@@ -317,25 +301,34 @@ def format_critical_alert(article):
     custom_tag = ""
     custom_matches = article.get("custom_alert", [])
     if custom_matches:
-        custom_tag = f"\n\U0001f514 <b>Alerte custom :</b> {', '.join(escape(str(m)) for m in custom_matches[:3])}"
+        custom_tag = f"\U0001f514 <b>Alerte custom :</b> {', '.join(escape(str(m)) for m in custom_matches[:3])}"
+
+    # Points cles
+    key_points = _extract_key_points(content)
 
     lines = [
-        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>ALERTE CRITIQUE</b> \U0001f6a8\U0001f6a8\U0001f6a8",
+        "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f4a5 Alerte",
         "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
         f"\U0001f4f0 {source}",
         "",
         f"<b>{title}</b>{france_tag}",
         "",
-        content,
-        "",
+        f"\U0001f4d6 {content}",
     ]
 
-    if custom_tag:
-        lines.append(custom_tag)
+    if key_points:
         lines.append("")
+        lines.append("\U0001f511 <b>A retenir :</b>")
+        for p in key_points:
+            lines.append(f"\u2022 {p}")
+
+    if custom_tag:
+        lines.append("")
+        lines.append(custom_tag)
 
     # Liens
+    lines.append("")
     lang = article.get("lang", "en")
     if lang != "fr":
         translate_url = _google_translate_url(url)
@@ -348,26 +341,35 @@ def format_critical_alert(article):
 
 def format_article_with_france_tag(article):
     """Format article avec tag France si pertinent."""
-    message = format_article(article)
-
-    # Verifier si l'article mentionne la France
+    # Verifier si l'article mentionne la France AVANT le formatage
     title = article.get("title_fr") or article.get("title", "")
     content = article.get("summary_fr") or article.get("content") or article.get("summary", "")
     text_lower = (title + " " + content).lower()
 
     france_keywords = ["france", "français", "francais", "anssi", "cert-fr", "cnil",
                        "rgpd", "paris", "french", "hexagone", "tricolore"]
-    if any(kw in text_lower for kw in france_keywords):
-        message = message.replace("</b>\n\n\U0001f4cc", "</b> \U0001f1eb\U0001f1f7\n\n\U0001f4cc", 1)
+    is_france = any(kw in text_lower for kw in france_keywords)
+
+    message = format_article(article)
+
+    if is_france:
+        # Inserer le tag apres le titre (qui est en <b>)
+        # Chercher la fin du titre bold
+        title_escaped = escape(article.get("title_fr") or article.get("title", ""))
+        message = message.replace(
+            f"<b>{title_escaped}</b>",
+            f"<b>{title_escaped}</b> \U0001f1eb\U0001f1f7",
+            1
+        )
 
     return message
 
 
 def format_health_check(stats, dead_sources, sources_total):
     """Formate le health check quotidien."""
-    from datetime import datetime, timezone, timedelta
-    paris_tz = timezone(timedelta(hours=1))
-    now = datetime.now(paris_tz).strftime("%d/%m/%Y")
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    now = datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y")
 
     lines = [
         f"\u2705 <b>Bot actif — {now}</b>",
@@ -393,9 +395,9 @@ def format_health_check(stats, dead_sources, sources_total):
 
 def format_weekly_digest(week_stats):
     """Formate le digest hebdomadaire."""
-    from datetime import datetime, timezone, timedelta
-    paris_tz = timezone(timedelta(hours=1))
-    now = datetime.now(paris_tz).strftime("%d/%m/%Y")
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    now = datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y")
 
     lines = [
         f"\U0001f4cb <b>Digest Hebdomadaire — Semaine du {now}</b>",
