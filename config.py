@@ -38,8 +38,8 @@ FEEDS = [
         "emoji": "\U0001f534",
     },
     {
-        "name": "CISA Alerts",
-        "url": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        "name": "Tenable Blog",
+        "url": "https://www.tenable.com/blog/feed",
         "category": "alerte",
         "lang": "en",
         "frequency": 30,
@@ -180,8 +180,8 @@ FEEDS = [
         "emoji": "\U0001f535",
     },
     {
-        "name": "Sophos News",
-        "url": "https://news.sophos.com/en-us/feed/",
+        "name": "Rapid7 Blog",
+        "url": "https://blog.rapid7.com/rss/",
         "category": "outil",
         "lang": "en",
         "frequency": 240,
@@ -222,8 +222,8 @@ FEEDS = [
         "emoji": "\U0001f7e2",
     },
     {
-        "name": "Securite Informatique Blog",
-        "url": "https://www.securite-informatique.gouv.fr/feed",
+        "name": "Next INpact Securite",
+        "url": "https://next.ink/feed/",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
