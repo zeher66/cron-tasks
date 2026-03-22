@@ -192,8 +192,8 @@ def process_articles():
         if dead:
             send_error(f"Sources en panne depuis 24h+ : {', '.join(dead)}")
 
-    # Stats quotidiennes (22h Paris)
-    if now.hour == 22:
+    # Stats quotidiennes (21h30 Paris)
+    if now.hour == 21 and now.minute >= 30:
         stats = get_today_stats()
         if stats:
             send_stats(stats)
