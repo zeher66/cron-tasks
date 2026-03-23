@@ -167,10 +167,14 @@ def get_severity(title, summary, category):
     """Determine la severite basee sur le contenu et la categorie."""
     text = (title + " " + summary).lower()
 
+    # "critical" seul est trop vague — il faut un contexte securite
     critical_keywords = [
-        "zero-day", "0day", "actively exploited", "critical", "rce",
-        "remote code execution", "cert-fr alerte", "urgence",
-        "exploitation active", "cisa kev",
+        "zero-day", "0day", "actively exploited",
+        "critical vulnerability", "critical flaw", "critical bug",
+        "critical rce", "critical patch", "critical security",
+        "rce", "remote code execution",
+        "cert-fr alerte", "urgence", "emergency patch",
+        "exploitation active", "cisa kev", "exploited in the wild",
     ]
     high_keywords = [
         "ransomware", "breach", "leak", "apt", "backdoor", "wiper",
@@ -178,7 +182,7 @@ def get_severity(title, summary, category):
     ]
     medium_keywords = [
         "vulnerability", "malware", "phishing", "trojan", "botnet",
-        "cve-", "patch", "update",
+        "cve-", "patch", "update", "critical",
     ]
 
     if any(kw in text for kw in critical_keywords):

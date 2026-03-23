@@ -93,6 +93,23 @@ def parse_cve(vuln_item):
     # Limiter a 5 produits
     affected = list(set(affected))[:5]
 
+    # Si pas de CPE, extraire le produit depuis la description
+    if not affected and description:
+        import re
+        # Pattern: "vulnerability in PRODUCT VERSION" ou "found in PRODUCT"
+        product_patterns = [
+            r'(?:in|dans|affecte|found in|discovered in|identified in)\s+([A-Z][A-Za-z0-9\s\-\.]+\d[\d\.]*)',
+            r'(?:in|dans)\s+([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z0-9\-]+){0,3}\s+\d[\d\.]+)',
+            r'^(?:A vulnerability|A flaw|An issue).*?(?:in|dans)\s+([A-Z][^\.,]+)',
+        ]
+        for pattern in product_patterns:
+            match = re.search(pattern, description)
+            if match:
+                product_name = match.group(1).strip()
+                if len(product_name) > 3 and len(product_name) < 80:
+                    affected = [product_name]
+                    break
+
     # References
     references = cve.get("references", [])
     ref_url = ""

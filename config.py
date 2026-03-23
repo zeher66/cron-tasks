@@ -222,8 +222,8 @@ FEEDS = [
         "emoji": "\U0001f7e2",
     },
     {
-        "name": "Next INpact Securite",
-        "url": "https://next.ink/feed/",
+        "name": "Le Monde Informatique Secu",
+        "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml",
         "category": "veille_fr",
         "lang": "fr",
         "frequency": 120,
@@ -258,9 +258,15 @@ KEYWORDS_PRIORITY = [
 ]
 
 KEYWORDS_IGNORE = [
+    # Pub / spam
     "sponsor", "webinar", "advertisement", "promoted",
     "podcast episode", "job posting", "hiring", "career",
     "subscribe now", "sign up for", "free trial",
+    # Hors-sujet (pas de la cybersecurite)
+    "premier tweet", "first tweet", "nft", "crypto monnaie",
+    "airdrop samsung", "galaxy s2", "iphone review",
+    "recette", "cuisine", "football", "sport",
+    "meteo", "weather", "horoscope",
 ]
 
 # --- Parametres ---
