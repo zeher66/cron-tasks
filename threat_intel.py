@@ -232,15 +232,69 @@ def format_github_trending():
 
 # === POC MONITOR ===
 
+# Mots-cles qui indiquent un VRAI PoC/exploit
+POC_KEYWORDS = [
+    "exploit", "poc", "proof of concept", "rce", "xss", "sqli",
+    "injection", "bypass", "overflow", "shell", "reverse",
+    "payload", "scanner", "detection", "vulnerability",
+    "unauthenticated", "privilege escalation", "remote code",
+    "dos", "denial of service", "lfi", "rfi", "ssrf", "deserialization",
+]
+
+# Mots-cles qui indiquent un FAUX positif (pas un vrai exploit)
+POC_NOISE = [
+    "homework", "assignment", "class project", "course", "tutorial",
+    "learning", "study", "practice", "vectors implemented",
+    "agent_dev", "database", "tracker", "list of", "collection",
+    "awesome", "benchmark", "bench", "dataset",
+]
+
+
+def _is_real_poc(name, description):
+    """Filtre les faux positifs — ne garde que les vrais PoC."""
+    text = (name + " " + description).lower()
+
+    # Rejeter si mot-cle de bruit
+    if any(noise in text for noise in POC_NOISE):
+        return False
+
+    # Le nom doit contenir un vrai CVE ID (CVE-XXXX-XXXXX)
+    import re
+    has_cve_id = bool(re.search(r'cve-\d{4}-\d{4,}', text))
+
+    # Si pas de CVE ID precis, rejeter
+    if not has_cve_id:
+        return False
+
+    # Bonus si description contient des mots-cles d'exploit
+    has_poc_keyword = any(kw in text for kw in POC_KEYWORDS)
+
+    # Accepter si : CVE ID + (description OU keyword OU stars > 0)
+    return has_cve_id and (has_poc_keyword or len(description) > 20)
+
+
+def _translate_poc_description(desc):
+    """Traduit et enrichit la description d'un PoC."""
+    if not desc:
+        return "Pas de description disponible"
+
+    try:
+        from deep_translator import GoogleTranslator
+        translated = GoogleTranslator(source="auto", target="fr").translate(desc[:500])
+        return translated or desc
+    except Exception:
+        return desc
+
+
 def fetch_new_pocs():
-    """Surveille GitHub pour les nouveaux repos PoC (CVE-XXXX dans le nom)."""
+    """Surveille GitHub pour les nouveaux repos PoC — filtre les faux positifs."""
     try:
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         params = {
             "q": f"CVE- in:name created:{today}",
-            "sort": "updated",
+            "sort": "stars",
             "order": "desc",
-            "per_page": 10,
+            "per_page": 20,
         }
         response = requests.get(
             "https://api.github.com/search/repositories",
@@ -261,6 +315,16 @@ def fetch_new_pocs():
             desc = repo.get("description", "") or ""
             stars = repo.get("stargazers_count", 0)
 
+            # Filtrer les faux positifs
+            if not _is_real_poc(name, desc):
+                logger.debug("PoC filtre (faux positif): %s", name)
+                continue
+
+            # Extraire le CVE ID du nom
+            import re
+            cve_match = re.search(r'(CVE-\d{4}-\d{4,})', name, re.IGNORECASE)
+            cve_id = cve_match.group(1).upper() if cve_match else ""
+
             # Verifier si le PoC concerne notre stack
             text_lower = (name + " " + desc).lower()
             concerns_my_stack = any(tech.lower() in text_lower for tech in MY_STACK)
@@ -271,10 +335,11 @@ def fetch_new_pocs():
                 "stars": stars,
                 "url": repo.get("html_url", ""),
                 "language": repo.get("language", ""),
+                "cve_id": cve_id,
                 "concerns_my_stack": concerns_my_stack,
             })
 
-        logger.info("PoC Monitor: %d nouveaux repos PoC", len(results))
+        logger.info("PoC Monitor: %d vrais PoC (sur %d repos)", len(results), len(repos))
         return results
     except Exception as e:
         logger.error("Erreur PoC Monitor: %s", e)
@@ -282,29 +347,49 @@ def fetch_new_pocs():
 
 
 def format_poc_alert(pocs):
-    """Formate les alertes PoC."""
+    """Formate les alertes PoC — format unifie avec details."""
     if not pocs:
         return None
 
     lines = [
-        "\U0001f4a3 <b>PoC Monitor — Nouveaux Exploits Publics</b>",
+        "\U0001f534\U0001f534 <b>IMPORTANT</b> | \U0001f4a3 PoC / Exploit",
+        "<code>" + "\u2588" * 7 + "\u2591" * 3 + "</code>",
+        "",
+        "\U0001f4f0 GitHub PoC Monitor",
+        "",
+        f"<b>{len(pocs)} nouveaux exploits publics detectes</b>",
         "",
     ]
 
-    for poc in pocs[:8]:
+    for poc in pocs[:6]:
         name = escape(poc["name"])
-        desc = escape((poc["description"] or "")[:80])
+        desc = poc.get("description", "")
+        desc_fr = _translate_poc_description(desc)
+        desc_fr = escape(desc_fr[:150])
         stars = poc["stars"]
         url = poc["url"]
+        cve_id = poc.get("cve_id", "")
+        lang = escape(poc.get("language") or "")
         stack_tag = " \u26a1" if poc["concerns_my_stack"] else ""
 
-        lines.append(f"\u2022 <a href=\"{escape(url)}\">{name}</a> \u2b50{stars}{stack_tag}")
-        if desc:
-            lines.append(f"  {desc}")
+        lines.append(f"\U0001f3af <b>{cve_id}</b>{stack_tag}")
+        lines.append(f"\U0001f4d6 {desc_fr}")
+        if lang:
+            lines.append(f"\U0001f4dd Langage: {lang} | \u2b50 {stars}")
+        lines.append(f'\U0001f517 <a href="{escape(url)}">Voir le PoC</a>')
         lines.append("")
 
-    if any(p["concerns_my_stack"] for p in pocs):
-        lines.append("\u26a1 = <b>concerne votre stack technique</b>")
+    # Points cles
+    lines.append("\U0001f511 <b>A retenir :</b>")
+    lines.append(f"\u2022 {len(pocs)} nouveaux PoC publics aujourd'hui")
+    stack_pocs = [p for p in pocs if p["concerns_my_stack"]]
+    if stack_pocs:
+        lines.append(f"\u2022 \u26a1 {len(stack_pocs)} concernent votre stack technique")
+    lines.append("\u2022 Verifiez si vos systemes sont affectes")
+
+    # Lien
+    lines.append("")
+    lines.append(f'\u27a1\ufe0f <a href="https://github.com/search?q=CVE-+in%3Aname&type=repositories&s=updated&o=desc">Voir tous les PoC</a>')
 
     return "\n".join(lines)
 
