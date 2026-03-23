@@ -21,7 +21,7 @@ def fetch_urlhaus_recent():
     try:
         response = requests.post(
             "https://urlhaus-api.abuse.ch/v1/urls/recent/",
-            headers={"User-Agent": UA},
+            headers={"User-Agent": "CyberVeille/1.0", "Accept": "application/json"},
             data={"limit": 10},
             timeout=15,
         )
@@ -51,7 +51,7 @@ def fetch_threatfox_recent():
     try:
         response = requests.post(
             "https://threatfox-api.abuse.ch/api/v1/",
-            headers={"User-Agent": UA},
+            headers={"User-Agent": "CyberVeille/1.0", "Accept": "application/json"},
             json={"query": "get_iocs", "days": 1},
             timeout=15,
         )
@@ -82,7 +82,7 @@ def fetch_malwarebazaar_recent():
     try:
         response = requests.post(
             "https://mb-api.abuse.ch/api/v1/",
-            headers={"User-Agent": UA},
+            headers={"User-Agent": "CyberVeille/1.0", "Accept": "application/json"},
             data={"query": "get_recent", "selector": "time"},
             timeout=15,
         )
