@@ -461,12 +461,11 @@ def process_articles():
                 trend_msg += f"\n\u26a0\ufe0f <b>Variation importante detectee !</b>"
             send_message(trend_msg, disable_preview=True)
 
-    # Threat Intel abuse.ch (toutes les 6h : 6h, 12h, 18h, 0h)
-    if now.hour in (0, 6, 12, 18):
-        logger.info("Envoi threat intel abuse.ch")
-        abuse_msg = format_abuse_ch_digest()
-        if abuse_msg:
-            send_message(abuse_msg, disable_preview=True)
+    # Threat Intel abuse.ch — desactive (API necessite un token maintenant)
+    # if now.hour in (0, 6, 12, 18):
+    #     abuse_msg = format_abuse_ch_digest()
+    #     if abuse_msg:
+    #         send_message(abuse_msg, disable_preview=True)
 
     # GitHub trending (1x/jour a 9h Paris)
     if now.hour == 9:
