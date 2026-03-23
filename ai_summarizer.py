@@ -137,6 +137,67 @@ RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de 
     return _call_groq(prompt, max_tokens=1200)
 
 
+def select_daily_important(articles_summary):
+    """L'IA decide quels articles du jour sont importants a retenir."""
+    if not is_ai_available() or not articles_summary:
+        return None
+
+    prompt = f"""Tu es un analyste cybersecurite senior. Voici la liste de TOUS les articles recus aujourd'hui.
+Tu dois selectionner les articles les plus importants que l'utilisateur DOIT absolument connaitre.
+
+Criteres de selection:
+- Menaces actives et exploitees
+- Vulnerabilites critiques sur des produits populaires
+- Attaques en cours ou recentes
+- Informations strategiques pour un professionnel de la securite
+- Ignorer: les articles marketing, les news mineures, les outils sans impact direct
+
+Liste des articles du jour:
+{articles_summary}
+
+Reponds avec EXACTEMENT ce format (pas de markdown):
+
+SELECTION: [numeros des articles selectionnes, separes par des virgules, ex: 1,3,5,8]
+
+RESUME JOURNEE: [resume en 3-4 phrases de la journee en cybersecurite: les tendances, les menaces principales, ce qu'il faut retenir]
+
+PRIORITE 1: [numero] - [pourquoi c'est le plus important en 1 phrase]
+PRIORITE 2: [numero] - [pourquoi en 1 phrase]
+PRIORITE 3: [numero] - [pourquoi en 1 phrase]"""
+
+    return _call_groq(prompt, max_tokens=600)
+
+
+def parse_daily_selection(response):
+    """Parse la reponse de selection quotidienne."""
+    if not response:
+        return None
+
+    result = {
+        "selected_ids": [],
+        "daily_summary": "",
+        "priorities": [],
+    }
+
+    for line in response.split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+
+        if line.startswith("SELECTION:"):
+            ids_str = line[10:].strip()
+            try:
+                result["selected_ids"] = [int(x.strip()) for x in ids_str.split(",") if x.strip().isdigit()]
+            except ValueError:
+                pass
+        elif line.startswith("RESUME JOURNEE:"):
+            result["daily_summary"] = line[15:].strip()
+        elif line.startswith("PRIORITE"):
+            result["priorities"].append(line.strip())
+
+    return result if result["selected_ids"] else None
+
+
 def parse_ai_response(response):
     """Parse la reponse structuree de l'IA."""
     if not response:

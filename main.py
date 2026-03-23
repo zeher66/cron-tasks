@@ -29,7 +29,7 @@ from config import FEEDS, CUSTOM_ALERTS, NIGHT_MODE_START, NIGHT_MODE_END
 from database import (
     init_db, is_duplicate, mark_as_sent, update_stats,
     get_today_stats, get_week_stats, cleanup_old_articles, export_monthly_csv,
-    get_threat_trend, get_today_important_articles,
+    get_threat_trend, get_today_important_articles, get_today_all_articles,
 )
 from feeds import fetch_all_feeds, extract_content, truncate_content, get_dead_sources
 from translator import translate_article, translate_text, clean_html
@@ -40,7 +40,7 @@ from telegram_bot import (
 )
 from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_kev_message
 from threat_intel import format_abuse_ch_digest, format_github_trending, fetch_new_pocs, format_poc_alert, check_stack_relevance
-from ai_summarizer import is_ai_available, summarize_article, summarize_cve, parse_ai_response
+from ai_summarizer import is_ai_available, summarize_article, summarize_cve, parse_ai_response, select_daily_important, parse_daily_selection
 
 # --- Logging ---
 logging.basicConfig(
@@ -412,28 +412,69 @@ def process_articles():
     if now.hour == 21 and now.minute >= 30:
         logger.info("Envoi digest important du jour")
 
-        # Recuperer les articles importants du jour
-        important = get_today_important_articles()
-        if important:
-            # Header
-            header_lines = [
-                f"\U0001f4cb <b>Digest du jour — {now.strftime('%d/%m/%Y')}</b>",
-                f"<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
-                "",
-                f"\U0001f4e8 <b>{len(important)} alertes importantes aujourd'hui</b>",
-                "",
-                "\u2500" * 25,
-            ]
-            send_message("\n".join(header_lines), disable_preview=True, silent=True)
-            time.sleep(1)
+        all_articles = get_today_all_articles()
 
-            # Envoyer chaque article important dans le format unifie
+        if all_articles and is_ai_available():
+            # L'IA decide quels articles sont importants
+            articles_list = "\n".join(
+                f"{a['id']}. [{a['severity'].upper()}] [{a['source']}] {a['title']}"
+                for a in all_articles
+            )
+            ai_selection = select_daily_important(articles_list)
+            parsed_sel = parse_daily_selection(ai_selection)
+
+            if parsed_sel:
+                selected_ids = parsed_sel["selected_ids"]
+                daily_summary = parsed_sel["daily_summary"]
+                priorities = parsed_sel["priorities"]
+
+                # Header avec resume IA de la journee
+                header_lines = [
+                    f"\U0001f4cb <b>Digest du jour — {now.strftime('%d/%m/%Y')}</b>",
+                    f"<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
+                    "",
+                    f"\U0001f4e8 <b>{len(selected_ids)} articles selectionnes par l'IA sur {len(all_articles)} du jour</b>",
+                    "",
+                ]
+
+                if daily_summary:
+                    header_lines.append(f"\U0001f4d6 <b>Resume de la journee :</b>")
+                    header_lines.append(daily_summary)
+                    header_lines.append("")
+
+                if priorities:
+                    header_lines.append("\U0001f3af <b>Top priorites :</b>")
+                    for p in priorities[:3]:
+                        header_lines.append(f"\u2022 {p}")
+                    header_lines.append("")
+
+                header_lines.append("\u2500" * 25)
+                send_message("\n".join(header_lines), disable_preview=True, silent=True)
+                time.sleep(1)
+
+                # Envoyer les articles selectionnes par l'IA
+                sent_digest = 0
+                for a in all_articles:
+                    if a["id"] in selected_ids and a.get("message"):
+                        send_message(a["message"], disable_preview=True, silent=True)
+                        sent_digest += 1
+                        time.sleep(2)
+
+                logger.info("Digest IA: %d articles selectionnes sur %d", sent_digest, len(all_articles))
+            else:
+                # Fallback si l'IA echoue : envoyer les critique + important
+                important = get_today_important_articles()
+                for art in important:
+                    if art.get("message"):
+                        send_message(art["message"], disable_preview=True, silent=True)
+                        time.sleep(2)
+        elif all_articles:
+            # Pas d'IA : fallback
+            important = get_today_important_articles()
             for art in important:
                 if art.get("message"):
                     send_message(art["message"], disable_preview=True, silent=True)
                     time.sleep(2)
-
-            logger.info("Digest: %d articles importants envoyes", len(important))
 
         # Stats
         stats = get_today_stats()

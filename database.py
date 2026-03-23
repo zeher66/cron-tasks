@@ -132,6 +132,21 @@ def get_today_important_articles():
     return [{"title": r[0], "source": r[1], "url": r[2], "category": r[3], "severity": r[4], "message": r[5]} for r in rows]
 
 
+def get_today_all_articles():
+    """Recupere TOUS les articles du jour pour la selection IA."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT title, source, url, category, severity, message FROM articles "
+        "WHERE sent_at >= ? ORDER BY sent_at ASC",
+        (today,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return [{"id": i + 1, "title": r[0], "source": r[1], "url": r[2], "category": r[3], "severity": r[4], "message": r[5]} for i, r in enumerate(rows)]
+
+
 def cleanup_old_articles(days=30):
     """Supprime les articles de plus de X jours pour garder la DB legere."""
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
