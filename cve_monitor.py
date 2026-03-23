@@ -347,40 +347,24 @@ def format_kev_message(cve_data):
 
 
 def _is_relevant_cve(cve_data):
-    """Filtre: garde seulement les CVE que les hackers utilisent vraiment."""
+    """Filtre: CRITICAL et HIGH toujours gardes. Le reste filtre."""
+    # CRITICAL et HIGH = toujours garder
+    severity = cve_data.get("cvss_severity", "")
+    if severity in ("CRITICAL", "HIGH"):
+        return True
+
+    # Le reste (MEDIUM, LOW) = garder seulement si exploit ou stack
     from config import MY_STACK
 
-    # Toujours garder : exploit public disponible
     if cve_data.get("has_exploit"):
         return True
 
-    # Toujours garder : CVSS >= 9.0
-    try:
-        if float(cve_data.get("cvss_score", 0)) >= 9.0:
-            return True
-    except (ValueError, TypeError):
-        pass
-
-    # Garder si concerne notre stack
     desc = cve_data.get("description", "").lower()
     affected_text = " ".join(cve_data.get("affected", [])).lower()
     full_text = desc + " " + affected_text
     if any(tech.lower() in full_text for tech in MY_STACK):
         return True
 
-    # Garder si produit connu/populaire
-    known_vendors = [
-        "microsoft", "apple", "google", "mozilla", "adobe", "oracle",
-        "cisco", "fortinet", "palo alto", "vmware", "citrix", "juniper",
-        "wordpress", "apache", "nginx", "linux", "samsung", "dell", "hp",
-        "ibm", "sap", "salesforce", "atlassian", "gitlab", "github",
-        "docker", "kubernetes", "redis", "postgresql", "mysql", "mongodb",
-        "elastic", "splunk", "jenkins", "terraform", "ansible",
-    ]
-    if any(vendor in full_text for vendor in known_vendors):
-        return True
-
-    # Rejeter le reste (Tenda, Simple Laundry System, etc.)
     return False
 
 
