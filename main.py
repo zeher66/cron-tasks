@@ -70,6 +70,68 @@ def _check_custom_alerts(text):
     return [kw for kw in CUSTOM_ALERTS if kw.lower() in text_lower]
 
 
+# Mots-cles d'urgence absolue
+URGENCY_KEYWORDS = [
+    "actively exploited", "exploitation active", "in the wild",
+    "zero-day", "0day", "zero day",
+    "cisa kev", "emergency patch", "correctif d'urgence",
+    "wiper", "supply chain attack", "ransomware attack",
+]
+
+
+def _check_must_read(article, is_relevant, matched_techs, custom_matches, cvss_score=None):
+    """Determine si un article est un 'A LIRE ABSOLUMENT'. Retourne (bool, raisons)."""
+    reasons = []
+    text = (article.get("title", "") + " " + article.get("content", "") + " " +
+            article.get("summary", "") + " " + article.get("title_fr", "")).lower()
+
+    # CVSS >= 9.0
+    if cvss_score and cvss_score != "N/A":
+        try:
+            if float(cvss_score) >= 9.0:
+                reasons.append(f"CVSS {cvss_score} (critique)")
+        except (ValueError, TypeError):
+            pass
+
+    # Exploitation active
+    if any(kw in text for kw in URGENCY_KEYWORDS):
+        matched = [kw for kw in URGENCY_KEYWORDS if kw in text]
+        reasons.append(f"Urgence: {matched[0]}")
+
+    # Concerne ta stack
+    if is_relevant and matched_techs:
+        reasons.append(f"Concerne votre stack: {', '.join(matched_techs[:2])}")
+
+    # Custom alerts
+    if custom_matches:
+        reasons.append(f"Alerte custom: {', '.join(custom_matches[:2])}")
+
+    # Severite critique + au moins une autre raison
+    severity = article.get("severity", "info")
+    if severity == "critique" and len(reasons) >= 1:
+        return True, reasons
+
+    # Au moins 2 raisons = a lire absolument
+    if len(reasons) >= 2:
+        return True, reasons
+
+    return False, reasons
+
+
+def _format_must_read_banner(reasons):
+    """Formate la banniere 'A LIRE ABSOLUMENT'."""
+    lines = [
+        "\u26a0\ufe0f\u26a0\ufe0f\u26a0\ufe0f <b>A LIRE ABSOLUMENT</b> \u26a0\ufe0f\u26a0\ufe0f\u26a0\ufe0f",
+        "",
+        "\U0001f4a2 <b>Pourquoi :</b>",
+    ]
+    for r in reasons:
+        lines.append(f"\u2022 {r}")
+    lines.append("")
+    lines.append("\u2b07\ufe0f\u2b07\ufe0f\u2b07\ufe0f")
+    return "\n".join(lines)
+
+
 def process_articles():
     """Pipeline principal."""
     logger.info("=" * 50)
@@ -136,6 +198,13 @@ def process_articles():
             else:
                 silent = False
 
+            # Verifier si "A LIRE ABSOLUMENT"
+            must_read, must_reasons = _check_must_read(article, is_relevant, matched_techs, custom_matches)
+            if must_read:
+                banner = _format_must_read_banner(must_reasons)
+                send_message(banner, silent=False)  # Toujours sonore
+                time.sleep(1)
+
             # Custom alert = forcer CRITICAL format
             if custom_matches:
                 article["custom_alert"] = custom_matches
@@ -185,12 +254,25 @@ def process_articles():
             desc_fr = translate_text(cve_data.get("description", ""), "en")
             if desc_fr:
                 cve_data["description"] = desc_fr
+
+            # Verifier "A LIRE ABSOLUMENT" pour les CVE
+            cvss = cve_data.get("cvss_score")
+            cve_text_check = {"title": cve_id, "content": cve_data.get("description", ""),
+                              "summary": "", "title_fr": "", "severity": "critique" if cve_data.get("cvss_severity") == "CRITICAL" else "important"}
+            cve_relevant, cve_techs = check_stack_relevance(cve_data.get("description", ""))
+            cve_must_read, cve_reasons = _check_must_read(cve_text_check, cve_relevant, cve_techs, [], cvss_score=cvss)
+            if cve_must_read:
+                banner = _format_must_read_banner(cve_reasons)
+                send_message(banner, silent=False)
+                time.sleep(1)
+
             message = format_cve_message(cve_data)
             if send_message(message):
                 cve_sev = "critique" if cve_data.get("cvss_severity") == "CRITICAL" else "important"
                 mark_as_sent(cve_data["nvd_url"], cve_id, "NVD", "cve", severity=cve_sev, message=message)
                 sent += 1
-                logger.info("CVE envoye: %s (CVSS %s)", cve_id, cve_data.get("cvss_score", "N/A"))
+                must_tag = " ⚠️MUST READ" if cve_must_read else ""
+                logger.info("CVE envoye: %s (CVSS %s)%s", cve_id, cve_data.get("cvss_score", "N/A"), must_tag)
                 time.sleep(2)
             else:
                 errors += 1
