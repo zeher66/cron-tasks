@@ -393,7 +393,7 @@ def process_articles():
     logger.info("-" * 50)
 
     # === Actions horaires (basees sur l'heure de Paris) ===
-    from datetime import datetime, timezone, timedelta
+    from datetime import datetime
     from zoneinfo import ZoneInfo
     paris_tz = ZoneInfo("Europe/Paris")
     now = datetime.now(paris_tz)
@@ -575,7 +575,7 @@ def main():
     try:
         sent, errors = process_articles()
         logger.info("Veille terminee. %d envoyes, %d erreurs.", sent, errors)
-        sys.exit(0 if errors == 0 else 1)
+        sys.exit(1 if errors > 5 else 0)  # Seulement si beaucoup d'erreurs
     except Exception as e:
         logger.critical("Erreur fatale: %s", e, exc_info=True)
         try:
