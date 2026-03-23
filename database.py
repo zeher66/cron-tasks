@@ -285,6 +285,33 @@ def export_monthly_csv():
     return output.getvalue()
 
 
+def export_weekly_csv():
+    """Exporte les articles de la semaine (7 derniers jours) en CSV."""
+    import csv
+    import io
+
+    week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT url, title, source, category, severity, sent_at FROM articles WHERE sent_at >= ? ORDER BY sent_at DESC",
+        (week_ago,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    if not rows:
+        return None
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["URL", "Titre", "Source", "Categorie", "Severite", "Date"])
+    for row in rows:
+        writer.writerow(row)
+
+    return output.getvalue()
+
+
 def get_threat_trend():
     """Compare cette semaine vs la precedente pour detecter les tendances."""
     now = datetime.now(timezone.utc)

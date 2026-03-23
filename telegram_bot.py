@@ -211,37 +211,6 @@ def _extract_key_points(text):
     return points
 
 
-def format_digest(articles):
-    """Formate un digest de plusieurs articles."""
-    from datetime import datetime
-    from zoneinfo import ZoneInfo
-
-    paris_tz = ZoneInfo("Europe/Paris")
-    now = datetime.now(paris_tz).strftime("%d/%m/%Y %H:%M Paris")
-
-    lines = [
-        f"\U0001f4cb <b>Digest Cyber Veille — {now}</b>",
-        "",
-        f"\U0001f4e8 {len(articles)} nouvelles alertes",
-        "\u2500" * 20,
-        "",
-    ]
-
-    for i, article in enumerate(articles, 1):
-        severity_emoji = article.get("severity_emoji", "\U0001f535")
-        title = article.get("title_fr") or article.get("title", "Sans titre")
-        title = escape(title)
-        source = escape(article.get("source", ""))
-        url = article.get("url", "")
-
-        lines.append(f"{severity_emoji} <b>{i}. {title}</b>")
-        lines.append(f"   \U0001f4f0 {source}")
-        lines.append(f'   \U0001f517 <a href="{escape(url)}">Lire</a>')
-        lines.append("")
-
-    return "\n".join(lines)
-
-
 def format_stats(stats):
     """Formate les statistiques quotidiennes."""
     if not stats:

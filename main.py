@@ -30,6 +30,7 @@ from database import (
     init_db, is_duplicate, mark_as_sent, update_stats,
     get_today_stats, get_week_stats, cleanup_old_articles, export_monthly_csv,
     get_threat_trend, get_today_important_articles, get_today_all_articles,
+    export_weekly_csv,
 )
 from feeds import fetch_all_feeds, extract_content, truncate_content, get_dead_sources
 from translator import translate_article, translate_text, clean_html
@@ -540,7 +541,7 @@ def process_articles():
     # Export CSV hebdomadaire (dimanche 11h) + mensuel (1er du mois 7h)
     if now.weekday() == 6 and now.hour == 11:
         logger.info("Export CSV hebdomadaire")
-        csv_data = export_monthly_csv()  # reutilise la meme fonction (30 derniers jours)
+        csv_data = export_weekly_csv()
         if csv_data:
             week_label = now.strftime("%Y-W%W")
             csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"export_semaine_{week_label}.csv")
