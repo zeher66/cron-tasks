@@ -10,56 +10,83 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_API_KEYS = [
+    os.environ.get("GROQ_API_KEY", ""),
+    os.environ.get("GROQ_API_KEY_2", ""),
+]
+GROQ_API_KEYS = [k for k in GROQ_API_KEYS if k]  # Enlever les vides
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.3-70b-versatile"
+
+# Index de la cle active (bascule si rate limit)
+_current_key_index = 0
 
 
 def is_ai_available():
     """Verifie si l'IA est configuree."""
-    return bool(GROQ_API_KEY)
+    return bool(GROQ_API_KEYS)
 
 
 def _call_groq(prompt, max_tokens=800):
-    """Appelle l'API Groq."""
-    if not GROQ_API_KEY:
+    """Appelle l'API Groq avec fallback sur la 2e cle."""
+    global _current_key_index
+
+    if not GROQ_API_KEYS:
         return None
 
-    headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json",
-    }
+    # Essayer chaque cle
+    for attempt in range(len(GROQ_API_KEYS)):
+        key_index = (_current_key_index + attempt) % len(GROQ_API_KEYS)
+        api_key = GROQ_API_KEYS[key_index]
 
-    data = {
-        "model": GROQ_MODEL,
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "Tu es un analyste expert en cybersecurite. "
-                    "Tu reponds UNIQUEMENT en francais. "
-                    "Tu es precis, concis et technique."
-                ),
-            },
-            {"role": "user", "content": prompt},
-        ],
-        "max_tokens": max_tokens,
-        "temperature": 0.3,
-    }
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        }
 
-    try:
-        response = requests.post(
-            GROQ_API_URL, headers=headers, json=data, timeout=30
-        )
-        response.raise_for_status()
-        result = response.json()
-        return result["choices"][0]["message"]["content"].strip()
-    except requests.RequestException as e:
-        logger.warning("Erreur Groq API: %s", e)
-        return None
-    except (KeyError, IndexError) as e:
-        logger.warning("Erreur parsing reponse Groq: %s", e)
-        return None
+        data = {
+            "model": GROQ_MODEL,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": (
+                        "Tu es un analyste expert en cybersecurite. "
+                        "Tu reponds UNIQUEMENT en francais. "
+                        "Tu es precis, concis et technique."
+                    ),
+                },
+                {"role": "user", "content": prompt},
+            ],
+            "max_tokens": max_tokens,
+            "temperature": 0.3,
+        }
+
+        try:
+            response = requests.post(
+                GROQ_API_URL, headers=headers, json=data, timeout=30
+            )
+
+            # Rate limit → basculer sur l'autre cle
+            if response.status_code == 429:
+                logger.warning("Groq rate limit sur cle %d, bascule sur cle %d",
+                               key_index + 1, (key_index + 1) % len(GROQ_API_KEYS) + 1)
+                _current_key_index = (key_index + 1) % len(GROQ_API_KEYS)
+                continue
+
+            response.raise_for_status()
+            result = response.json()
+            _current_key_index = key_index  # Garder la cle qui marche
+            return result["choices"][0]["message"]["content"].strip()
+
+        except requests.RequestException as e:
+            logger.warning("Erreur Groq API (cle %d): %s", key_index + 1, e)
+            continue
+        except (KeyError, IndexError) as e:
+            logger.warning("Erreur parsing reponse Groq: %s", e)
+            return None
+
+    logger.error("Toutes les cles Groq ont echoue")
+    return None
 
 
 def summarize_article(title, content, source, lang="en"):
