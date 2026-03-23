@@ -29,7 +29,7 @@ from config import FEEDS, CUSTOM_ALERTS, NIGHT_MODE_START, NIGHT_MODE_END
 from database import (
     init_db, is_duplicate, mark_as_sent, update_stats,
     get_today_stats, get_week_stats, cleanup_old_articles, export_monthly_csv,
-    get_threat_trend,
+    get_threat_trend, get_today_important_articles,
 )
 from feeds import fetch_all_feeds, extract_content, truncate_content, get_dead_sources
 from translator import translate_article, translate_text, clean_html
@@ -150,7 +150,10 @@ def process_articles():
                 success = send_message(message, silent=silent)
 
             if success:
-                mark_as_sent(article["url"], article["title"], article["source"], article["category"])
+                # Stocker le message formate pour le digest
+                stored_msg = message if not custom_matches and severity != "critique" else format_article_with_france_tag(article)
+                mark_as_sent(article["url"], article["title"], article["source"], article["category"],
+                             severity=severity, message=stored_msg)
                 sent += 1
                 tags = ""
                 if is_relevant:
@@ -184,7 +187,8 @@ def process_articles():
                 cve_data["description"] = desc_fr
             message = format_cve_message(cve_data)
             if send_message(message):
-                mark_as_sent(cve_data["nvd_url"], cve_id, "NVD", "cve")
+                cve_sev = "critique" if cve_data.get("cvss_severity") == "CRITICAL" else "important"
+                mark_as_sent(cve_data["nvd_url"], cve_id, "NVD", "cve", severity=cve_sev, message=message)
                 sent += 1
                 logger.info("CVE envoye: %s (CVSS %s)", cve_id, cve_data.get("cvss_score", "N/A"))
                 time.sleep(2)
@@ -211,7 +215,7 @@ def process_articles():
                 kev["description"] = desc_fr
             message = format_kev_message(kev)
             if send_message(message):
-                mark_as_sent(kev["nvd_url"], cve_id, "CISA KEV", "kev")
+                mark_as_sent(kev["nvd_url"], cve_id, "CISA KEV", "kev", severity="critique", message=message)
                 sent += 1
                 logger.info("KEV envoye: %s", cve_id)
                 time.sleep(2)
@@ -247,8 +251,34 @@ def process_articles():
         if dead:
             send_error(f"Sources en panne depuis 24h+ : {', '.join(dead)}")
 
-    # Stats quotidiennes (21h30 Paris)
+    # Digest important du jour + stats (21h30 Paris)
     if now.hour == 21 and now.minute >= 30:
+        logger.info("Envoi digest important du jour")
+
+        # Recuperer les articles importants du jour
+        important = get_today_important_articles()
+        if important:
+            # Header
+            header_lines = [
+                f"\U0001f4cb <b>Digest du jour — {now.strftime('%d/%m/%Y')}</b>",
+                f"<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
+                "",
+                f"\U0001f4e8 <b>{len(important)} alertes importantes aujourd'hui</b>",
+                "",
+                "\u2500" * 25,
+            ]
+            send_message("\n".join(header_lines), disable_preview=True, silent=True)
+            time.sleep(1)
+
+            # Envoyer chaque article important dans le format unifie
+            for art in important:
+                if art.get("message"):
+                    send_message(art["message"], disable_preview=True, silent=True)
+                    time.sleep(2)
+
+            logger.info("Digest: %d articles importants envoyes", len(important))
+
+        # Stats
         stats = get_today_stats()
         if stats:
             send_stats(stats)
@@ -308,24 +338,7 @@ def process_articles():
                         for poc in new_pocs:
                             mark_as_sent(poc["url"], poc["name"], "GitHub PoC", "poc")
 
-    # Resume quotidien condense (21h Paris)
-    if now.hour == 21 and now.minute < 30:
-        logger.info("Envoi resume quotidien condense")
-        stats = get_today_stats()
-        if stats and stats.get("articles_sent", 0) > 0:
-            dead = get_dead_sources()
-            lines = [
-                f"\U0001f4cb <b>Resume du jour — {now.strftime('%d/%m/%Y')}</b>",
-                "",
-                f"\U0001f4e8 {stats['articles_sent']} articles envoyes",
-                f"\U0001f6ab {stats['duplicates_filtered']} doublons filtres",
-                f"\U0001f4e1 {stats['sources_active']}/{stats['sources_total']} sources actives",
-            ]
-            if stats['errors'] > 0:
-                lines.append(f"\u26a0\ufe0f {stats['errors']} erreurs")
-            if dead:
-                lines.append(f"\U0001f6d1 Sources down: {', '.join(dead[:3])}")
-            send_message("\n".join(lines), disable_preview=True, silent=True)
+    # (Resume quotidien integre dans le digest a 21h30)
 
     # Export CSV hebdomadaire (dimanche 11h) + mensuel (1er du mois 7h)
     if now.weekday() == 6 and now.hour == 11:

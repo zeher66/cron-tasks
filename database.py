@@ -27,9 +27,20 @@ def init_db():
             title TEXT NOT NULL,
             source TEXT NOT NULL,
             category TEXT NOT NULL,
-            sent_at TEXT NOT NULL
+            sent_at TEXT NOT NULL,
+            severity TEXT DEFAULT 'info',
+            message TEXT DEFAULT ''
         )
     """)
+    # Migration: ajouter les colonnes si elles n'existent pas (ancienne DB)
+    try:
+        cursor.execute("ALTER TABLE articles ADD COLUMN severity TEXT DEFAULT 'info'")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE articles ADD COLUMN message TEXT DEFAULT ''")
+    except Exception:
+        pass
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS stats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,7 +95,7 @@ def is_duplicate(url, title):
     return False
 
 
-def mark_as_sent(url, title, source, category):
+def mark_as_sent(url, title, source, category, severity="info", message=""):
     """Enregistre un article comme envoye."""
     url_hash = _hash(url)
     title_hash = _hash(title)
@@ -94,15 +105,31 @@ def mark_as_sent(url, title, source, category):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            "INSERT OR IGNORE INTO articles (url_hash, title_hash, url, title, source, category, sent_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (url_hash, title_hash, url, title, source, category, now),
+            "INSERT OR IGNORE INTO articles (url_hash, title_hash, url, title, source, category, sent_at, severity, message) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (url_hash, title_hash, url, title, source, category, now, severity, message),
         )
         conn.commit()
     except sqlite3.Error as e:
         logger.error("Erreur DB mark_as_sent: %s", e)
     finally:
         conn.close()
+
+
+def get_today_important_articles():
+    """Recupere les articles importants du jour (critique + important)."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT title, source, url, category, severity, message FROM articles "
+        "WHERE sent_at >= ? AND severity IN ('critique', 'important') "
+        "ORDER BY CASE severity WHEN 'critique' THEN 0 WHEN 'important' THEN 1 ELSE 2 END",
+        (today,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return [{"title": r[0], "source": r[1], "url": r[2], "category": r[3], "severity": r[4], "message": r[5]} for r in rows]
 
 
 def cleanup_old_articles(days=30):
