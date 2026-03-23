@@ -88,8 +88,8 @@ FEEDS = [
         "emoji": "\u2622\ufe0f",
     },
     {
-        "name": "Qualys Threat Research",
-        "url": "https://blog.qualys.com/feed",
+        "name": "Project Discovery Blog",
+        "url": "https://blog.projectdiscovery.io/rss/",
         "category": "0day",
         "lang": "en",
         "frequency": 30,

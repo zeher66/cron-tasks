@@ -110,12 +110,24 @@ def parse_cve(vuln_item):
                     affected = [product_name]
                     break
 
-    # References
+    # References — detecter si un exploit/PoC existe
     references = cve.get("references", [])
     ref_url = ""
+    has_exploit = False
+    exploit_tags = ["Exploit", "Third Party Advisory", "Patch"]
     for ref in references:
-        ref_url = ref.get("url", "")
-        break
+        tags = ref.get("tags", [])
+        url = ref.get("url", "")
+        if not ref_url:
+            ref_url = url
+        # Detecter les PoC/exploits
+        if "Exploit" in tags:
+            has_exploit = True
+            ref_url = url  # Prioriser le lien exploit
+        elif any(kw in url.lower() for kw in ["exploit", "poc", "github.com", "packetstorm", "vuldb"]):
+            has_exploit = True
+            if "Exploit" not in tags:
+                ref_url = url
 
     # Date de publication
     published = cve.get("published", "")
@@ -132,6 +144,7 @@ def parse_cve(vuln_item):
         "ref_url": ref_url,
         "nvd_url": nvd_url,
         "published": published,
+        "has_exploit": has_exploit,
     }
 
 
@@ -333,21 +346,69 @@ def format_kev_message(cve_data):
     return "\n".join(lines)
 
 
-def get_new_cves(hours=6):
-    """Recupere et formate les nouvelles CVE critiques et hautes."""
-    all_cves = []
+def _is_relevant_cve(cve_data):
+    """Filtre: garde seulement les CVE que les hackers utilisent vraiment."""
+    from config import MY_STACK
 
-    # CVE critiques (dernières X heures)
+    # Toujours garder : exploit public disponible
+    if cve_data.get("has_exploit"):
+        return True
+
+    # Toujours garder : CVSS >= 9.0
+    try:
+        if float(cve_data.get("cvss_score", 0)) >= 9.0:
+            return True
+    except (ValueError, TypeError):
+        pass
+
+    # Garder si concerne notre stack
+    desc = cve_data.get("description", "").lower()
+    affected_text = " ".join(cve_data.get("affected", [])).lower()
+    full_text = desc + " " + affected_text
+    if any(tech.lower() in full_text for tech in MY_STACK):
+        return True
+
+    # Garder si produit connu/populaire
+    known_vendors = [
+        "microsoft", "apple", "google", "mozilla", "adobe", "oracle",
+        "cisco", "fortinet", "palo alto", "vmware", "citrix", "juniper",
+        "wordpress", "apache", "nginx", "linux", "samsung", "dell", "hp",
+        "ibm", "sap", "salesforce", "atlassian", "gitlab", "github",
+        "docker", "kubernetes", "redis", "postgresql", "mysql", "mongodb",
+        "elastic", "splunk", "jenkins", "terraform", "ansible",
+    ]
+    if any(vendor in full_text for vendor in known_vendors):
+        return True
+
+    # Rejeter le reste (Tenda, Simple Laundry System, etc.)
+    return False
+
+
+def get_new_cves(hours=6):
+    """Recupere les CVE exploitees / pertinentes uniquement."""
+    all_cves = []
+    filtered_out = 0
+
+    # CVE critiques
     critical = fetch_recent_cves(hours=hours, severity="CRITICAL")
     for vuln in critical:
-        all_cves.append(parse_cve(vuln))
+        cve = parse_cve(vuln)
+        if _is_relevant_cve(cve):
+            all_cves.append(cve)
+        else:
+            filtered_out += 1
 
-    # CVE hautes (dernières X heures)
+    # CVE hautes
     high = fetch_recent_cves(hours=hours, severity="HIGH")
     for vuln in high:
-        all_cves.append(parse_cve(vuln))
+        cve = parse_cve(vuln)
+        if _is_relevant_cve(cve):
+            all_cves.append(cve)
+        else:
+            filtered_out += 1
 
-    logger.info("CVE trouvees: %d critiques, %d hautes", len(critical), len(high))
+    logger.info("CVE: %d pertinentes gardees, %d filtrees (pas d'exploit/hors stack)",
+                len(all_cves), filtered_out)
     return all_cves
 
 
