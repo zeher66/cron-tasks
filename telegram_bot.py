@@ -129,13 +129,15 @@ def format_article(article):
     detail = article.get("summary_fr") or article.get("content") or article.get("summary", "")
     detail = escape(detail)
 
-    # Garder plus de texte pour le detail (4-5 phrases)
-    if len(detail) > 600:
-        cut = detail.find(".", 500)
-        if cut > 0 and cut < 700:
+    # Garder plus de texte pour le detail (IA = complet, sinon tronquer)
+    has_ai = bool(article.get("ai_key_points"))
+    max_detail = 1500 if has_ai else 600
+    if len(detail) > max_detail:
+        cut = detail.find(".", max_detail - 100)
+        if cut > 0 and cut < max_detail + 100:
             detail = detail[:cut + 1]
         else:
-            detail = detail[:600].rstrip() + "..."
+            detail = detail[:max_detail].rstrip() + "..."
 
     # Points cles : IA si disponible, sinon extraction
     summary_points = article.get("ai_key_points") or _extract_key_points(detail)

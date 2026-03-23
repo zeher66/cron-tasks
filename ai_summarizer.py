@@ -87,16 +87,18 @@ SEVERITE: [CRITIQUE/IMPORTANT/MOYEN/INFO] - basee sur l'impact reel (CRITIQUE = 
 
 TITRE: [titre traduit en francais, clair et accrocheur]
 
-DESCRIPTION: [description detaillee en 3-4 phrases qui expliquent le contexte, l'impact et les details techniques]
+DESCRIPTION: [resume COMPLET et DETAILLE en 6-10 phrases. Le lecteur ne doit PAS avoir besoin de lire l'article original. Inclure: le contexte (qui, quoi, quand), les details techniques (comment l'attaque fonctionne, quelle faille, quel vecteur), les systemes/produits affectes avec versions, l'impact concret (nombre de victimes, donnees volees, acces obtenus), et les mesures prises ou recommandees. Utilise un langage clair et professionnel.]
 
 POINTS CLES:
-- [point cle 1]
-- [point cle 2]
-- [point cle 3]
+- [qui est affecte et combien]
+- [comment l'attaque/faille fonctionne techniquement]
+- [quel est l'impact concret]
+- [quelle action prendre immediatement]
+- [contexte supplementaire important]
 
-RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1 phrase de pourquoi ce niveau]"""
+RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1-2 phrases de pourquoi ce niveau, avec les consequences possibles]"""
 
-    return _call_groq(prompt)
+    return _call_groq(prompt, max_tokens=1200)
 
 
 def summarize_cve(cve_id, description, cvss_score, affected, has_exploit=False):
@@ -121,17 +123,18 @@ Reponds avec EXACTEMENT ce format (pas de markdown, juste du texte brut):
 
 TITRE: [CVE ID + description courte du probleme en francais]
 
-DESCRIPTION: [explication detaillee en 3-4 phrases: quelle est la faille, comment elle fonctionne, quel est l'impact]
+DESCRIPTION: [explication COMPLETE en 6-10 phrases pour un analyste securite. Inclure: quel produit/version est affecte, quelle est la nature exacte de la faille (type, composant, fonction), comment un attaquant peut l'exploiter (vecteur d'attaque, conditions, authentification requise ou non), quel est l'impact concret (execution de code, vol de donnees, deni de service, escalade de privileges), si un exploit public existe, et quelle action corrective prendre (patch, workaround, mitigation).]
 
 POINTS CLES:
-- [ce qui est vulnerable]
-- [comment un attaquant peut exploiter]
-- [quel est l'impact concret]
-- [action recommandee]
+- [produit et versions affectees]
+- [type de faille et comment l'exploiter]
+- [impact concret: ce qu'un attaquant peut faire]
+- [exploit public disponible ou non]
+- [action: patch/mise a jour/mitigation a appliquer]
 
-RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS et de l'exploit]"""
+RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de l'exploit, et de la surface d'attaque]"""
 
-    return _call_groq(prompt)
+    return _call_groq(prompt, max_tokens=1200)
 
 
 def parse_ai_response(response):
