@@ -202,10 +202,27 @@ def process_articles():
                 )
                 parsed = parse_ai_response(ai_response)
                 if parsed:
+                    # Filtrer les articles hors-sujet
+                    if not parsed.get("pertinent", True):
+                        logger.info("Filtre IA (hors-sujet): %s", article["title"][:60])
+                        duplicates += 1
+                        continue
+
                     article["title_fr"] = parsed["title"] or article["title"]
                     article["summary_fr"] = parsed["description"]
                     article["ai_key_points"] = parsed["key_points"]
                     article["ai_risk"] = parsed["risk"]
+
+                    # Utiliser la severite IA si disponible
+                    if parsed.get("ai_severity"):
+                        article["severity"] = parsed["ai_severity"]
+                        severity_emojis = {
+                            "critique": "\U0001f534",
+                            "important": "\U0001f7e0",
+                            "moyen": "\U0001f7e1",
+                            "info": "\U0001f535",
+                        }
+                        article["severity_emoji"] = severity_emojis.get(parsed["ai_severity"], "\U0001f535")
                 else:
                     article = translate_article(article)
             else:

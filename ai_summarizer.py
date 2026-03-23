@@ -70,7 +70,7 @@ def summarize_article(title, content, source, lang="en"):
     # Tronquer le contenu pour rester dans les limites de tokens
     content_truncated = content[:3000] if content else ""
 
-    prompt = f"""Analyse cet article de cybersecurite et genere un resume structure en francais.
+    prompt = f"""Analyse cet article et genere un resume structure en francais.
 
 Source: {source}
 Titre original: {title}
@@ -80,6 +80,10 @@ Contenu:
 {content_truncated}
 
 Reponds avec EXACTEMENT ce format (pas de markdown, juste du texte brut):
+
+PERTINENT: [OUI ou NON] - est-ce un article de cybersecurite, vulnerabilite, attaque, outil de securite, ou veille informatique ? (NON si c'est du marketing, promo, smartphone, sport, divertissement, etc.)
+
+SEVERITE: [CRITIQUE/IMPORTANT/MOYEN/INFO] - basee sur l'impact reel (CRITIQUE = exploitation active ou RCE, IMPORTANT = menace reelle, MOYEN = vulnerabilite ou patch, INFO = actualite/outil)
 
 TITRE: [titre traduit en francais, clair et accrocheur]
 
@@ -140,6 +144,8 @@ def parse_ai_response(response):
         "description": "",
         "key_points": [],
         "risk": "",
+        "pertinent": True,
+        "ai_severity": "",
     }
 
     current_section = None
@@ -148,7 +154,24 @@ def parse_ai_response(response):
         if not line:
             continue
 
-        if line.startswith("TITRE:"):
+        if line.startswith("PERTINENT:"):
+            value = line[10:].strip().upper()
+            result["pertinent"] = value.startswith("OUI")
+            current_section = "pertinent"
+        elif line.startswith("SEVERITE:"):
+            value = line[9:].strip().upper()
+            severity_map = {
+                "CRITIQUE": "critique",
+                "IMPORTANT": "important",
+                "MOYEN": "moyen",
+                "INFO": "info",
+            }
+            for key, val in severity_map.items():
+                if key in value:
+                    result["ai_severity"] = val
+                    break
+            current_section = "severite"
+        elif line.startswith("TITRE:"):
             result["title"] = line[6:].strip()
             current_section = "title"
         elif line.startswith("DESCRIPTION:"):
