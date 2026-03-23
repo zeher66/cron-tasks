@@ -141,15 +141,35 @@ def _check_must_read(article, is_relevant, matched_techs, custom_matches, cvss_s
     return False, reasons
 
 
-def _format_must_read_banner(reasons):
-    """Formate la banniere 'A LIRE ABSOLUMENT'."""
+def _format_must_read_banner(reasons, article=None):
+    """Formate la banniere 'A LIRE ABSOLUMENT' avec explication detaillee."""
     lines = [
         "\u26a0\ufe0f\u26a0\ufe0f\u26a0\ufe0f <b>A LIRE ABSOLUMENT</b> \u26a0\ufe0f\u26a0\ufe0f\u26a0\ufe0f",
         "",
-        "\U0001f4a2 <b>Pourquoi :</b>",
+        "\U0001f4a2 <b>Pourquoi tu dois lire ca :</b>",
     ]
+
     for r in reasons:
-        lines.append(f"\u2022 {r}")
+        # Enrichir chaque raison avec une explication
+        if "CVSS" in r:
+            lines.append(f"\u2022 \U0001f534 {r} — score maximal, exploitation facile et impact total")
+        elif "stack" in r.lower():
+            techs = r.split(": ")[-1] if ": " in r else r
+            lines.append(f"\u2022 \u26a1 {r} — cette faille/attaque cible directement des technologies que tu utilises")
+        elif "urgence" in r.lower() or "exploit" in r.lower():
+            lines.append(f"\u2022 \U0001f525 {r} — des attaquants exploitent activement cette faille en ce moment")
+        elif "custom" in r.lower():
+            lines.append(f"\u2022 \U0001f514 {r} — correspond a un de tes mots-cles de surveillance")
+        else:
+            lines.append(f"\u2022 {r}")
+
+    # Ajouter le contexte de l'article si disponible
+    if article:
+        title = article.get("title_fr") or article.get("title", "")
+        if title:
+            lines.append("")
+            lines.append(f"\U0001f4cc <b>{title[:100]}</b>")
+
     lines.append("")
     lines.append("\u2b07\ufe0f\u2b07\ufe0f\u2b07\ufe0f")
     return "\n".join(lines)
@@ -260,7 +280,7 @@ def process_articles():
             # Verifier si "A LIRE ABSOLUMENT"
             must_read, must_reasons = _check_must_read(article, is_relevant, matched_techs, custom_matches)
             if must_read:
-                banner = _format_must_read_banner(must_reasons)
+                banner = _format_must_read_banner(must_reasons, article)
                 send_message(banner, silent=False)  # Toujours sonore
                 time.sleep(1)
 
@@ -338,7 +358,7 @@ def process_articles():
             cve_relevant, cve_techs = check_stack_relevance(cve_data.get("description", ""))
             cve_must_read, cve_reasons = _check_must_read(cve_text_check, cve_relevant, cve_techs, [], cvss_score=cvss)
             if cve_must_read:
-                banner = _format_must_read_banner(cve_reasons)
+                banner = _format_must_read_banner(cve_reasons, cve_text_check)
                 send_message(banner, silent=False)
                 time.sleep(1)
 
