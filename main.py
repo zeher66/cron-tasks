@@ -106,13 +106,34 @@ def _check_must_read(article, is_relevant, matched_techs, custom_matches, cvss_s
     if custom_matches:
         reasons.append(f"Alerte custom: {', '.join(custom_matches[:2])}")
 
-    # Severite critique + au moins une autre raison
     severity = article.get("severity", "info")
+
+    # CRITIQUE + au moins 1 raison → MUST READ
     if severity == "critique" and len(reasons) >= 1:
         return True, reasons
 
-    # Au moins 2 raisons = a lire absolument
-    if len(reasons) >= 2:
+    # IMPORTANT + au moins 2 raisons → MUST READ
+    if severity == "important" and len(reasons) >= 2:
+        return True, reasons
+
+    # MOYEN ou INFO + concerne ta stack + urgence → MUST READ
+    if severity in ("moyen", "info") and is_relevant and any(kw in text for kw in URGENCY_KEYWORDS):
+        return True, reasons
+
+    # N'importe quelle severite + custom alert → MUST READ
+    if custom_matches:
+        return True, reasons
+
+    # N'importe quelle severite + CVSS >= 9.0 → MUST READ
+    if cvss_score and cvss_score != "N/A":
+        try:
+            if float(cvss_score) >= 9.0:
+                return True, reasons
+        except (ValueError, TypeError):
+            pass
+
+    # Au moins 3 raisons combinées → MUST READ
+    if len(reasons) >= 3:
         return True, reasons
 
     return False, reasons
