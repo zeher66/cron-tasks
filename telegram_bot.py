@@ -137,8 +137,11 @@ def format_article(article):
         else:
             detail = detail[:600].rstrip() + "..."
 
-    # Generer un resume en points cles (extraire les phrases cles)
-    summary_points = _extract_key_points(detail)
+    # Points cles : IA si disponible, sinon extraction
+    summary_points = article.get("ai_key_points") or _extract_key_points(detail)
+
+    # Risque IA si disponible
+    ai_risk = article.get("ai_risk", "")
 
     lines = [
         f"{header} | {cat_tag}",
@@ -159,7 +162,12 @@ def format_article(article):
         lines.append("")
         lines.append("\U0001f511 <b>A retenir :</b>")
         for point in summary_points:
-            lines.append(f"\u2022 {point}")
+            lines.append(f"\u2022 {escape(point)}")
+
+    # Analyse de risque IA
+    if ai_risk:
+        lines.append("")
+        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     # Liens
     lines.append("")
@@ -303,8 +311,9 @@ def format_critical_alert(article):
     if custom_matches:
         custom_tag = f"\U0001f514 <b>Alerte custom :</b> {', '.join(escape(str(m)) for m in custom_matches[:3])}"
 
-    # Points cles
-    key_points = _extract_key_points(content)
+    # Points cles : IA si disponible
+    key_points = article.get("ai_key_points") or _extract_key_points(content)
+    ai_risk = article.get("ai_risk", "")
 
     lines = [
         "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f4a5 Alerte",
@@ -322,6 +331,10 @@ def format_critical_alert(article):
         lines.append("\U0001f511 <b>A retenir :</b>")
         for p in key_points:
             lines.append(f"\u2022 {p}")
+
+    if ai_risk:
+        lines.append("")
+        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     if custom_tag:
         lines.append("")

@@ -40,6 +40,7 @@ from telegram_bot import (
 )
 from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_kev_message
 from threat_intel import format_abuse_ch_digest, format_github_trending, fetch_new_pocs, format_poc_alert, check_stack_relevance
+from ai_summarizer import is_ai_available, summarize_article, summarize_cve, parse_ai_response
 
 # --- Logging ---
 logging.basicConfig(
@@ -190,12 +191,31 @@ def process_articles():
             logger.warning("Erreur extraction %s: %s", url, e)
             article["content"] = clean_html(article.get("summary", ""))
 
-        # Traduction
+        # Resume IA (Groq) ou traduction Google (fallback)
         try:
-            article = translate_article(article)
+            if is_ai_available():
+                ai_response = summarize_article(
+                    article["title"],
+                    article.get("content") or article.get("summary", ""),
+                    article["source"],
+                    article.get("lang", "en"),
+                )
+                parsed = parse_ai_response(ai_response)
+                if parsed:
+                    article["title_fr"] = parsed["title"] or article["title"]
+                    article["summary_fr"] = parsed["description"]
+                    article["ai_key_points"] = parsed["key_points"]
+                    article["ai_risk"] = parsed["risk"]
+                else:
+                    article = translate_article(article)
+            else:
+                article = translate_article(article)
         except Exception as e:
-            logger.warning("Erreur traduction: %s", e)
-            errors += 1
+            logger.warning("Erreur IA/traduction: %s", e)
+            try:
+                article = translate_article(article)
+            except Exception:
+                errors += 1
 
         # Stack relevance check
         full_text = (article.get("title", "") + " " + article.get("content", "") + " " + article.get("summary", ""))
@@ -272,9 +292,26 @@ def process_articles():
             if is_duplicate(cve_data["nvd_url"], cve_id):
                 duplicates += 1
                 continue
-            desc_fr = translate_text(cve_data.get("description", ""), "en")
-            if desc_fr:
-                cve_data["description"] = desc_fr
+            # Resume IA ou traduction
+            if is_ai_available():
+                ai_resp = summarize_cve(
+                    cve_id, cve_data.get("description", ""),
+                    cve_data.get("cvss_score"), cve_data.get("affected", []),
+                    cve_data.get("has_exploit", False),
+                )
+                parsed = parse_ai_response(ai_resp)
+                if parsed:
+                    cve_data["description"] = parsed["description"]
+                    cve_data["ai_key_points"] = parsed["key_points"]
+                    cve_data["ai_risk"] = parsed["risk"]
+                else:
+                    desc_fr = translate_text(cve_data.get("description", ""), "en")
+                    if desc_fr:
+                        cve_data["description"] = desc_fr
+            else:
+                desc_fr = translate_text(cve_data.get("description", ""), "en")
+                if desc_fr:
+                    cve_data["description"] = desc_fr
 
             # Verifier "A LIRE ABSOLUMENT" pour les CVE
             cvss = cve_data.get("cvss_score")

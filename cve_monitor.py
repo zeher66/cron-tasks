@@ -227,14 +227,18 @@ def format_cve_message(cve_data):
         else:
             description = description[:600].rstrip() + "..."
 
-    # Points cles
-    key_points = _extract_key_points_from_text(description)
-    # Ajouter infos structurees
-    if target != "Non specifie":
-        key_points.insert(0, f"Cible : {target}")
-    if attack_type:
-        key_points.insert(1, f"Type : {attack_type}")
+    # Points cles : IA si disponible, sinon extraction
+    key_points = cve_data.get("ai_key_points") or _extract_key_points_from_text(description)
+    if not cve_data.get("ai_key_points"):
+        # Ajouter infos structurees seulement si pas d'IA
+        if target != "Non specifie":
+            key_points.insert(0, f"Cible : {target}")
+        if attack_type:
+            key_points.insert(1, f"Type : {attack_type}")
     key_points = key_points[:4]
+
+    # Risque IA
+    ai_risk = cve_data.get("ai_risk", "")
 
     lines = [
         header,
@@ -252,6 +256,11 @@ def format_cve_message(cve_data):
         lines.append("\U0001f511 <b>A retenir :</b>")
         for p in key_points:
             lines.append(f"\u2022 {p}")
+
+    # Risque IA
+    if ai_risk:
+        lines.append("")
+        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     # Liens
     lines.append("")
