@@ -258,15 +258,10 @@ KEYWORDS_PRIORITY = [
 ]
 
 KEYWORDS_IGNORE = [
-    # Pub / spam
-    "sponsor", "webinar", "advertisement", "promoted",
-    "podcast episode", "job posting", "hiring", "career",
+    # Spam publicitaire evident (l'IA gere le reste)
+    "sponsored content", "advertisement", "promoted post",
     "subscribe now", "sign up for", "free trial",
-    # Hors-sujet (pas de la cybersecurite)
-    "premier tweet", "first tweet", "nft", "crypto monnaie",
-    "airdrop samsung", "galaxy s2", "iphone review",
-    "recette", "cuisine", "football", "sport",
-    "meteo", "weather", "horoscope",
+    "job posting", "we are hiring", "career opportunity",
 ]
 
 # --- Parametres ---
