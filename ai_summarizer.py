@@ -161,7 +161,7 @@ QUE FAIRE:
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1-2 phrases de pourquoi ce niveau, avec les consequences possibles]"""
 
-    return _call_groq(prompt, max_tokens=1200)
+    return _call_groq(prompt, max_tokens=1500)
 
 
 def summarize_cve(cve_id, description, cvss_score, affected, has_exploit=False):
@@ -206,7 +206,7 @@ QUE FAIRE:
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de l'exploit, et de la surface d'attaque]"""
 
-    return _call_groq(prompt, max_tokens=1200)
+    return _call_groq(prompt, max_tokens=1500)
 
 
 def select_daily_important(articles_summary):
