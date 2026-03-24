@@ -273,6 +273,12 @@ def format_cve_message(cve_data):
         f"<b>{title}</b>",
     ]
 
+    # VICTIME
+    ai_victim = cve_data.get("ai_victim", "")
+    if ai_victim and ai_victim.lower() not in ("non specifie", "non spécifié", ""):
+        lines.append("")
+        lines.append(f"\U0001f3af <b>Victime :</b> {escape(ai_victim)}")
+
     if ai_brief:
         lines.append("")
         lines.append(f"\u26a1 <b>EN BREF :</b> {escape(ai_brief)}")

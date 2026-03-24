@@ -116,6 +116,8 @@ TITRE: [titre traduit en francais, clair et accrocheur]
 
 EN BREF: [resume RAPIDE en 1-3 phrases maximum. L'essentiel pour comprendre en 3 secondes: quoi, qui est touche, quel impact. Court et percutant.]
 
+VICTIME: [qui est la victime/cible: nom de l'entreprise, organisme, pays, secteur. Nombre de personnes/systemes touches si connu. Ex: "Orange France — 19 millions de clients" ou "Hopitaux francais — 3 etablissements" ou "Utilisateurs WordPress — toutes versions" ou "Non specifie"]
+
 DETAILS: [resume COMPLET et DETAILLE en 6-10 phrases. Le lecteur ne doit PAS avoir besoin de lire l'article original. Inclure: le contexte (qui, quoi, quand), les details techniques (comment l'attaque fonctionne, quelle faille, quel vecteur), les systemes/produits affectes avec versions, l'impact concret (nombre de victimes, donnees volees, acces obtenus), et les mesures prises ou recommandees.]
 
 POINTS CLES:
@@ -158,6 +160,8 @@ Reponds avec EXACTEMENT ce format (pas de markdown, juste du texte brut):
 TITRE: [CVE ID + description courte du probleme en francais]
 
 EN BREF: [resume RAPIDE en 1-3 phrases. L'essentiel: quel produit, quelle faille, quel impact. Court et percutant.]
+
+VICTIME: [produit et versions affectes + qui utilise ce produit. Ex: "Apache Log4j 2.x — tous les serveurs Java" ou "WordPress WP Maps plugin ≤4.9.1 — sites WordPress" ou "Fortinet FortiGate — entreprises utilisant ce firewall"]
 
 DETAILS: [explication COMPLETE en 6-10 phrases pour un analyste securite. Inclure: quel produit/version est affecte, quelle est la nature exacte de la faille (type, composant, fonction), comment un attaquant peut l'exploiter (vecteur d'attaque, conditions, authentification requise ou non), quel est l'impact concret (execution de code, vol de donnees, deni de service, escalade de privileges), si un exploit public existe.]
 
@@ -252,6 +256,7 @@ def parse_ai_response(response):
         "actions": [],
         "risk": "",
         "location": "",
+        "victim": "",
         "pertinent": True,
         "ai_severity": "",
     }
@@ -295,6 +300,9 @@ def parse_ai_response(response):
             current_section = "points"
         elif line.startswith("QUE FAIRE:"):
             current_section = "actions"
+        elif line.startswith("VICTIME:"):
+            result["victim"] = line[8:].strip()
+            current_section = "victim"
         elif line.startswith("LIEU:"):
             result["location"] = line[5:].strip()
             current_section = "lieu"

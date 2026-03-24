@@ -186,6 +186,12 @@ def format_article(article):
         f"<b>{title}</b>",
     ]
 
+    # VICTIME
+    ai_victim = article.get("ai_victim", "")
+    if ai_victim and ai_victim.lower() not in ("non specifie", "non spécifié", ""):
+        lines.append("")
+        lines.append(f"\U0001f3af <b>Victime :</b> {escape(ai_victim)}")
+
     # EN BREF (resume rapide)
     ai_brief = article.get("ai_brief", "")
     if ai_brief:
@@ -359,6 +365,12 @@ def format_critical_alert(article):
         "",
         f"<b>{title}</b>{france_tag}",
     ]
+
+    # VICTIME
+    ai_victim = article.get("ai_victim", "")
+    if ai_victim and ai_victim.lower() not in ("non specifie", "non spécifié", ""):
+        lines.append("")
+        lines.append(f"\U0001f3af <b>Victime :</b> {escape(ai_victim)}")
 
     # EN BREF
     ai_brief = article.get("ai_brief", "")
