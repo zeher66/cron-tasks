@@ -42,6 +42,7 @@ from telegram_bot import (
 from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_kev_message
 from threat_intel import format_abuse_ch_digest, format_github_trending, fetch_new_pocs, format_poc_alert, check_stack_relevance
 from ai_summarizer import is_ai_available, summarize_article, summarize_cve, parse_ai_response, select_daily_important, parse_daily_selection
+from exploit_organizer import save_cve_with_exploit, save_poc
 
 # --- Logging ---
 logging.basicConfig(
@@ -415,6 +416,9 @@ def process_articles():
                 sent += 1
                 must_tag = " ⚠️MUST READ" if cve_must_read else ""
                 logger.info("CVE envoye: %s (CVSS %s)%s", cve_id, cve_data.get("cvss_score", "N/A"), must_tag)
+                # Sauvegarder dans exploits/ si PoC disponible
+                if cve_data.get("has_exploit"):
+                    save_cve_with_exploit(cve_data)
                 time.sleep(2)
             else:
                 errors += 1
@@ -606,6 +610,7 @@ def process_articles():
                     if success:
                         for poc in new_pocs:
                             mark_as_sent(poc["url"], poc["name"], "GitHub PoC", "poc")
+                            save_poc(poc)  # Sauvegarder dans exploits/
 
     # (Resume quotidien integre dans le digest a 21h30)
 
