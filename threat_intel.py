@@ -273,6 +273,47 @@ def _is_real_poc(name, description):
     return has_cve_id and (has_poc_keyword or len(description) > 20)
 
 
+def _ai_analyze_poc(name, desc, cve_id, language):
+    """L'IA analyse si c'est un vrai PoC et genere une description FR."""
+    try:
+        from ai_summarizer import is_ai_available, _call_groq
+        if not is_ai_available():
+            return None
+
+        prompt = f"""Analyse ce repo GitHub et reponds en francais.
+
+Repo: {name}
+CVE: {cve_id}
+Description: {desc}
+Langage: {language}
+
+Reponds avec EXACTEMENT ce format (pas de markdown):
+
+VRAI POC: [OUI ou NON] - est-ce un vrai exploit/PoC fonctionnel ou juste un tracker/README/projet scolaire ?
+
+DESCRIPTION FR: [1-2 phrases en francais expliquant ce que fait cet exploit, quel produit est vise, quel type d'attaque]
+
+DANGER: [Critique/Eleve/Moyen/Faible] - [pourquoi en 1 phrase]"""
+
+        response = _call_groq(prompt, max_tokens=300)
+        if not response:
+            return None
+
+        result = {"is_real": False, "description_fr": "", "danger": ""}
+        for line in response.split("\n"):
+            line = line.strip()
+            if line.startswith("VRAI POC:"):
+                result["is_real"] = line[9:].strip().upper().startswith("OUI")
+            elif line.startswith("DESCRIPTION FR:"):
+                result["description_fr"] = line[15:].strip()
+            elif line.startswith("DANGER:"):
+                result["danger"] = line[7:].strip()
+
+        return result
+    except Exception:
+        return None
+
+
 def _translate_poc_description(desc):
     """Traduit et enrichit la description d'un PoC."""
     if not desc:
@@ -286,64 +327,91 @@ def _translate_poc_description(desc):
         return desc
 
 
-def fetch_new_pocs():
-    """Surveille GitHub pour les nouveaux repos PoC — filtre les faux positifs."""
+def _search_github(query, per_page=15):
+    """Execute une recherche GitHub."""
     try:
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        params = {
-            "q": f"CVE- in:name created:{today}",
-            "sort": "stars",
-            "order": "desc",
-            "per_page": 20,
-        }
         response = requests.get(
             "https://api.github.com/search/repositories",
-            params=params,
-            headers={
-                "User-Agent": UA,
-                "Accept": "application/vnd.github.v3+json",
-            },
+            params={"q": query, "sort": "stars", "order": "desc", "per_page": per_page},
+            headers={"User-Agent": UA, "Accept": "application/vnd.github.v3+json"},
             timeout=15,
         )
+        if response.status_code == 403:
+            logger.warning("GitHub API rate limit")
+            return []
         response.raise_for_status()
-        data = response.json()
-        repos = data.get("items", [])
-
-        results = []
-        for repo in repos:
-            name = repo.get("full_name", "")
-            desc = repo.get("description", "") or ""
-            stars = repo.get("stargazers_count", 0)
-
-            # Filtrer les faux positifs
-            if not _is_real_poc(name, desc):
-                logger.debug("PoC filtre (faux positif): %s", name)
-                continue
-
-            # Extraire le CVE ID du nom
-            import re
-            cve_match = re.search(r'(CVE-\d{4}-\d{4,})', name, re.IGNORECASE)
-            cve_id = cve_match.group(1).upper() if cve_match else ""
-
-            # Verifier si le PoC concerne notre stack
-            text_lower = (name + " " + desc).lower()
-            concerns_my_stack = any(tech.lower() in text_lower for tech in MY_STACK)
-
-            results.append({
-                "name": name,
-                "description": desc,
-                "stars": stars,
-                "url": repo.get("html_url", ""),
-                "language": repo.get("language", ""),
-                "cve_id": cve_id,
-                "concerns_my_stack": concerns_my_stack,
-            })
-
-        logger.info("PoC Monitor: %d vrais PoC (sur %d repos)", len(results), len(repos))
-        return results
+        return response.json().get("items", [])
     except Exception as e:
-        logger.error("Erreur PoC Monitor: %s", e)
+        logger.warning("Erreur recherche GitHub: %s", e)
         return []
+
+
+def fetch_new_pocs():
+    """Surveille GitHub avec 4 recherches pour trouver les vrais PoC."""
+    import re
+    import time as t
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    yesterday = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+
+    # 4 recherches differentes
+    queries = [
+        f"CVE- in:name created:>{yesterday}",
+        f"CVE- exploit in:name,description created:>{yesterday}",
+        f"proof of concept CVE in:description pushed:>{yesterday}",
+        f"CVE- in:name stars:>3 pushed:>{yesterday}",
+    ]
+
+    all_repos = {}
+    for query in queries:
+        repos = _search_github(query)
+        for repo in repos:
+            url = repo.get("html_url", "")
+            if url not in all_repos:
+                all_repos[url] = repo
+        t.sleep(2)  # Eviter le rate limit GitHub
+
+    logger.info("PoC Monitor: %d repos trouves (4 recherches)", len(all_repos))
+
+    results = []
+    for repo in all_repos.values():
+        name = repo.get("full_name", "")
+        desc = repo.get("description", "") or ""
+        stars = repo.get("stargazers_count", 0)
+        language = repo.get("language", "") or ""
+        has_code = repo.get("size", 0) > 0
+
+        # Filtrer les faux positifs
+        if not _is_real_poc(name, desc):
+            continue
+
+        # Repos sans code = probablement juste un README
+        if not has_code and stars == 0:
+            continue
+
+        # Extraire le CVE ID
+        cve_match = re.search(r'(CVE-\d{4}-\d{4,})', name + " " + desc, re.IGNORECASE)
+        cve_id = cve_match.group(1).upper() if cve_match else ""
+
+        # Verifier si concerne notre stack
+        text_lower = (name + " " + desc + " " + language).lower()
+        concerns_my_stack = any(tech.lower() in text_lower for tech in MY_STACK)
+
+        results.append({
+            "name": name,
+            "description": desc,
+            "stars": stars,
+            "url": repo.get("html_url", ""),
+            "language": language,
+            "cve_id": cve_id,
+            "concerns_my_stack": concerns_my_stack,
+        })
+
+    # Trier : stack d'abord, puis par etoiles
+    results.sort(key=lambda x: (-x["concerns_my_stack"], -x["stars"]))
+
+    logger.info("PoC Monitor: %d vrais PoC apres filtrage", len(results))
+    return results
 
 
 def format_poc_alert(pocs):
@@ -367,16 +435,28 @@ def format_poc_alert(pocs):
     for poc in pocs[:6]:
         name = escape(poc["name"])
         desc = poc.get("description", "")
-        desc_fr = _translate_poc_description(desc)
-        desc_fr = escape(desc_fr[:150])
         stars = poc["stars"]
         url = poc["url"]
         cve_id = poc.get("cve_id", "")
         lang = escape(poc.get("language") or "")
         stack_tag = " \u26a1" if poc["concerns_my_stack"] else ""
 
+        # Analyse IA du PoC
+        ai_result = _ai_analyze_poc(poc["name"], desc, cve_id, poc.get("language", ""))
+        if ai_result and not ai_result.get("is_real", True):
+            continue  # IA dit que c'est pas un vrai PoC → skip
+
+        if ai_result and ai_result.get("description_fr"):
+            desc_fr = escape(ai_result["description_fr"][:200])
+            danger = ai_result.get("danger", "")
+        else:
+            desc_fr = escape(_translate_poc_description(desc)[:150])
+            danger = ""
+
         lines.append(f"\U0001f3af <b>{cve_id}</b>{stack_tag}")
         lines.append(f"\U0001f4d6 {desc_fr}")
+        if danger:
+            lines.append(f"\u26a0\ufe0f Danger: {escape(danger)}")
         if lang:
             lines.append(f"\U0001f4dd Langage: {lang} | \u2b50 {stars}")
         lines.append(f'\U0001f517 <a href="{escape(url)}">Voir le PoC</a>')
