@@ -178,22 +178,36 @@ def format_article(article):
         f"<b>{title}</b>",
     ]
 
-    # Description detaillee
+    # EN BREF (resume rapide)
+    ai_brief = article.get("ai_brief", "")
+    if ai_brief:
+        lines.append("")
+        lines.append(f"\u26a1 <b>EN BREF :</b> {escape(ai_brief)}")
+
+    # DETAILS (resume complet)
     if detail:
         lines.append("")
-        lines.append(f"\U0001f4d6 {detail}")
+        lines.append(f"\U0001f4d6 <b>DETAILS :</b> {detail}")
 
-    # Resume en points cles
+    # Points cles
     if summary_points:
         lines.append("")
         lines.append("\U0001f511 <b>A retenir :</b>")
         for point in summary_points:
             lines.append(f"\u2022 {escape(point)}")
 
+    # QUE FAIRE
+    ai_actions = article.get("ai_actions", [])
+    if ai_actions:
+        lines.append("")
+        lines.append("\U0001f6e1\ufe0f <b>QUE FAIRE :</b>")
+        for action in ai_actions:
+            lines.append(f"\u2192 {escape(action)}")
+
     # Analyse de risque IA
     if ai_risk:
         lines.append("")
-        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
+        lines.append(f"\u26a0\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     # Liens
     lines.append("")
@@ -330,9 +344,17 @@ def format_critical_alert(article):
         f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>{france_tag}",
-        "",
-        f"\U0001f4d6 {content}",
     ]
+
+    # EN BREF
+    ai_brief = article.get("ai_brief", "")
+    if ai_brief:
+        lines.append("")
+        lines.append(f"\u26a1 <b>EN BREF :</b> {escape(ai_brief)}")
+
+    # DETAILS
+    lines.append("")
+    lines.append(f"\U0001f4d6 <b>DETAILS :</b> {content}")
 
     if key_points:
         lines.append("")
@@ -340,9 +362,17 @@ def format_critical_alert(article):
         for p in key_points:
             lines.append(f"\u2022 {p}")
 
+    # QUE FAIRE
+    ai_actions = article.get("ai_actions", [])
+    if ai_actions:
+        lines.append("")
+        lines.append("\U0001f6e1\ufe0f <b>QUE FAIRE :</b>")
+        for action in ai_actions:
+            lines.append(f"\u2192 {escape(action)}")
+
     if ai_risk:
         lines.append("")
-        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
+        lines.append(f"\u26a0\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     if custom_tag:
         lines.append("")

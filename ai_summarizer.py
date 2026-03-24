@@ -114,14 +114,19 @@ SEVERITE: [CRITIQUE/IMPORTANT/MOYEN/INFO] - basee sur l'impact reel (CRITIQUE = 
 
 TITRE: [titre traduit en francais, clair et accrocheur]
 
-DESCRIPTION: [resume COMPLET et DETAILLE en 6-10 phrases. Le lecteur ne doit PAS avoir besoin de lire l'article original. Inclure: le contexte (qui, quoi, quand), les details techniques (comment l'attaque fonctionne, quelle faille, quel vecteur), les systemes/produits affectes avec versions, l'impact concret (nombre de victimes, donnees volees, acces obtenus), et les mesures prises ou recommandees. Utilise un langage clair et professionnel.]
+EN BREF: [resume RAPIDE en 1-3 phrases maximum. L'essentiel pour comprendre en 3 secondes: quoi, qui est touche, quel impact. Court et percutant.]
+
+DETAILS: [resume COMPLET et DETAILLE en 6-10 phrases. Le lecteur ne doit PAS avoir besoin de lire l'article original. Inclure: le contexte (qui, quoi, quand), les details techniques (comment l'attaque fonctionne, quelle faille, quel vecteur), les systemes/produits affectes avec versions, l'impact concret (nombre de victimes, donnees volees, acces obtenus), et les mesures prises ou recommandees.]
 
 POINTS CLES:
 - [qui est affecte et combien]
 - [comment l'attaque/faille fonctionne techniquement]
 - [quel est l'impact concret]
-- [quelle action prendre immediatement]
-- [contexte supplementaire important]
+
+QUE FAIRE:
+- [action concrete 1 a prendre immediatement]
+- [action concrete 2]
+- [action concrete 3]
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1-2 phrases de pourquoi ce niveau, avec les consequences possibles]"""
 
@@ -150,14 +155,19 @@ Reponds avec EXACTEMENT ce format (pas de markdown, juste du texte brut):
 
 TITRE: [CVE ID + description courte du probleme en francais]
 
-DESCRIPTION: [explication COMPLETE en 6-10 phrases pour un analyste securite. Inclure: quel produit/version est affecte, quelle est la nature exacte de la faille (type, composant, fonction), comment un attaquant peut l'exploiter (vecteur d'attaque, conditions, authentification requise ou non), quel est l'impact concret (execution de code, vol de donnees, deni de service, escalade de privileges), si un exploit public existe, et quelle action corrective prendre (patch, workaround, mitigation).]
+EN BREF: [resume RAPIDE en 1-3 phrases. L'essentiel: quel produit, quelle faille, quel impact. Court et percutant.]
+
+DETAILS: [explication COMPLETE en 6-10 phrases pour un analyste securite. Inclure: quel produit/version est affecte, quelle est la nature exacte de la faille (type, composant, fonction), comment un attaquant peut l'exploiter (vecteur d'attaque, conditions, authentification requise ou non), quel est l'impact concret (execution de code, vol de donnees, deni de service, escalade de privileges), si un exploit public existe.]
 
 POINTS CLES:
 - [produit et versions affectees]
 - [type de faille et comment l'exploiter]
 - [impact concret: ce qu'un attaquant peut faire]
-- [exploit public disponible ou non]
-- [action: patch/mise a jour/mitigation a appliquer]
+
+QUE FAIRE:
+- [action corrective 1: patch/mise a jour]
+- [action corrective 2: workaround/mitigation]
+- [action corrective 3: detection/verification]
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de l'exploit, et de la surface d'attaque]"""
 
@@ -232,8 +242,10 @@ def parse_ai_response(response):
 
     result = {
         "title": "",
+        "brief": "",
         "description": "",
         "key_points": [],
+        "actions": [],
         "risk": "",
         "pertinent": True,
         "ai_severity": "",
@@ -265,22 +277,35 @@ def parse_ai_response(response):
         elif line.startswith("TITRE:"):
             result["title"] = line[6:].strip()
             current_section = "title"
-        elif line.startswith("DESCRIPTION:"):
+        elif line.startswith("EN BREF:"):
+            result["brief"] = line[8:].strip()
+            current_section = "brief"
+        elif line.upper().startswith("DETAILS:"):
+            result["description"] = line[8:].strip()
+            current_section = "description"
+        elif line.upper().startswith("DESCRIPTION:"):
             result["description"] = line[12:].strip()
             current_section = "description"
         elif line.startswith("POINTS CLES:"):
             current_section = "points"
+        elif line.startswith("QUE FAIRE:"):
+            current_section = "actions"
         elif line.startswith("RISQUE:"):
             result["risk"] = line[7:].strip()
             current_section = "risk"
+        elif current_section == "brief" and not line.startswith("-"):
+            result["brief"] += " " + line
         elif current_section == "description" and not line.startswith("-"):
             result["description"] += " " + line
         elif current_section == "points" and line.startswith("- "):
             result["key_points"].append(line[2:].strip())
+        elif current_section == "actions" and line.startswith("- "):
+            result["actions"].append(line[2:].strip())
         elif current_section == "risk" and not line.startswith("-"):
             result["risk"] += " " + line
 
     # Nettoyer
+    result["brief"] = result["brief"].strip()
     result["description"] = result["description"].strip()
     result["risk"] = result["risk"].strip()
 

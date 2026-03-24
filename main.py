@@ -230,8 +230,10 @@ def process_articles():
                         continue
 
                     article["title_fr"] = parsed["title"] or article["title"]
+                    article["ai_brief"] = parsed.get("brief", "")
                     article["summary_fr"] = parsed["description"]
                     article["ai_key_points"] = parsed["key_points"]
+                    article["ai_actions"] = parsed.get("actions", [])
                     article["ai_risk"] = parsed["risk"]
 
                     # Utiliser la severite IA si disponible
@@ -357,8 +359,10 @@ def process_articles():
                 )
                 parsed = parse_ai_response(ai_resp)
                 if parsed:
+                    cve_data["ai_brief"] = parsed.get("brief", "")
                     cve_data["description"] = parsed["description"]
                     cve_data["ai_key_points"] = parsed["key_points"]
+                    cve_data["ai_actions"] = parsed.get("actions", [])
                     cve_data["ai_risk"] = parsed["risk"]
                 else:
                     desc_fr = translate_text(cve_data.get("description", ""), "en")

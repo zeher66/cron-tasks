@@ -252,6 +252,12 @@ def format_cve_message(cve_data):
         except (ValueError, TypeError):
             pass
 
+    # EN BREF
+    ai_brief = cve_data.get("ai_brief", "")
+
+    # QUE FAIRE
+    ai_actions = cve_data.get("ai_actions", [])
+
     lines = [
         header,
         f"<code>{bar}</code>",
@@ -259,9 +265,14 @@ def format_cve_message(cve_data):
         f"\U0001f4f0 NVD" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>",
-        "",
-        f"\U0001f4d6 {description}",
     ]
+
+    if ai_brief:
+        lines.append("")
+        lines.append(f"\u26a1 <b>EN BREF :</b> {escape(ai_brief)}")
+
+    lines.append("")
+    lines.append(f"\U0001f4d6 <b>DETAILS :</b> {description}")
 
     if key_points:
         lines.append("")
@@ -269,10 +280,15 @@ def format_cve_message(cve_data):
         for p in key_points:
             lines.append(f"\u2022 {p}")
 
-    # Risque IA
+    if ai_actions:
+        lines.append("")
+        lines.append("\U0001f6e1\ufe0f <b>QUE FAIRE :</b>")
+        for action in ai_actions:
+            lines.append(f"\u2192 {escape(action)}")
+
     if ai_risk:
         lines.append("")
-        lines.append(f"\U0001f6e1\ufe0f <b>Risque :</b> {escape(ai_risk)}")
+        lines.append(f"\u26a0\ufe0f <b>Risque :</b> {escape(ai_risk)}")
 
     # Liens
     lines.append("")
