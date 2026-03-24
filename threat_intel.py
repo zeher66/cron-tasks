@@ -209,7 +209,7 @@ def format_github_trending():
         return None
 
     lines = [
-        "\U0001f4bb <b>GitHub Trending — Securite</b>",
+        f"\U0001f4bb <b>GitHub Trending — Securite</b> | \U0001f4c5 {datetime.now(timezone.utc).strftime('%d/%m/%Y')}",
         "",
     ]
 
@@ -351,11 +351,14 @@ def format_poc_alert(pocs):
     if not pocs:
         return None
 
+    from zoneinfo import ZoneInfo
+    now_paris = datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y %H:%M")
+
     lines = [
         "\U0001f534\U0001f534 <b>IMPORTANT</b> | \U0001f4a3 PoC / Exploit",
         "<code>" + "\u2588" * 7 + "\u2591" * 3 + "</code>",
         "",
-        "\U0001f4f0 GitHub PoC Monitor",
+        f"\U0001f4f0 GitHub PoC Monitor | \U0001f4c5 {now_paris}",
         "",
         f"<b>{len(pocs)} nouveaux exploits publics detectes</b>",
         "",

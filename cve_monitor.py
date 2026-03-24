@@ -240,11 +240,23 @@ def format_cve_message(cve_data):
     # Risque IA
     ai_risk = cve_data.get("ai_risk", "")
 
+    # Date de publication
+    published = cve_data.get("published", "")
+    date_str = ""
+    if published:
+        try:
+            dt = datetime.fromisoformat(published.replace("Z", "+00:00"))
+            from zoneinfo import ZoneInfo
+            dt_paris = dt.astimezone(ZoneInfo("Europe/Paris"))
+            date_str = dt_paris.strftime("%d/%m/%Y %H:%M")
+        except (ValueError, TypeError):
+            pass
+
     lines = [
         header,
         f"<code>{bar}</code>",
         "",
-        f"\U0001f4f0 NVD",
+        f"\U0001f4f0 NVD" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>",
         "",
@@ -331,11 +343,23 @@ def format_kev_message(cve_data):
         else:
             description = description[:600].rstrip() + "..."
 
+    # Date
+    published = cve_data.get("published", "")
+    date_str = ""
+    if published:
+        try:
+            dt = datetime.strptime(published, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            from zoneinfo import ZoneInfo
+            dt_paris = dt.astimezone(ZoneInfo("Europe/Paris"))
+            date_str = dt_paris.strftime("%d/%m/%Y")
+        except (ValueError, TypeError):
+            pass
+
     lines = [
         "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f525 Exploitation Active",
         "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        "\U0001f4f0 CISA KEV",
+        "\U0001f4f0 CISA KEV" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>",
         "",
