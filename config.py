@@ -260,6 +260,19 @@ KEYWORDS_PRIORITY = [
     "france", "francais", "anssi", "cnil", "rgpd",
 ]
 
+# --- Mots-cles France (articles prioritaires) ---
+FRANCE_KEYWORDS = [
+    "france", "français", "francais", "french",
+    "anssi", "cert-fr", "cnil", "rgpd",
+    "paris", "hexagone",
+    "cybermalveillance", "dgsi", "dgse",
+    "hopital francais", "mairie", "prefecture",
+    "orange", "sfr", "bouygues", "free mobile",
+    "sncf", "edf", "engie", "total", "bnp", "societe generale",
+    "credit agricole", "la poste", "pole emploi", "caf",
+    "ameli", "impots.gouv", "france connect",
+]
+
 KEYWORDS_IGNORE = [
     # Spam publicitaire evident (l'IA gere le reste)
     "sponsored content", "advertisement", "promoted post",

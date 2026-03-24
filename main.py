@@ -25,7 +25,7 @@ import os
 import sys
 import time
 
-from config import FEEDS, CUSTOM_ALERTS, NIGHT_MODE_START, NIGHT_MODE_END
+from config import FEEDS, CUSTOM_ALERTS, NIGHT_MODE_START, NIGHT_MODE_END, FRANCE_KEYWORDS
 from database import (
     init_db, is_duplicate, mark_as_sent, update_stats,
     get_today_stats, get_week_stats, cleanup_old_articles, export_monthly_csv,
@@ -104,6 +104,10 @@ def _check_must_read(article, is_relevant, matched_techs, custom_matches, cvss_s
     if is_relevant and matched_techs:
         reasons.append(f"Concerne votre stack: {', '.join(matched_techs[:2])}")
 
+    # Concerne la France
+    if any(kw in text for kw in [k.lower() for k in FRANCE_KEYWORDS]):
+        reasons.append("Concerne la France \U0001f1eb\U0001f1f7")
+
     # Custom alerts
     if custom_matches:
         reasons.append(f"Alerte custom: {', '.join(custom_matches[:2])}")
@@ -158,6 +162,8 @@ def _format_must_read_banner(reasons, article=None):
             lines.append(f"\u2022 \u26a1 {r} — cette faille/attaque cible directement des technologies que tu utilises")
         elif "urgence" in r.lower() or "exploit" in r.lower():
             lines.append(f"\u2022 \U0001f525 {r} — des attaquants exploitent activement cette faille en ce moment")
+        elif "france" in r.lower():
+            lines.append(f"\u2022 \U0001f1eb\U0001f1f7 {r} — menace ou incident qui touche directement la France")
         elif "custom" in r.lower():
             lines.append(f"\u2022 \U0001f514 {r} — correspond a un de tes mots-cles de surveillance")
         else:
@@ -301,12 +307,14 @@ def process_articles():
             # Custom alert = forcer CRITICAL format
             if custom_matches:
                 article["custom_alert"] = custom_matches
+                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if must_read:
+                if must_read or is_france:
                     send_critical_alert(article, channel="urgent")
             elif severity == "critique":
+                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if must_read:
+                if must_read or is_france:
                     send_critical_alert(article, channel="urgent")
             else:
                 message = format_article_with_france_tag(article)
@@ -314,7 +322,10 @@ def process_articles():
                     techs_str = ", ".join(matched_techs[:3])
                     message += f"\n\u26a1 <b>Stack:</b> {techs_str}"
                 success = send_message(message, silent=silent, channel=channel)
-                if must_read:
+
+                # France = prioritaire → envoyer sur URGENT
+                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
+                if must_read or is_france:
                     send_message(message, silent=False, channel="urgent")
 
             if success:
