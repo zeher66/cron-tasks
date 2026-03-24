@@ -455,9 +455,9 @@ def send_critical_alert(article, channel="info"):
 
 
 def send_health_check(stats, dead_sources, sources_total):
-    """Envoie le health check."""
+    """Envoie le health check sur le canal URGENT."""
     message = format_health_check(stats, dead_sources, sources_total)
-    return send_message(message, disable_preview=True)
+    return send_message(message, disable_preview=True, channel="urgent")
 
 
 def send_weekly_digest(week_stats):
