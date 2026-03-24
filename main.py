@@ -495,37 +495,40 @@ def process_articles():
                     header_lines.append("")
 
                 header_lines.append("\u2500" * 25)
-                send_message("\n".join(header_lines), disable_preview=True, silent=True)
+                send_message("\n".join(header_lines), disable_preview=True, channel="urgent")
                 time.sleep(1)
 
-                # Envoyer les articles selectionnes par l'IA
+                # Envoyer les articles selectionnes par l'IA sur URGENT
                 sent_digest = 0
                 for a in all_articles:
                     if a["id"] in selected_ids and a.get("message"):
-                        send_message(a["message"], disable_preview=True, silent=True)
+                        send_message(a["message"], disable_preview=True, channel="urgent")
                         sent_digest += 1
                         time.sleep(2)
 
                 logger.info("Digest IA: %d articles selectionnes sur %d", sent_digest, len(all_articles))
             else:
-                # Fallback si l'IA echoue : envoyer les critique + important
+                # Fallback si l'IA echoue : envoyer les critique + important sur URGENT
                 important = get_today_important_articles()
                 for art in important:
                     if art.get("message"):
-                        send_message(art["message"], disable_preview=True, silent=True)
+                        send_message(art["message"], disable_preview=True, channel="urgent")
                         time.sleep(2)
         elif all_articles:
-            # Pas d'IA : fallback
+            # Pas d'IA : fallback sur URGENT
             important = get_today_important_articles()
             for art in important:
                 if art.get("message"):
-                    send_message(art["message"], disable_preview=True, silent=True)
+                    send_message(art["message"], disable_preview=True, channel="urgent")
                     time.sleep(2)
 
-        # Stats
+        # Stats sur URGENT
         stats = get_today_stats()
         if stats:
-            send_stats(stats)
+            from telegram_bot import format_stats
+            stats_msg = format_stats(stats)
+            if stats_msg:
+                send_message(stats_msg, disable_preview=True, channel="urgent")
             logger.info("Stats quotidiennes envoyees")
 
     # Digest hebdomadaire + tendance (dimanche 10h Paris)
