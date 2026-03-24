@@ -133,12 +133,19 @@ def _call_groq(prompt, max_tokens=800):
             logger.warning("Erreur parsing reponse Groq: %s", e)
             return None
 
-    # Toutes les cles Groq en rate limit → attendre puis reessayer
-    logger.warning("Toutes les cles Groq en rate limit, attente 65s...")
+    # Groq down → fallback OpenRouter
+    if OPENROUTER_API_KEY:
+        logger.warning("Groq down, bascule sur OpenRouter...")
+        result = _call_openrouter(prompt, max_tokens)
+        if result:
+            return result
+
+    # OpenRouter aussi down → attendre 65s puis reessayer Groq
+    logger.warning("Groq + OpenRouter down, attente 65s...")
     import time
     time.sleep(65)
 
-    # Reessayer chaque cle Groq
+    # Reessayer Groq
     for attempt in range(len(GROQ_API_KEYS)):
         key_index = attempt % len(GROQ_API_KEYS)
         api_key = GROQ_API_KEYS[key_index]
@@ -160,12 +167,7 @@ def _call_groq(prompt, max_tokens=800):
         except Exception:
             continue
 
-    # Groq completement down → fallback OpenRouter
-    if OPENROUTER_API_KEY:
-        logger.warning("Groq down, bascule sur OpenRouter...")
-        return _call_openrouter(prompt, max_tokens)
-
-    logger.error("Groq et OpenRouter echoues")
+    logger.error("Tout echoue: Groq + OpenRouter + retry")
     return None
 
 
