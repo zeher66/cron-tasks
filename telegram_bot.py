@@ -171,11 +171,17 @@ def format_article(article):
         except (ValueError, TypeError):
             pass
 
+    # Lieu
+    location = article.get("ai_location", "")
+    location_str = ""
+    if location and location.lower() not in ("non specifie", "non spécifié", ""):
+        location_str = f" | \U0001f4cd {escape(location)}"
+
     lines = [
         f"{header} | {cat_tag}",
         f"<code>{bar}</code>",
         "",
-        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
+        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else "") + location_str,
         "",
         f"<b>{title}</b>",
     ]
@@ -339,11 +345,17 @@ def format_critical_alert(article):
         except (ValueError, TypeError):
             pass
 
+    # Lieu
+    location = article.get("ai_location", "")
+    location_str = ""
+    if location and location.lower() not in ("non specifie", "non spécifié", ""):
+        location_str = f" | \U0001f4cd {escape(location)}"
+
     lines = [
         "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f4a5 Alerte",
         "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
+        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else "") + location_str,
         "",
         f"<b>{title}</b>{france_tag}",
     ]

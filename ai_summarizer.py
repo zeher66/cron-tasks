@@ -171,6 +171,8 @@ QUE FAIRE:
 - [action corrective 2: workaround/mitigation]
 - [action corrective 3: detection/verification]
 
+LIEU: [pays ou region concernes si mentionne, ex: France, USA, Europe, Mondial, ou "Non specifie"]
+
 RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de l'exploit, et de la surface d'attaque]"""
 
     return _call_groq(prompt, max_tokens=1200)
@@ -249,6 +251,7 @@ def parse_ai_response(response):
         "key_points": [],
         "actions": [],
         "risk": "",
+        "location": "",
         "pertinent": True,
         "ai_severity": "",
     }
@@ -292,6 +295,9 @@ def parse_ai_response(response):
             current_section = "points"
         elif line.startswith("QUE FAIRE:"):
             current_section = "actions"
+        elif line.startswith("LIEU:"):
+            result["location"] = line[5:].strip()
+            current_section = "lieu"
         elif line.startswith("RISQUE:"):
             result["risk"] = line[7:].strip()
             current_section = "risk"

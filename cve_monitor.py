@@ -258,11 +258,17 @@ def format_cve_message(cve_data):
     # QUE FAIRE
     ai_actions = cve_data.get("ai_actions", [])
 
+    # Lieu
+    location = cve_data.get("ai_location", "")
+    location_str = ""
+    if location and location.lower() not in ("non specifie", "non spécifié", ""):
+        location_str = f" | \U0001f4cd {escape(location)}"
+
     lines = [
         header,
         f"<code>{bar}</code>",
         "",
-        f"\U0001f4f0 NVD" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
+        f"\U0001f4f0 NVD" + (f" | \U0001f4c5 {date_str}" if date_str else "") + location_str,
         "",
         f"<b>{title}</b>",
     ]
