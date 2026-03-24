@@ -448,14 +448,15 @@ def process_articles():
         logger.info("Envoi health check quotidien")
         stats = get_today_stats()
         dead = get_dead_sources()
-        send_health_check(stats, dead, sources_total)
+        from ai_summarizer import is_ai_available as check_ai
+        send_health_check(stats, dead, sources_total, ai_active=check_ai())
 
         # Alerte sources mortes
         if dead:
             send_error(f"Sources en panne depuis 24h+ : {', '.join(dead)}")
 
-    # Digest important du jour + stats (21h30 Paris)
-    if now.hour == 21 and now.minute >= 30:
+    # Digest important du jour + stats (21h Paris)
+    if now.hour == 21:
         logger.info("Envoi digest important du jour")
 
         all_articles = get_today_all_articles()

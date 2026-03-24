@@ -416,24 +416,38 @@ def format_article_with_france_tag(article):
     return message
 
 
-def format_health_check(stats, dead_sources, sources_total):
+def format_health_check(stats, dead_sources, sources_total, ai_active=False):
     """Formate le health check quotidien."""
     from datetime import datetime
     from zoneinfo import ZoneInfo
-    now = datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y")
+    now = datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y %H:%M")
 
     lines = [
         f"\u2705 <b>Bot actif — {now}</b>",
         "",
     ]
 
+    # Statut IA
+    if ai_active:
+        lines.append(f"\U0001f916 IA Groq : \u2705 Active")
+    else:
+        lines.append(f"\U0001f916 IA Groq : \u274c Inactive (fallback traduction Google)")
+
     if stats:
-        lines.append(f"\u2022 Articles envoyes aujourd'hui : {stats.get('articles_sent', 0)}")
+        lines.append(f"\u2022 Articles envoyes hier : {stats.get('articles_sent', 0)}")
         lines.append(f"\u2022 Doublons filtres : {stats.get('duplicates_filtered', 0)}")
         lines.append(f"\u2022 Sources actives : {stats.get('sources_active', 0)}/{sources_total}")
         lines.append(f"\u2022 Erreurs : {stats.get('errors', 0)}")
     else:
         lines.append(f"\u2022 Sources configurees : {sources_total}")
+
+    # Canaux
+    lines.append("")
+    lines.append("<b>Canaux :</b>")
+    lines.append(f"\u2022 INFO : {'✅' if TELEGRAM_CHAT_ID else '❌'}")
+    lines.append(f"\u2022 CVE : {'✅' if TELEGRAM_CHAT_ID_CVE else '❌'}")
+    lines.append(f"\u2022 0-Day : {'✅' if TELEGRAM_CHAT_ID_0DAY else '❌'}")
+    lines.append(f"\u2022 URGENT : {'✅' if TELEGRAM_CHAT_ID_URGENT else '❌'}")
 
     if dead_sources:
         lines.append("")
@@ -484,9 +498,9 @@ def send_critical_alert(article, channel="info"):
     return send_message(message, channel=channel)
 
 
-def send_health_check(stats, dead_sources, sources_total):
+def send_health_check(stats, dead_sources, sources_total, ai_active=False):
     """Envoie le health check sur le canal URGENT."""
-    message = format_health_check(stats, dead_sources, sources_total)
+    message = format_health_check(stats, dead_sources, sources_total, ai_active)
     return send_message(message, disable_preview=True, channel="urgent")
 
 
