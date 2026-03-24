@@ -3,7 +3,7 @@ import time
 import requests
 from html import escape
 
-from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_MAX_LENGTH, REQUEST_TIMEOUT
+from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_CHAT_ID_CVE, TELEGRAM_CHAT_ID_0DAY, TELEGRAM_MAX_LENGTH, REQUEST_TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -38,13 +38,22 @@ def _send_request(method, data):
         return None
 
 
-def send_message(text, parse_mode="HTML", disable_preview=False, silent=False):
-    """Envoie un message sur le canal Telegram."""
+def send_message(text, parse_mode="HTML", disable_preview=False, silent=False, channel="info"):
+    """Envoie un message sur le canal Telegram appropriate."""
     if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN == "YOUR_TOKEN_HERE":
         logger.error("Token Telegram non configure")
         return False
-    if not TELEGRAM_CHAT_ID or TELEGRAM_CHAT_ID == "YOUR_CHAT_ID_HERE":
-        logger.error("Chat ID Telegram non configure")
+
+    # Choisir le canal
+    if channel == "cve" and TELEGRAM_CHAT_ID_CVE:
+        chat_id = TELEGRAM_CHAT_ID_CVE
+    elif channel == "0day" and TELEGRAM_CHAT_ID_0DAY:
+        chat_id = TELEGRAM_CHAT_ID_0DAY
+    else:
+        chat_id = TELEGRAM_CHAT_ID
+
+    if not chat_id or chat_id == "YOUR_CHAT_ID_HERE":
+        logger.error("Chat ID Telegram non configure pour canal: %s", channel)
         return False
 
     # Decouper si le message depasse la limite
@@ -52,7 +61,7 @@ def send_message(text, parse_mode="HTML", disable_preview=False, silent=False):
 
     for msg in messages:
         data = {
-            "chat_id": TELEGRAM_CHAT_ID,
+            "chat_id": chat_id,
             "text": msg,
             "parse_mode": parse_mode,
             "disable_web_page_preview": disable_preview,
@@ -411,10 +420,10 @@ def format_weekly_digest(week_stats):
     return "\n".join(lines)
 
 
-def send_critical_alert(article):
+def send_critical_alert(article, channel="info"):
     """Envoie une alerte critique."""
     message = format_critical_alert(article)
-    return send_message(message)
+    return send_message(message, channel=channel)
 
 
 def send_health_check(stats, dead_sources, sources_total):

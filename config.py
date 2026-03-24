@@ -6,7 +6,9 @@ import os
 
 # --- Telegram ---
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "YOUR_TOKEN_HERE")
-TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID_HERE")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID_HERE")  # Canal INFO
+TELEGRAM_CHAT_ID_CVE = os.environ.get("TELEGRAM_CHAT_ID_CVE", "")  # Canal CVE
+TELEGRAM_CHAT_ID_0DAY = os.environ.get("TELEGRAM_CHAT_ID_0DAY", "")  # Canal 0-Day
 
 # --- Sources RSS ---
 # Chaque source a : nom, url, categorie, langue, frequence (minutes)

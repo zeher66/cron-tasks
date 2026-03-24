@@ -42,6 +42,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID_CVE: ${{ secrets.TELEGRAM_CHAT_ID_CVE }}
+          TELEGRAM_CHAT_ID_0DAY: ${{ secrets.TELEGRAM_CHAT_ID_0DAY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
         run: python main.py
