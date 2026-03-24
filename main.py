@@ -572,6 +572,7 @@ def process_articles():
                 if poc_msg:
                     has_stack = any(p["concerns_my_stack"] for p in new_pocs)
                     success = send_message(poc_msg, disable_preview=True, silent=not has_stack, channel="0day")
+                    send_message(poc_msg, disable_preview=True, silent=not has_stack, channel="cve")
                     # Marquer comme envoyes SEULEMENT apres envoi reussi
                     if success:
                         for poc in new_pocs:
