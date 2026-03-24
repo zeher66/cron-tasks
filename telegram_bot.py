@@ -156,11 +156,24 @@ def format_article(article):
     # Risque IA si disponible
     ai_risk = article.get("ai_risk", "")
 
+    # Date de publication (heure de Paris)
+    pub_date = article.get("pub_date", "")
+    date_str = ""
+    if pub_date:
+        try:
+            from datetime import datetime as dt_cls
+            from zoneinfo import ZoneInfo
+            d = dt_cls.fromisoformat(pub_date)
+            d_paris = d.astimezone(ZoneInfo("Europe/Paris"))
+            date_str = d_paris.strftime("%d/%m/%Y %H:%M")
+        except (ValueError, TypeError):
+            pass
+
     lines = [
         f"{header} | {cat_tag}",
         f"<code>{bar}</code>",
         "",
-        f"\U0001f4f0 {source}",
+        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>",
     ]
@@ -297,11 +310,24 @@ def format_critical_alert(article):
     key_points = article.get("ai_key_points") or _extract_key_points(content)
     ai_risk = article.get("ai_risk", "")
 
+    # Date
+    pub_date = article.get("pub_date", "")
+    date_str = ""
+    if pub_date:
+        try:
+            from datetime import datetime as dt_cls
+            from zoneinfo import ZoneInfo
+            d = dt_cls.fromisoformat(pub_date)
+            d_paris = d.astimezone(ZoneInfo("Europe/Paris"))
+            date_str = d_paris.strftime("%d/%m/%Y %H:%M")
+        except (ValueError, TypeError):
+            pass
+
     lines = [
         "\U0001f6a8\U0001f6a8\U0001f6a8 <b>CRITIQUE</b> | \U0001f4a5 Alerte",
         "<code>\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588</code>",
         "",
-        f"\U0001f4f0 {source}",
+        f"\U0001f4f0 {source}" + (f" | \U0001f4c5 {date_str}" if date_str else ""),
         "",
         f"<b>{title}</b>{france_tag}",
         "",
