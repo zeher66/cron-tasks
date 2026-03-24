@@ -3,7 +3,7 @@ import time
 import requests
 from html import escape
 
-from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_CHAT_ID_CVE, TELEGRAM_CHAT_ID_0DAY, TELEGRAM_MAX_LENGTH, REQUEST_TIMEOUT
+from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_CHAT_ID_CVE, TELEGRAM_CHAT_ID_0DAY, TELEGRAM_CHAT_ID_URGENT, TELEGRAM_MAX_LENGTH, REQUEST_TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +49,8 @@ def send_message(text, parse_mode="HTML", disable_preview=False, silent=False, c
         chat_id = TELEGRAM_CHAT_ID_CVE
     elif channel == "0day" and TELEGRAM_CHAT_ID_0DAY:
         chat_id = TELEGRAM_CHAT_ID_0DAY
+    elif channel == "urgent" and TELEGRAM_CHAT_ID_URGENT:
+        chat_id = TELEGRAM_CHAT_ID_URGENT
     else:
         chat_id = TELEGRAM_CHAT_ID
 

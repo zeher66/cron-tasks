@@ -279,10 +279,6 @@ def process_articles():
 
             # Verifier si "A LIRE ABSOLUMENT"
             must_read, must_reasons = _check_must_read(article, is_relevant, matched_techs, custom_matches)
-            if must_read:
-                banner = _format_must_read_banner(must_reasons, article)
-                send_message(banner, silent=False, channel=channel)  # Toujours sonore
-                time.sleep(1)
 
             # Determiner le canal
             cat = article.get("category", "")
@@ -293,18 +289,31 @@ def process_articles():
             else:
                 channel = "info"
 
+            # Envoyer banner MUST READ
+            if must_read:
+                banner = _format_must_read_banner(must_reasons, article)
+                send_message(banner, silent=False, channel=channel)
+                send_message(banner, silent=False, channel="urgent")
+                time.sleep(1)
+
             # Custom alert = forcer CRITICAL format
             if custom_matches:
                 article["custom_alert"] = custom_matches
                 success = send_critical_alert(article, channel=channel)
+                if must_read:
+                    send_critical_alert(article, channel="urgent")
             elif severity == "critique":
                 success = send_critical_alert(article, channel=channel)
+                if must_read:
+                    send_critical_alert(article, channel="urgent")
             else:
                 message = format_article_with_france_tag(article)
                 if is_relevant:
                     techs_str = ", ".join(matched_techs[:3])
                     message += f"\n\u26a1 <b>Stack:</b> {techs_str}"
                 success = send_message(message, silent=silent, channel=channel)
+                if must_read:
+                    send_message(message, silent=False, channel="urgent")
 
             if success:
                 # Stocker le message formate pour le digest
@@ -369,10 +378,13 @@ def process_articles():
             if cve_must_read:
                 banner = _format_must_read_banner(cve_reasons, cve_text_check)
                 send_message(banner, silent=False, channel="cve")
+                send_message(banner, silent=False, channel="urgent")
                 time.sleep(1)
 
             message = format_cve_message(cve_data)
             if send_message(message, channel="cve"):
+                if cve_must_read:
+                    send_message(message, silent=False, channel="urgent")
                 cve_sev = "critique" if cve_data.get("cvss_severity") == "CRITICAL" else "important"
                 mark_as_sent(cve_data["nvd_url"], cve_id, "NVD", "cve", severity=cve_sev, message=message)
                 sent += 1
