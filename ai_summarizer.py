@@ -85,29 +85,35 @@ def _call_groq(prompt, max_tokens=800):
             logger.warning("Erreur parsing reponse Groq: %s", e)
             return None
 
-    # Toutes les cles en rate limit → attendre 60s et reessayer 1 fois
-    logger.warning("Toutes les cles Groq en rate limit, attente 60s...")
+    # Toutes les cles en rate limit → attendre la prochaine minute et reessayer
+    logger.warning("Toutes les cles Groq en rate limit, attente 65s pour la prochaine minute...")
     import time
-    time.sleep(60)
+    time.sleep(65)
 
-    # Reessayer avec la premiere cle
-    try:
-        api_key = GROQ_API_KEYS[0]
+    # Reessayer chaque cle
+    for attempt in range(len(GROQ_API_KEYS)):
+        key_index = attempt % len(GROQ_API_KEYS)
+        api_key = GROQ_API_KEYS[key_index]
+
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         }
-        response = requests.post(GROQ_API_URL, headers=headers, json=data, timeout=30)
-        if response.status_code == 429:
-            logger.error("Groq toujours en rate limit apres attente")
-            return None
-        response.raise_for_status()
-        result = response.json()
-        _current_key_index = 0
-        return result["choices"][0]["message"]["content"].strip()
-    except Exception as e:
-        logger.error("Groq echoue apres attente: %s", e)
-        return None
+
+        try:
+            response = requests.post(GROQ_API_URL, headers=headers, json=data, timeout=30)
+            if response.status_code == 429:
+                continue
+            response.raise_for_status()
+            result = response.json()
+            _current_key_index = key_index
+            logger.info("Groq OK apres attente (cle %d)", key_index + 1)
+            return result["choices"][0]["message"]["content"].strip()
+        except Exception:
+            continue
+
+    logger.error("Groq echoue meme apres attente")
+    return None
 
 
 def summarize_article(title, content, source, lang="en"):
