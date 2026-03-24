@@ -286,7 +286,7 @@ MAX_ARTICLE_AGE_HOURS = 48  # Ignorer les articles plus vieux que 48h
 MAX_CONTENT_LENGTH = 500  # Longueur max du resume en caracteres
 TELEGRAM_MAX_LENGTH = 4096  # Limite Telegram
 REQUEST_TIMEOUT = 30  # Timeout HTTP en secondes
-TIMEZONE = "Europe/Paris"  # Fuseau horaire pour l'affichage
+
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 # --- Stack technique (pour marquer les CVE/articles qui te concernent avec ⚡) ---

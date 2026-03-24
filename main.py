@@ -55,10 +55,9 @@ logger = logging.getLogger("cyber-veille")
 
 def _is_night_mode():
     """Verifie si on est en mode nuit (23h-7h Paris)."""
-    from datetime import datetime, timezone, timedelta
+    from datetime import datetime
     from zoneinfo import ZoneInfo
-    paris_tz = ZoneInfo("Europe/Paris")
-    hour = datetime.now(paris_tz).hour
+    hour = datetime.now(ZoneInfo("Europe/Paris")).hour
     if NIGHT_MODE_START > NIGHT_MODE_END:
         return hour >= NIGHT_MODE_START or hour < NIGHT_MODE_END
     return NIGHT_MODE_START <= hour < NIGHT_MODE_END
