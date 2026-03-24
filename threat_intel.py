@@ -432,7 +432,7 @@ def format_poc_alert(pocs):
         "",
     ]
 
-    for poc in pocs[:6]:
+    for poc in pocs[:4]:
         name = escape(poc["name"])
         desc = poc.get("description", "")
         stars = poc["stars"]
@@ -447,10 +447,10 @@ def format_poc_alert(pocs):
             continue  # IA dit que c'est pas un vrai PoC → skip
 
         if ai_result and ai_result.get("description_fr"):
-            desc_fr = escape(ai_result["description_fr"][:200])
+            desc_fr = escape(ai_result["description_fr"][:300])
             danger = ai_result.get("danger", "")
         else:
-            desc_fr = escape(_translate_poc_description(desc)[:150])
+            desc_fr = escape(_translate_poc_description(desc)[:250])
             danger = ""
 
         lines.append(f"\U0001f3af <b>{cve_id}</b>{stack_tag}")

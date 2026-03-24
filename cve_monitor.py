@@ -261,7 +261,7 @@ def format_cve_message(cve_data):
     # Lieu
     location = cve_data.get("ai_location", "")
     location_str = ""
-    if location and location.lower() not in ("non specifie", "non spécifié", ""):
+    if location and not any(x in location.lower() for x in ("non specifie", "non spécifié", "non specif")):
         location_str = f" | \U0001f4cd {escape(location)}"
 
     lines = [
