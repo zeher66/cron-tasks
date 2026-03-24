@@ -94,10 +94,17 @@ def summarize_article(title, content, source, lang="en"):
     if not is_ai_available():
         return None
 
+    from config import FRANCE_KEYWORDS
+
     # Tronquer le contenu pour rester dans les limites de tokens
     content_truncated = content[:3000] if content else ""
 
+    # Liste des entites francaises pour aider l'IA
+    france_entities = ", ".join(FRANCE_KEYWORDS[:30])
+
     prompt = f"""Analyse cet article et genere un resume structure en francais.
+
+IMPORTANT pour le champ LIEU: les entites suivantes sont FRANCAISES: {france_entities}. Si l'article mentionne une de ces entites, le lieu est "France".
 
 Source: {source}
 Titre original: {title}
