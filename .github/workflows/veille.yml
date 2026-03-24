@@ -48,6 +48,7 @@ jobs:
           TELEGRAM_CHAT_ID_FRANCE: ${{ secrets.TELEGRAM_CHAT_ID_FRANCE }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python main.py
 
       # 5. Commit la DB pour persistance

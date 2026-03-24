@@ -18,13 +18,61 @@ GROQ_API_KEYS = [k for k in GROQ_API_KEYS if k]  # Enlever les vides
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
+# OpenRouter fallback
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
+
 # Index de la cle active (bascule si rate limit)
 _current_key_index = 0
 
 
 def is_ai_available():
     """Verifie si l'IA est configuree."""
-    return bool(GROQ_API_KEYS)
+    return bool(GROQ_API_KEYS) or bool(OPENROUTER_API_KEY)
+
+
+def _call_openrouter(prompt, max_tokens=1500):
+    """Fallback: appelle OpenRouter si Groq est down."""
+    if not OPENROUTER_API_KEY:
+        return None
+
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    data = {
+        "model": OPENROUTER_MODEL,
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Tu es un analyste expert en cybersecurite. "
+                    "Tu reponds UNIQUEMENT en francais. "
+                    "Tu es precis, concis et technique."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+        "max_tokens": max_tokens,
+        "temperature": 0.3,
+    }
+
+    try:
+        response = requests.post(
+            OPENROUTER_API_URL, headers=headers, json=data, timeout=45
+        )
+        response.raise_for_status()
+        result = response.json()
+        logger.info("OpenRouter OK (fallback)")
+        return result["choices"][0]["message"]["content"].strip()
+    except requests.RequestException as e:
+        logger.error("Erreur OpenRouter: %s", e)
+        return None
+    except (KeyError, IndexError) as e:
+        logger.error("Erreur parsing OpenRouter: %s", e)
+        return None
 
 
 def _call_groq(prompt, max_tokens=800):
@@ -85,12 +133,12 @@ def _call_groq(prompt, max_tokens=800):
             logger.warning("Erreur parsing reponse Groq: %s", e)
             return None
 
-    # Toutes les cles en rate limit → attendre la prochaine minute et reessayer
-    logger.warning("Toutes les cles Groq en rate limit, attente 65s pour la prochaine minute...")
+    # Toutes les cles Groq en rate limit → attendre puis reessayer
+    logger.warning("Toutes les cles Groq en rate limit, attente 65s...")
     import time
     time.sleep(65)
 
-    # Reessayer chaque cle
+    # Reessayer chaque cle Groq
     for attempt in range(len(GROQ_API_KEYS)):
         key_index = attempt % len(GROQ_API_KEYS)
         api_key = GROQ_API_KEYS[key_index]
@@ -112,7 +160,12 @@ def _call_groq(prompt, max_tokens=800):
         except Exception:
             continue
 
-    logger.error("Groq echoue meme apres attente")
+    # Groq completement down → fallback OpenRouter
+    if OPENROUTER_API_KEY:
+        logger.warning("Groq down, bascule sur OpenRouter...")
+        return _call_openrouter(prompt, max_tokens)
+
+    logger.error("Groq et OpenRouter echoues")
     return None
 
 

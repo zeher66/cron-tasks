@@ -455,9 +455,9 @@ def format_health_check(stats, dead_sources, sources_total, ai_active=False):
 
     # Statut IA
     if ai_active:
-        lines.append(f"\U0001f916 IA Groq : \u2705 Active")
+        lines.append(f"\U0001f916 IA : \u2705 Active (Groq + OpenRouter fallback)")
     else:
-        lines.append(f"\U0001f916 IA Groq : \u274c Inactive (fallback traduction Google)")
+        lines.append(f"\U0001f916 IA : \u274c Inactive (fallback traduction Google)")
 
     if stats:
         lines.append(f"\u2022 Articles envoyes hier : {stats.get('articles_sent', 0)}")
