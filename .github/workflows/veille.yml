@@ -45,6 +45,7 @@ jobs:
           TELEGRAM_CHAT_ID_CVE: ${{ secrets.TELEGRAM_CHAT_ID_CVE }}
           TELEGRAM_CHAT_ID_0DAY: ${{ secrets.TELEGRAM_CHAT_ID_0DAY }}
           TELEGRAM_CHAT_ID_URGENT: ${{ secrets.TELEGRAM_CHAT_ID_URGENT }}
+          TELEGRAM_CHAT_ID_FRANCE: ${{ secrets.TELEGRAM_CHAT_ID_FRANCE }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
         run: python main.py

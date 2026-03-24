@@ -309,12 +309,16 @@ def process_articles():
                 article["custom_alert"] = custom_matches
                 is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if must_read or is_france:
+                if is_france:
+                    send_critical_alert(article, channel="france")
+                if must_read:
                     send_critical_alert(article, channel="urgent")
             elif severity == "critique":
                 is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if must_read or is_france:
+                if is_france:
+                    send_critical_alert(article, channel="france")
+                if must_read:
                     send_critical_alert(article, channel="urgent")
             else:
                 message = format_article_with_france_tag(article)
@@ -323,9 +327,12 @@ def process_articles():
                     message += f"\n\u26a1 <b>Stack:</b> {techs_str}"
                 success = send_message(message, silent=silent, channel=channel)
 
-                # France = prioritaire → envoyer sur URGENT
+                # France → canal FRANCE
                 is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
-                if must_read or is_france:
+                if is_france:
+                    send_message(message, silent=False, channel="france")
+                # Must read → canal URGENT
+                if must_read:
                     send_message(message, silent=False, channel="urgent")
 
             if success:

@@ -10,6 +10,7 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID_HERE")  # Ca
 TELEGRAM_CHAT_ID_CVE = os.environ.get("TELEGRAM_CHAT_ID_CVE", "")  # Canal CVE
 TELEGRAM_CHAT_ID_0DAY = os.environ.get("TELEGRAM_CHAT_ID_0DAY", "")  # Canal 0-Day
 TELEGRAM_CHAT_ID_URGENT = os.environ.get("TELEGRAM_CHAT_ID_URGENT", "")  # Canal A LIRE ABSOLUMENT
+TELEGRAM_CHAT_ID_FRANCE = os.environ.get("TELEGRAM_CHAT_ID_FRANCE", "")  # Canal France
 
 # --- Sources RSS ---
 # Chaque source a : nom, url, categorie, langue, frequence (minutes)

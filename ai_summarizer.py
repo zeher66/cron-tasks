@@ -128,6 +128,8 @@ QUE FAIRE:
 - [action concrete 2]
 - [action concrete 3]
 
+LIEU: [pays ou region concernes si mentionne, ex: France, USA, Europe, Mondial, ou "Non specifie"]
+
 RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1-2 phrases de pourquoi ce niveau, avec les consequences possibles]"""
 
     return _call_groq(prompt, max_tokens=1200)
