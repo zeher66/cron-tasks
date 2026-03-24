@@ -141,6 +141,8 @@ SEVERITE: [CRITIQUE/IMPORTANT/MOYEN/INFO] - basee sur l'impact reel (CRITIQUE = 
 
 TITRE: [titre traduit en francais, clair et accrocheur]
 
+LIEU: [pays ou region concernes. Ex: France, USA, Europe, Mondial. Si la source est CERT-FR ou ANSSI = France. Si pas de pays mentionne = Mondial]
+
 EN BREF: [resume RAPIDE en 1-3 phrases maximum. L'essentiel pour comprendre en 3 secondes: quoi, qui est touche, quel impact. Court et percutant.]
 
 VICTIME: [qui est la victime/cible: nom de l'entreprise, organisme, pays, secteur. Nombre de personnes/systemes touches si connu. Ex: "Orange France — 19 millions de clients" ou "Hopitaux francais — 3 etablissements" ou "Utilisateurs WordPress — toutes versions" ou "Non specifie"]
@@ -156,8 +158,6 @@ QUE FAIRE:
 - [action concrete 1 a prendre immediatement]
 - [action concrete 2]
 - [action concrete 3]
-
-LIEU: [pays ou region concernes si mentionne, ex: France, USA, Europe, Mondial, ou "Non specifie"]
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [explication en 1-2 phrases de pourquoi ce niveau, avec les consequences possibles]"""
 
@@ -186,6 +186,8 @@ Reponds avec EXACTEMENT ce format (pas de markdown, juste du texte brut):
 
 TITRE: [CVE ID + description courte du probleme en francais]
 
+LIEU: [pays ou region concernes. Si le produit est utilise mondialement = Mondial. Si specifique a un pays = ce pays]
+
 EN BREF: [resume RAPIDE en 1-3 phrases. L'essentiel: quel produit, quelle faille, quel impact. Court et percutant.]
 
 VICTIME: [produit et versions affectes + qui utilise ce produit. Ex: "Apache Log4j 2.x — tous les serveurs Java" ou "WordPress WP Maps plugin ≤4.9.1 — sites WordPress" ou "Fortinet FortiGate — entreprises utilisant ce firewall"]
@@ -201,8 +203,6 @@ QUE FAIRE:
 - [action corrective 1: patch/mise a jour]
 - [action corrective 2: workaround/mitigation]
 - [action corrective 3: detection/verification]
-
-LIEU: [pays ou region concernes si mentionne, ex: France, USA, Europe, Mondial, ou "Non specifie"]
 
 RISQUE: [Critique/Eleve/Moyen/Faible] - [pourquoi, en tenant compte du CVSS, de l'exploit, et de la surface d'attaque]"""
 
