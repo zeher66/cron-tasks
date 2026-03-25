@@ -688,12 +688,18 @@ def cmd_ask(chat_id, args):
     # Chercher dans les articles recents pour donner du contexte
     context = ""
     try:
-        articles = get_today_articles()
+        # Chercher dans jour, semaine, mois
+        articles = get_today_articles() or []
+        if not articles:
+            articles = get_week_articles() or []
+        if not articles:
+            articles = get_month_articles() or []
+
         if articles:
-            # Chercher les articles qui matchent la question
             question_lower = args.lower()
+            words = [w for w in question_lower.split() if len(w) > 3]
             relevant = [a for a in articles if any(
-                word in a["title"].lower() for word in question_lower.split() if len(word) > 3
+                word in a["title"].lower() for word in words
             )]
             if relevant:
                 context = "\n\nCONTEXTE - Articles recents sur ce sujet:\n"
