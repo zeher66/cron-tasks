@@ -508,6 +508,116 @@ def cmd_shodan(chat_id, args):
         send_telegram(chat_id, f"\u274c Erreur Shodan: {e}")
 
 
+def cmd_scan(chat_id, args):
+    """Scan complet d'une cible (domaine, IP ou URL)."""
+    if not args:
+        send_telegram(chat_id, "Usage: /scan exemple.com ou /scan 8.8.8.8 ou /scan https://exemple.com")
+        return
+
+    target = args.strip().lower()
+    # Nettoyer l'URL
+    target = target.replace("https://", "").replace("http://", "").split("/")[0].split(":")[0]
+
+    send_telegram(chat_id, f"\U0001f3af <b>Scan complet: {target}</b>\n\n\U0001f50d Analyse en cours...")
+
+    results = []
+
+    # 1. DNS
+    try:
+        ip = socket.gethostbyname(target)
+        results.append(f"\U0001f4cd <b>DNS:</b> {target} \u2192 {ip}")
+    except socket.gaierror:
+        ip = target  # C'est peut-etre deja une IP
+        results.append(f"\U0001f4cd <b>IP:</b> {ip}")
+
+    # 2. Shodan
+    shodan_data = {}
+    if SHODAN_API_KEY:
+        try:
+            response = requests.get(
+                f"https://api.shodan.io/shodan/host/{ip}?key={SHODAN_API_KEY}",
+                timeout=15,
+            )
+            if response.status_code == 200:
+                shodan_data = response.json()
+
+                org = shodan_data.get("org", "Inconnu")
+                country = shodan_data.get("country_name", "Inconnu")
+                city = shodan_data.get("city", "")
+                isp = shodan_data.get("isp", "")
+                ports = shodan_data.get("ports", [])
+                vulns = shodan_data.get("vulns", [])
+
+                results.append(f"\U0001f3e2 <b>Organisation:</b> {org}")
+                results.append(f"\U0001f30d <b>Localisation:</b> {country}" + (f" — {city}" if city else ""))
+                if isp:
+                    results.append(f"\U0001f4e1 <b>FAI:</b> {isp}")
+
+                if ports:
+                    ports_str = ""
+                    for port in sorted(ports)[:10]:
+                        warning = ""
+                        if port in (21, 23, 3306, 5432, 6379, 27017, 1433):
+                            warning = " \U0001f534"
+                        elif port in (22, 3389):
+                            warning = " \u26a0\ufe0f"
+                        ports_str += f"  \u2022 {port}{warning}\n"
+                    results.append(f"\n\U0001f6aa <b>Ports ouverts ({len(ports)}):</b>\n{ports_str}")
+
+                if vulns:
+                    vulns_str = "\n".join(f"  \u2022 {v}" for v in sorted(vulns)[:10])
+                    results.append(f"\U0001f534 <b>Vulnerabilites ({len(vulns)}):</b>\n{vulns_str}")
+                else:
+                    results.append("\u2705 Aucune vulnerabilite connue")
+
+                # Technologies detectees
+                techs = set()
+                for s in shodan_data.get("data", []):
+                    product = s.get("product", "")
+                    if product:
+                        techs.add(product)
+                if techs:
+                    results.append(f"\n\U0001f527 <b>Technologies:</b> {', '.join(list(techs)[:8])}")
+
+            else:
+                results.append("\U0001f4ed Aucune donnee Shodan pour cette IP")
+        except Exception as e:
+            results.append(f"\u26a0\ufe0f Shodan: {e}")
+
+    # 3. SSL check
+    try:
+        import ssl
+        import datetime
+        ctx = ssl.create_default_context()
+        with ctx.wrap_socket(socket.socket(), server_hostname=target) as s:
+            s.settimeout(10)
+            s.connect((target, 443))
+            cert = s.getpeercert()
+            expire = cert.get("notAfter", "")
+            issuer = dict(x[0] for x in cert.get("issuer", []))
+            issuer_name = issuer.get("organizationName", "Inconnu")
+            results.append(f"\n\U0001f512 <b>SSL:</b> Valide \u2014 {issuer_name}")
+            results.append(f"\U0001f4c5 <b>Expire:</b> {expire}")
+    except Exception:
+        results.append(f"\n\U0001f512 <b>SSL:</b> Non disponible ou invalide")
+
+    # 4. Analyse IA
+    scan_summary = "\n".join(results)
+    ai_response = call_ai(
+        f"Voici le resultat du scan de la cible {target}:\n\n{scan_summary}\n\n"
+        f"Analyse cette cible et donne:\n"
+        f"1. Niveau de risque global (Critique/Eleve/Moyen/Faible)\n"
+        f"2. Les problemes de securite detectes\n"
+        f"3. Les recommandations concretes pour securiser cette cible",
+        max_tokens=800,
+    )
+
+    results.append(f"\n\U0001f916 <b>Analyse IA:</b>\n{ai_response}")
+    results.append(f"\n\U0001f517 <a href=\"https://www.shodan.io/host/{ip}\">Shodan</a>")
+
+    send_telegram(chat_id, "\n".join(results))
+
+
 def cmd_help(chat_id):
     """Aide."""
     send_telegram(chat_id, (
@@ -519,6 +629,7 @@ def cmd_help(chat_id):
         "/search mot-cle \u2014 Recherche cybersecurite\n"
         "/whois domaine.com \u2014 Info domaine/DNS\n"
         "/shodan IP \u2014 Scanner une IP (ports, vulns)\n"
+        "/scan cible \u2014 Scan complet (domaine, IP ou URL)\n"
         "/list \u2014 Lister les sources RSS\n"
         "/ask question \u2014 Poser une question libre\n"
         "/help \u2014 Cette aide\n\n"
@@ -558,6 +669,8 @@ def handle_message(data):
         cmd_whois(chat_id, text[7:].strip())
     elif text.startswith("/shodan "):
         cmd_shodan(chat_id, text[8:].strip())
+    elif text.startswith("/scan "):
+        cmd_scan(chat_id, text[6:].strip())
     elif text == "/list":
         cmd_list(chat_id)
     elif text == "/today":
