@@ -678,13 +678,35 @@ def cmd_help(chat_id):
 
 
 def cmd_ask(chat_id, args):
-    """Question libre a l'IA."""
+    """Question libre a l'IA avec contexte des articles recents."""
     if not args:
         send_telegram(chat_id, "Usage: /ask comment fonctionne un ransomware ?")
         return
 
     send_telegram(chat_id, "\U0001f914 Reflexion...")
-    ai_response = call_ai(args)
+
+    # Chercher dans les articles recents pour donner du contexte
+    context = ""
+    try:
+        articles = get_today_articles()
+        if articles:
+            # Chercher les articles qui matchent la question
+            question_lower = args.lower()
+            relevant = [a for a in articles if any(
+                word in a["title"].lower() for word in question_lower.split() if len(word) > 3
+            )]
+            if relevant:
+                context = "\n\nCONTEXTE - Articles recents sur ce sujet:\n"
+                for a in relevant[:5]:
+                    context += f"- [{a['severity'].upper()}] [{a['source']}] {a['title']}\n"
+    except Exception:
+        pass
+
+    ai_response = call_ai(
+        f"Question: {args}\n{context}\n"
+        f"Si le contexte contient des articles pertinents, utilise-les pour donner une reponse precise et actuelle. "
+        f"Sinon reponds avec tes connaissances generales. Sois precis et technique."
+    )
     send_telegram(chat_id, ai_response)
 
 
