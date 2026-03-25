@@ -73,7 +73,7 @@ def call_ai(prompt, max_tokens=1000):
                 json={
                     "model": model,
                     "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais, de maniere precise et technique."},
+                        {"role": "system", "content": "Tu es un expert en cybersecurite. Tu reponds TOUJOURS et UNIQUEMENT en francais. Tu es precis, concis et technique. Ne reponds JAMAIS en anglais."},
                         {"role": "user", "content": prompt},
                     ],
                     "max_tokens": max_tokens,
