@@ -416,9 +416,8 @@ def process_articles():
                 sent += 1
                 must_tag = " ⚠️MUST READ" if cve_must_read else ""
                 logger.info("CVE envoye: %s (CVSS %s)%s", cve_id, cve_data.get("cvss_score", "N/A"), must_tag)
-                # Sauvegarder dans exploits/ si PoC disponible
-                if cve_data.get("has_exploit"):
-                    save_cve_with_exploit(cve_data)
+                # Sauvegarder dans exploits/
+                save_cve_with_exploit(cve_data)
                 time.sleep(2)
             else:
                 errors += 1
