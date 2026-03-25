@@ -357,10 +357,18 @@ def cmd_today(chat_id):
     )
 
     ai_response = call_ai(
-        f"Voici les {len(articles)} articles de cybersecurite recus aujourd'hui.\n"
-        f"Fais un resume structure des choses les plus importantes de la journee.\n"
-        f"Classe par priorite. Sois precis et technique.\n\n"
-        f"{articles_text}"
+        f"Voici les {len(articles)} articles de cybersecurite recus aujourd'hui.\n\n"
+        f"{articles_text}\n\n"
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
+        f"RESUME: [2-3 phrases resumant la journee globalement]\n\n"
+        f"CRITIQUE:\n"
+        f"1. [titre] — [1 phrase: pourquoi c'est critique et que faire]\n\n"
+        f"IMPORTANT:\n"
+        f"1. [titre] — [1 phrase: impact et action]\n\n"
+        f"A SURVEILLER:\n"
+        f"1. [titre] — [1 phrase courte]\n\n"
+        f"Pas de blabla. Sois direct, technique et actionnable.",
+        max_tokens=1500,
     )
 
     send_telegram(chat_id, f"\U0001f4cb <b>Resume du jour — {len(articles)} articles</b>\n\n{ai_response}")
@@ -381,10 +389,20 @@ def cmd_week(chat_id):
     )
 
     ai_response = call_ai(
-        f"Voici les {len(articles)} articles de cybersecurite de la semaine.\n"
-        f"Fais un resume des evenements majeurs de la semaine.\n"
-        f"Classe par importance. Identifie les tendances.\n\n"
-        f"{articles_text}"
+        f"Voici les {len(articles)} articles de cybersecurite de la semaine.\n\n"
+        f"{articles_text}\n\n"
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
+        f"TENDANCES: [2-3 phrases sur les tendances de la semaine]\n\n"
+        f"TOP MENACES:\n"
+        f"1. [titre] — [impact en 1 phrase]\n\n"
+        f"CVE CRITIQUES:\n"
+        f"1. [CVE-ID] — [produit + risque en 1 phrase]\n\n"
+        f"A RETENIR:\n"
+        f"- [point cle 1]\n"
+        f"- [point cle 2]\n"
+        f"- [point cle 3]\n\n"
+        f"Pas de blabla. Direct et technique.",
+        max_tokens=1500,
     )
 
     send_telegram(chat_id, f"\U0001f4ca <b>Resume de la semaine — {len(articles)} articles</b>\n\n{ai_response}")
@@ -405,10 +423,22 @@ def cmd_month(chat_id):
     )
 
     ai_response = call_ai(
-        f"Voici les {len(articles)} articles de cybersecurite du mois.\n"
-        f"Fais un resume des evenements majeurs du mois.\n"
-        f"Identifie les tendances, les menaces principales, les groupes actifs.\n\n"
-        f"{articles_text}",
+        f"Voici les {len(articles)} articles de cybersecurite du mois.\n\n"
+        f"{articles_text}\n\n"
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
+        f"BILAN: [3-4 phrases sur le mois en cybersecurite]\n\n"
+        f"TOP 5 EVENEMENTS:\n"
+        f"1. [titre] — [impact]\n\n"
+        f"GROUPES ACTIFS: [liste des groupes de hackers mentionnes]\n\n"
+        f"TENDANCES:\n"
+        f"- [tendance 1]\n"
+        f"- [tendance 2]\n"
+        f"- [tendance 3]\n\n"
+        f"RECOMMANDATIONS:\n"
+        f"- [action 1]\n"
+        f"- [action 2]\n"
+        f"- [action 3]\n\n"
+        f"Direct et technique.",
         max_tokens=1500,
     )
 
