@@ -94,8 +94,14 @@ def call_ai(prompt, max_tokens=1000):
 
 # --- Telegram ---
 
+def _clean_markdown(text):
+    """Nettoie le markdown de la reponse IA."""
+    return text.replace("**", "").replace("##", "").replace("# ", "").replace("```", "")
+
+
 def send_telegram(chat_id, text):
     """Envoie un message Telegram."""
+    text = _clean_markdown(text)
     while text:
         chunk = text[:4096]
         text = text[4096:]
@@ -367,10 +373,12 @@ def cmd_today(chat_id):
         f"1. [titre] — [1 phrase: impact et action]\n\n"
         f"A SURVEILLER:\n"
         f"1. [titre] — [1 phrase courte]\n\n"
-        f"Pas de blabla. Sois direct, technique et actionnable.",
+        f"Pas de blabla. Sois direct, technique et actionnable. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
         max_tokens=1500,
     )
 
+    # Nettoyer le markdown
+    ai_response = ai_response.replace("**", "").replace("##", "").replace("# ", "")
     send_telegram(chat_id, f"\U0001f4cb <b>Resume du jour — {len(articles)} articles</b>\n\n{ai_response}")
 
 
@@ -401,10 +409,11 @@ def cmd_week(chat_id):
         f"- [point cle 1]\n"
         f"- [point cle 2]\n"
         f"- [point cle 3]\n\n"
-        f"Pas de blabla. Direct et technique.",
+        f"Pas de blabla. Direct et technique. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
         max_tokens=1500,
     )
 
+    ai_response = ai_response.replace("**", "").replace("##", "").replace("# ", "")
     send_telegram(chat_id, f"\U0001f4ca <b>Resume de la semaine — {len(articles)} articles</b>\n\n{ai_response}")
 
 
@@ -438,10 +447,11 @@ def cmd_month(chat_id):
         f"- [action 1]\n"
         f"- [action 2]\n"
         f"- [action 3]\n\n"
-        f"Direct et technique.",
+        f"Direct et technique. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
         max_tokens=1500,
     )
 
+    ai_response = ai_response.replace("**", "").replace("##", "").replace("# ", "")
     send_telegram(chat_id, f"\U0001f4c6 <b>Resume du mois — {len(articles)} articles</b>\n\n{ai_response}")
 
 
