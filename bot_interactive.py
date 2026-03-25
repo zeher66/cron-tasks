@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 """
 Bot Telegram interactif — tourne sur Render (Web Service).
-Repond aux commandes en temps reel via l'IA.
+Utilise les webhooks Telegram : Render dort et se reveille quand un message arrive.
 
 Commandes:
 /cve CVE-2026-XXXXX     → details d'une CVE
-/search mot-cle          → chercher sur le web
+/search mot-cle          → chercher cybersecurite
 /whois domaine.com       → info domaine/DNS
 /list                    → lister les sources RSS
+/ask question            → poser une question libre
 /help                    → aide
 """
 
 import os
 import logging
+import json
 import time
 import requests
-import json
+import socket
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from threading import Thread
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -30,23 +31,46 @@ SAMBANOVA_API_KEY = os.environ.get("SAMBANOVA_API_KEY", "")
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "")
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 PORT = int(os.environ.get("PORT", 10000))
+RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://cron-tasks.onrender.com")
 
 TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 
+
 # --- IA ---
 
 def call_ai(prompt, max_tokens=1000):
-    """Appelle Groq puis OpenRouter en fallback."""
-    keys = [k for k in [GROQ_API_KEY, GROQ_API_KEY_2] if k]
+    """Appelle les providers IA en cascade."""
+    providers = []
 
-    for key in keys:
+    # Groq
+    for key in [GROQ_API_KEY, GROQ_API_KEY_2]:
+        if key:
+            providers.append(("https://api.groq.com/openai/v1/chat/completions", key, "llama-3.3-70b-versatile"))
+
+    # Cerebras
+    if CEREBRAS_API_KEY:
+        providers.append(("https://api.cerebras.ai/v1/chat/completions", CEREBRAS_API_KEY, "llama-3.3-70b"))
+
+    # SambaNova
+    if SAMBANOVA_API_KEY:
+        providers.append(("https://api.sambanova.ai/v1/chat/completions", SAMBANOVA_API_KEY, "Meta-Llama-3.3-70B-Instruct"))
+
+    # Together AI
+    if TOGETHER_API_KEY:
+        providers.append(("https://api.together.xyz/v1/chat/completions", TOGETHER_API_KEY, "meta-llama/Llama-3.3-70B-Instruct-Turbo"))
+
+    # OpenRouter
+    if OPENROUTER_API_KEY:
+        providers.append(("https://openrouter.ai/api/v1/chat/completions", OPENROUTER_API_KEY, "meta-llama/llama-3.3-70b-instruct:free"))
+
+    for url, key, model in providers:
         try:
             response = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
+                url,
                 headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
                 json={
-                    "model": "llama-3.3-70b-versatile",
+                    "model": model,
                     "messages": [
                         {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais, de maniere precise et technique."},
                         {"role": "user", "content": prompt},
@@ -63,97 +87,6 @@ def call_ai(prompt, max_tokens=1000):
         except Exception:
             continue
 
-    # Fallback Cerebras
-    if CEREBRAS_API_KEY:
-        try:
-            response = requests.post(
-                "https://api.cerebras.ai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {CEREBRAS_API_KEY}", "Content-Type": "application/json"},
-                json={
-                    "model": "llama-3.3-70b",
-                    "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": max_tokens,
-                    "temperature": 0.3,
-                },
-                timeout=30,
-            )
-            if response.status_code != 429:
-                response.raise_for_status()
-                return response.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
-            pass
-
-    # Fallback SambaNova
-    if SAMBANOVA_API_KEY:
-        try:
-            response = requests.post(
-                "https://api.sambanova.ai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {SAMBANOVA_API_KEY}", "Content-Type": "application/json"},
-                json={
-                    "model": "Meta-Llama-3.3-70B-Instruct",
-                    "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": max_tokens,
-                    "temperature": 0.3,
-                },
-                timeout=30,
-            )
-            if response.status_code != 429:
-                response.raise_for_status()
-                return response.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
-            pass
-
-    # Fallback Together AI
-    if TOGETHER_API_KEY:
-        try:
-            response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
-                headers={"Authorization": f"Bearer {TOGETHER_API_KEY}", "Content-Type": "application/json"},
-                json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-                    "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": max_tokens,
-                    "temperature": 0.3,
-                },
-                timeout=30,
-            )
-            if response.status_code != 429:
-                response.raise_for_status()
-                return response.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
-            pass
-
-    # Fallback OpenRouter
-    if OPENROUTER_API_KEY:
-        try:
-            response = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={"Authorization": f"Bearer {OPENROUTER_API_KEY}", "Content-Type": "application/json"},
-                json={
-                    "model": "meta-llama/llama-3.3-70b-instruct:free",
-                    "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": max_tokens,
-                    "temperature": 0.3,
-                },
-                timeout=45,
-            )
-            response.raise_for_status()
-            return response.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
-            pass
-
     return "Erreur: IA indisponible."
 
 
@@ -161,7 +94,6 @@ def call_ai(prompt, max_tokens=1000):
 
 def send_telegram(chat_id, text):
     """Envoie un message Telegram."""
-    # Decouper si trop long
     while text:
         chunk = text[:4096]
         text = text[4096:]
@@ -178,16 +110,20 @@ def send_telegram(chat_id, text):
             time.sleep(1)
 
 
-def get_updates(offset=None):
-    """Recupere les nouveaux messages."""
+def setup_webhook():
+    """Configure le webhook Telegram."""
+    webhook_url = f"{RENDER_URL}/webhook"
     try:
-        params = {"timeout": 30}
-        if offset:
-            params["offset"] = offset
-        response = requests.get(f"{TELEGRAM_API}/getUpdates", params=params, timeout=35)
-        return response.json().get("result", [])
-    except Exception:
-        return []
+        response = requests.post(f"{TELEGRAM_API}/setWebhook", json={
+            "url": webhook_url,
+        }, timeout=15)
+        result = response.json()
+        if result.get("ok"):
+            logger.info("Webhook configure: %s", webhook_url)
+        else:
+            logger.error("Erreur webhook: %s", result)
+    except Exception as e:
+        logger.error("Erreur setup webhook: %s", e)
 
 
 # --- Commandes ---
@@ -199,7 +135,7 @@ def cmd_cve(chat_id, args):
         return
 
     cve_id = args.upper()
-    send_telegram(chat_id, f"🔍 Recherche {cve_id}...")
+    send_telegram(chat_id, f"\U0001f50d Recherche {cve_id}...")
 
     try:
         response = requests.get(f"{NVD_API}?cveId={cve_id}", timeout=15)
@@ -207,7 +143,7 @@ def cmd_cve(chat_id, args):
         vulns = data.get("vulnerabilities", [])
 
         if not vulns:
-            send_telegram(chat_id, f"❌ {cve_id} non trouve dans NVD.")
+            send_telegram(chat_id, f"\u274c {cve_id} non trouve dans NVD.")
             return
 
         cve = vulns[0].get("cve", {})
@@ -217,7 +153,6 @@ def cmd_cve(chat_id, args):
                 desc = d.get("value", "")
                 break
 
-        # CVSS
         score = "N/A"
         for key in ("cvssMetricV31", "cvssMetricV30", "cvssMetricV40"):
             metrics = cve.get("metrics", {}).get(key, [])
@@ -225,7 +160,6 @@ def cmd_cve(chat_id, args):
                 score = metrics[0].get("cvssData", {}).get("baseScore", "N/A")
                 break
 
-        # Demander a l'IA d'analyser
         ai_response = call_ai(
             f"Analyse cette CVE en francais de maniere detaillee:\n\n"
             f"CVE: {cve_id}\nCVSS: {score}\nDescription: {desc[:2000]}\n\n"
@@ -233,23 +167,23 @@ def cmd_cve(chat_id, args):
         )
 
         message = (
-            f"🔴 <b>{cve_id}</b> | CVSS {score}\n\n"
+            f"\U0001f534 <b>{cve_id}</b> | CVSS {score}\n\n"
             f"{ai_response}\n\n"
-            f'🔗 <a href="https://nvd.nist.gov/vuln/detail/{cve_id}">NVD</a>'
+            f'\U0001f517 <a href="https://nvd.nist.gov/vuln/detail/{cve_id}">NVD</a>'
         )
         send_telegram(chat_id, message)
 
     except Exception as e:
-        send_telegram(chat_id, f"❌ Erreur: {e}")
+        send_telegram(chat_id, f"\u274c Erreur: {e}")
 
 
 def cmd_search(chat_id, args):
-    """Recherche sur le web via l'IA."""
+    """Recherche cybersecurite via l'IA."""
     if not args:
         send_telegram(chat_id, "Usage: /search ransomware 2026")
         return
 
-    send_telegram(chat_id, f"🔍 Recherche: {args}...")
+    send_telegram(chat_id, f"\U0001f50d Recherche: {args}...")
 
     ai_response = call_ai(
         f"L'utilisateur cherche des informations sur: {args}\n\n"
@@ -257,7 +191,7 @@ def cmd_search(chat_id, args):
         f"Inclure: definition, exemples recents, comment se proteger, outils recommandes."
     )
 
-    send_telegram(chat_id, f"🔍 <b>Recherche: {args}</b>\n\n{ai_response}")
+    send_telegram(chat_id, f"\U0001f50d <b>Recherche: {args}</b>\n\n{ai_response}")
 
 
 def cmd_whois(chat_id, args):
@@ -267,11 +201,9 @@ def cmd_whois(chat_id, args):
         return
 
     domain = args.strip().lower()
-    send_telegram(chat_id, f"🔍 Whois {domain}...")
+    send_telegram(chat_id, f"\U0001f50d Whois {domain}...")
 
     try:
-        # DNS lookup
-        import socket
         ip = socket.gethostbyname(domain)
 
         ai_response = call_ai(
@@ -280,41 +212,41 @@ def cmd_whois(chat_id, args):
         )
 
         message = (
-            f"🌐 <b>Whois: {domain}</b>\n"
-            f"📍 IP: {ip}\n\n"
+            f"\U0001f310 <b>Whois: {domain}</b>\n"
+            f"\U0001f4cd IP: {ip}\n\n"
             f"{ai_response}"
         )
         send_telegram(chat_id, message)
 
     except socket.gaierror:
-        send_telegram(chat_id, f"❌ Domaine non resolu: {domain}")
+        send_telegram(chat_id, f"\u274c Domaine non resolu: {domain}")
     except Exception as e:
-        send_telegram(chat_id, f"❌ Erreur: {e}")
+        send_telegram(chat_id, f"\u274c Erreur: {e}")
 
 
 def cmd_list(chat_id):
     """Liste les sources RSS."""
     try:
         from config import FEEDS
-        lines = ["📡 <b>Sources RSS actives:</b>\n"]
+        lines = ["\U0001f4e1 <b>Sources RSS actives:</b>\n"]
         for i, feed in enumerate(FEEDS, 1):
             lines.append(f"{i}. {feed['emoji']} {feed['name']}")
         send_telegram(chat_id, "\n".join(lines))
     except Exception:
-        send_telegram(chat_id, "❌ Impossible de lire la config.")
+        send_telegram(chat_id, "\u274c Impossible de lire la config.")
 
 
 def cmd_help(chat_id):
     """Aide."""
     send_telegram(chat_id, (
-        "🤖 <b>Bot Cyber Veille — Commandes</b>\n\n"
-        "/cve CVE-2026-XXXXX — Details d'une CVE\n"
-        "/search mot-cle — Recherche cybersecurite\n"
-        "/whois domaine.com — Info domaine/DNS\n"
-        "/list — Lister les sources RSS\n"
-        "/ask question — Poser une question libre\n"
-        "/help — Cette aide\n\n"
-        "💡 Tu peux aussi envoyer un message libre et l'IA repondra."
+        "\U0001f916 <b>Bot Cyber Veille — Commandes</b>\n\n"
+        "/cve CVE-2026-XXXXX \u2014 Details d'une CVE\n"
+        "/search mot-cle \u2014 Recherche cybersecurite\n"
+        "/whois domaine.com \u2014 Info domaine/DNS\n"
+        "/list \u2014 Lister les sources RSS\n"
+        "/ask question \u2014 Poser une question libre\n"
+        "/help \u2014 Cette aide\n\n"
+        "\U0001f4a1 Tu peux aussi envoyer un message libre et l'IA repondra."
     ))
 
 
@@ -324,15 +256,14 @@ def cmd_ask(chat_id, args):
         send_telegram(chat_id, "Usage: /ask comment fonctionne un ransomware ?")
         return
 
-    send_telegram(chat_id, "🤔 Reflexion...")
-
+    send_telegram(chat_id, "\U0001f914 Reflexion...")
     ai_response = call_ai(args)
     send_telegram(chat_id, ai_response)
 
 
-def handle_message(update):
-    """Traite un message Telegram."""
-    message = update.get("message", {})
+def handle_message(data):
+    """Traite un message Telegram depuis le webhook."""
+    message = data.get("message", {})
     chat_id = message.get("chat", {}).get("id")
     text = message.get("text", "").strip()
 
@@ -354,70 +285,53 @@ def handle_message(update):
     elif text.startswith("/ask "):
         cmd_ask(chat_id, text[5:].strip())
     else:
-        # Message libre → l'IA repond
         cmd_ask(chat_id, text)
 
 
-# --- Web Server (pour garder Render actif) ---
+# --- Web Server (webhook) ---
 
-class HealthHandler(BaseHTTPRequestHandler):
+class WebhookHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        """Health check."""
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+
+    def do_POST(self):
+        """Receive Telegram webhook."""
+        try:
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_length)
+            data = json.loads(body)
+            handle_message(data)
+        except Exception as e:
+            logger.error("Erreur webhook: %s", e)
+
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"OK")
 
     def log_message(self, format, *args):
-        pass  # Pas de log pour les health checks
-
-
-def start_web_server():
-    """Demarre un serveur HTTP pour le health check Render."""
-    server = HTTPServer(("0.0.0.0", PORT), HealthHandler)
-    logger.info("Health server sur port %d", PORT)
-    server.serve_forever()
-
-
-# --- Self-ping (garder Render actif) ---
-
-def self_ping():
-    """Ping le service toutes les 4 minutes pour eviter le sleep."""
-    render_url = os.environ.get("RENDER_EXTERNAL_URL", "")
-    while True:
-        time.sleep(240)  # 4 minutes
-        if render_url:
-            try:
-                requests.get(render_url, timeout=10)
-            except Exception:
-                pass
+        pass
 
 
 # --- Main ---
 
 def main():
-    """Point d'entree — polling Telegram."""
-    logger.info("Bot interactif demarre")
+    """Point d'entree — webhook mode."""
+    logger.info("Bot interactif demarre (webhook mode)")
 
     if not TELEGRAM_BOT_TOKEN:
         logger.error("TELEGRAM_BOT_TOKEN non configure")
         return
 
-    # Demarrer le serveur web en background
-    web_thread = Thread(target=start_web_server, daemon=True)
-    web_thread.start()
+    # Configurer le webhook Telegram
+    setup_webhook()
 
-    # Polling Telegram
-    offset = None
-    while True:
-        try:
-            updates = get_updates(offset)
-            for update in updates:
-                offset = update["update_id"] + 1
-                handle_message(update)
-        except KeyboardInterrupt:
-            break
-        except Exception as e:
-            logger.error("Erreur polling: %s", e)
-            time.sleep(5)
+    # Demarrer le serveur web
+    server = HTTPServer(("0.0.0.0", PORT), WebhookHandler)
+    logger.info("Serveur webhook sur port %d", PORT)
+    server.serve_forever()
 
 
 if __name__ == "__main__":
