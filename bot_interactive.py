@@ -30,6 +30,7 @@ CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY", "")
 SAMBANOVA_API_KEY = os.environ.get("SAMBANOVA_API_KEY", "")
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "")
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+SHODAN_API_KEY = os.environ.get("SHODAN_API_KEY", "")
 PORT = int(os.environ.get("PORT", 10000))
 RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://cron-tasks.onrender.com")
 
@@ -414,6 +415,99 @@ def cmd_month(chat_id):
     send_telegram(chat_id, f"\U0001f4c6 <b>Resume du mois — {len(articles)} articles</b>\n\n{ai_response}")
 
 
+def cmd_shodan(chat_id, args):
+    """Recherche Shodan sur une IP."""
+    if not args:
+        send_telegram(chat_id, "Usage: /shodan 8.8.8.8")
+        return
+
+    if not SHODAN_API_KEY:
+        send_telegram(chat_id, "\u274c Shodan API non configuree.")
+        return
+
+    ip = args.strip()
+    send_telegram(chat_id, f"\U0001f50d Scan Shodan: {ip}...")
+
+    try:
+        response = requests.get(
+            f"https://api.shodan.io/shodan/host/{ip}?key={SHODAN_API_KEY}",
+            timeout=15,
+        )
+
+        if response.status_code == 404:
+            send_telegram(chat_id, f"\U0001f4ed Aucune donnee Shodan pour {ip}")
+            return
+
+        response.raise_for_status()
+        data = response.json()
+
+        org = data.get("org", "Inconnu")
+        country = data.get("country_name", "Inconnu")
+        city = data.get("city", "")
+        isp = data.get("isp", "")
+        os_name = data.get("os", "Inconnu")
+        ports = data.get("ports", [])
+        vulns = data.get("vulns", [])
+
+        lines = [
+            f"\U0001f310 <b>Shodan: {ip}</b>",
+            "",
+            f"\U0001f3e2 Organisation: {org}",
+            f"\U0001f4cd Pays: {country}" + (f" — {city}" if city else ""),
+        ]
+
+        if isp:
+            lines.append(f"\U0001f4e1 FAI: {isp}")
+        if os_name and os_name != "Inconnu":
+            lines.append(f"\U0001f4bb OS: {os_name}")
+
+        if ports:
+            lines.append("")
+            lines.append(f"<b>Ports ouverts ({len(ports)}) :</b>")
+            for port in sorted(ports)[:15]:
+                # Trouver le service
+                service = ""
+                for s in data.get("data", []):
+                    if s.get("port") == port:
+                        service = s.get("product", "") or s.get("_shodan", {}).get("module", "")
+                        break
+                warning = ""
+                if port in (21, 23, 3306, 5432, 6379, 27017, 1433):
+                    warning = " \U0001f534 expose !"
+                elif port in (22, 3389):
+                    warning = " \u26a0\ufe0f"
+                lines.append(f"  \u2022 {port}" + (f" ({service})" if service else "") + warning)
+
+        if vulns:
+            lines.append("")
+            lines.append(f"\U0001f534 <b>Vulnerabilites ({len(vulns)}) :</b>")
+            for v in sorted(vulns)[:10]:
+                lines.append(f"  \u2022 {v}")
+
+        if not vulns:
+            lines.append("")
+            lines.append("\u2705 Aucune vulnerabilite connue")
+
+        # Demander a l'IA d'analyser
+        shodan_summary = f"IP: {ip}, Org: {org}, Pays: {country}, Ports: {ports[:10]}, Vulns: {vulns[:5]}"
+        ai_analysis = call_ai(
+            f"Analyse cette IP scannee par Shodan et donne des recommandations de securite:\n{shodan_summary}",
+            max_tokens=500,
+        )
+
+        lines.append("")
+        lines.append(f"\U0001f916 <b>Analyse IA :</b>")
+        lines.append(ai_analysis)
+
+        lines.append("")
+        lines.append(f'\U0001f517 <a href="https://www.shodan.io/host/{ip}">Voir sur Shodan</a>')
+
+        send_telegram(chat_id, "\n".join(lines))
+
+    except Exception as e:
+        send_telegram(chat_id, f"\u274c Erreur Shodan: {e}")
+
+
 def cmd_help(chat_id):
     """Aide."""
     send_telegram(chat_id, (
@@ -424,6 +518,7 @@ def cmd_help(chat_id):
         "/cve CVE-2026-XXXXX \u2014 Details d'une CVE\n"
         "/search mot-cle \u2014 Recherche cybersecurite\n"
         "/whois domaine.com \u2014 Info domaine/DNS\n"
+        "/shodan IP \u2014 Scanner une IP (ports, vulns)\n"
         "/list \u2014 Lister les sources RSS\n"
         "/ask question \u2014 Poser une question libre\n"
         "/help \u2014 Cette aide\n\n"
@@ -461,6 +556,8 @@ def handle_message(data):
         cmd_search(chat_id, text[8:].strip())
     elif text.startswith("/whois "):
         cmd_whois(chat_id, text[7:].strip())
+    elif text.startswith("/shodan "):
+        cmd_shodan(chat_id, text[8:].strip())
     elif text == "/list":
         cmd_list(chat_id)
     elif text == "/today":
