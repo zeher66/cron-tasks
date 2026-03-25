@@ -35,6 +35,7 @@ RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://cron-tasks.onrender.
 
 TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+GITHUB_DB_URL = "https://raw.githubusercontent.com/zeher66/cron-tasks/main/veille.db"
 
 
 # --- IA ---
@@ -124,6 +125,74 @@ def setup_webhook():
             logger.error("Erreur webhook: %s", result)
     except Exception as e:
         logger.error("Erreur setup webhook: %s", e)
+
+
+# --- DB ---
+
+def get_today_articles():
+    """Telecharge la DB depuis GitHub et recupere les articles du jour."""
+    import sqlite3
+    import tempfile
+    from datetime import datetime, timezone
+
+    try:
+        response = requests.get(GITHUB_DB_URL, timeout=15)
+        response.raise_for_status()
+
+        # Ecrire en fichier temporaire
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".db")
+        tmp.write(response.content)
+        tmp.close()
+
+        # Lire la DB
+        conn = sqlite3.connect(tmp.name)
+        cursor = conn.cursor()
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        cursor.execute(
+            "SELECT title, source, category, severity FROM articles WHERE sent_at >= ? ORDER BY sent_at DESC",
+            (today,)
+        )
+        rows = cursor.fetchall()
+        conn.close()
+
+        # Supprimer le fichier temporaire
+        os.unlink(tmp.name)
+
+        return [{"title": r[0], "source": r[1], "category": r[2], "severity": r[3]} for r in rows]
+    except Exception as e:
+        logger.error("Erreur lecture DB: %s", e)
+        return None
+
+
+def get_week_articles():
+    """Recupere les articles de la semaine."""
+    import sqlite3
+    import tempfile
+    from datetime import datetime, timedelta, timezone
+
+    try:
+        response = requests.get(GITHUB_DB_URL, timeout=15)
+        response.raise_for_status()
+
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".db")
+        tmp.write(response.content)
+        tmp.close()
+
+        conn = sqlite3.connect(tmp.name)
+        cursor = conn.cursor()
+        week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d")
+        cursor.execute(
+            "SELECT title, source, category, severity FROM articles WHERE sent_at >= ? ORDER BY sent_at DESC",
+            (week_ago,)
+        )
+        rows = cursor.fetchall()
+        conn.close()
+        os.unlink(tmp.name)
+
+        return [{"title": r[0], "source": r[1], "category": r[2], "severity": r[3]} for r in rows]
+    except Exception as e:
+        logger.error("Erreur lecture DB: %s", e)
+        return None
 
 
 # --- Commandes ---
@@ -236,10 +305,122 @@ def cmd_list(chat_id):
         send_telegram(chat_id, "\u274c Impossible de lire la config.")
 
 
+def get_month_articles():
+    """Recupere les articles du mois."""
+    import sqlite3
+    import tempfile
+    from datetime import datetime, timedelta, timezone
+
+    try:
+        response = requests.get(GITHUB_DB_URL, timeout=15)
+        response.raise_for_status()
+
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".db")
+        tmp.write(response.content)
+        tmp.close()
+
+        conn = sqlite3.connect(tmp.name)
+        cursor = conn.cursor()
+        month_ago = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
+        cursor.execute(
+            "SELECT title, source, category, severity FROM articles WHERE sent_at >= ? ORDER BY sent_at DESC",
+            (month_ago,)
+        )
+        rows = cursor.fetchall()
+        conn.close()
+        os.unlink(tmp.name)
+
+        return [{"title": r[0], "source": r[1], "category": r[2], "severity": r[3]} for r in rows]
+    except Exception as e:
+        logger.error("Erreur lecture DB: %s", e)
+        return None
+
+
+def cmd_today(chat_id):
+    """Articles importants du jour."""
+    send_telegram(chat_id, "\U0001f50d Chargement des articles du jour...")
+
+    articles = get_today_articles()
+    if not articles:
+        send_telegram(chat_id, "\u274c Impossible de recuperer les articles.")
+        return
+
+    if not articles:
+        send_telegram(chat_id, "\U0001f4ed Aucun article aujourd'hui.")
+        return
+
+    # Preparer la liste pour l'IA
+    articles_text = "\n".join(
+        f"- [{a['severity'].upper()}] [{a['source']}] {a['title']}"
+        for a in articles[:30]
+    )
+
+    ai_response = call_ai(
+        f"Voici les {len(articles)} articles de cybersecurite recus aujourd'hui.\n"
+        f"Fais un resume structure des choses les plus importantes de la journee.\n"
+        f"Classe par priorite. Sois precis et technique.\n\n"
+        f"{articles_text}"
+    )
+
+    send_telegram(chat_id, f"\U0001f4cb <b>Resume du jour — {len(articles)} articles</b>\n\n{ai_response}")
+
+
+def cmd_week(chat_id):
+    """Resume de la semaine."""
+    send_telegram(chat_id, "\U0001f50d Chargement des articles de la semaine...")
+
+    articles = get_week_articles()
+    if not articles:
+        send_telegram(chat_id, "\u274c Impossible de recuperer les articles.")
+        return
+
+    articles_text = "\n".join(
+        f"- [{a['severity'].upper()}] [{a['source']}] {a['title']}"
+        for a in articles[:50]
+    )
+
+    ai_response = call_ai(
+        f"Voici les {len(articles)} articles de cybersecurite de la semaine.\n"
+        f"Fais un resume des evenements majeurs de la semaine.\n"
+        f"Classe par importance. Identifie les tendances.\n\n"
+        f"{articles_text}"
+    )
+
+    send_telegram(chat_id, f"\U0001f4ca <b>Resume de la semaine — {len(articles)} articles</b>\n\n{ai_response}")
+
+
+def cmd_month(chat_id):
+    """Resume du mois."""
+    send_telegram(chat_id, "\U0001f50d Chargement des articles du mois...")
+
+    articles = get_month_articles()
+    if not articles:
+        send_telegram(chat_id, "\u274c Impossible de recuperer les articles.")
+        return
+
+    articles_text = "\n".join(
+        f"- [{a['severity'].upper()}] [{a['source']}] {a['title']}"
+        for a in articles[:60]
+    )
+
+    ai_response = call_ai(
+        f"Voici les {len(articles)} articles de cybersecurite du mois.\n"
+        f"Fais un resume des evenements majeurs du mois.\n"
+        f"Identifie les tendances, les menaces principales, les groupes actifs.\n\n"
+        f"{articles_text}",
+        max_tokens=1500,
+    )
+
+    send_telegram(chat_id, f"\U0001f4c6 <b>Resume du mois — {len(articles)} articles</b>\n\n{ai_response}")
+
+
 def cmd_help(chat_id):
     """Aide."""
     send_telegram(chat_id, (
         "\U0001f916 <b>Bot Cyber Veille — Commandes</b>\n\n"
+        "/today \u2014 Resume des articles importants du jour\n"
+        "/week \u2014 Resume de la semaine\n"
+        "/month \u2014 Resume du mois\n"
         "/cve CVE-2026-XXXXX \u2014 Details d'une CVE\n"
         "/search mot-cle \u2014 Recherche cybersecurite\n"
         "/whois domaine.com \u2014 Info domaine/DNS\n"
@@ -272,6 +453,8 @@ def handle_message(data):
 
     logger.info("Message de %s: %s", chat_id, text[:50])
 
+    text_lower = text.lower()
+
     if text.startswith("/cve "):
         cmd_cve(chat_id, text[5:].strip())
     elif text.startswith("/search "):
@@ -280,10 +463,22 @@ def handle_message(data):
         cmd_whois(chat_id, text[7:].strip())
     elif text == "/list":
         cmd_list(chat_id)
+    elif text == "/today":
+        cmd_today(chat_id)
+    elif text == "/week":
+        cmd_week(chat_id)
+    elif text == "/month":
+        cmd_month(chat_id)
     elif text == "/help" or text == "/start":
         cmd_help(chat_id)
     elif text.startswith("/ask "):
         cmd_ask(chat_id, text[5:].strip())
+    elif any(kw in text_lower for kw in ["aujourd'hui", "du jour", "today", "ce matin", "ce soir", "important"]):
+        cmd_today(chat_id)
+    elif any(kw in text_lower for kw in ["semaine", "week", "cette semaine", "7 jours"]):
+        cmd_week(chat_id)
+    elif any(kw in text_lower for kw in ["mois", "month", "ce mois", "30 jours"]):
+        cmd_month(chat_id)
     else:
         cmd_ask(chat_id, text)
 
