@@ -365,15 +365,15 @@ def cmd_today(chat_id):
     ai_response = call_ai(
         f"Voici les {len(articles)} articles de cybersecurite recus aujourd'hui.\n\n"
         f"{articles_text}\n\n"
-        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
-        f"RESUME: [2-3 phrases resumant la journee globalement]\n\n"
-        f"CRITIQUE:\n"
-        f"1. [titre] — [1 phrase: pourquoi c'est critique et que faire]\n\n"
-        f"IMPORTANT:\n"
-        f"1. [titre] — [1 phrase: impact et action]\n\n"
-        f"A SURVEILLER:\n"
-        f"1. [titre] — [1 phrase courte]\n\n"
-        f"Pas de blabla. Sois direct, technique et actionnable. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format (utilise les emojis indiques):\n\n"
+        f"📊 RESUME:\n[2-3 phrases resumant la journee globalement]\n\n"
+        f"🔴 CRITIQUE:\n"
+        f"1. 🚨 [titre] — [1 phrase: pourquoi c'est critique et que faire]\n\n"
+        f"🟠 IMPORTANT:\n"
+        f"1. ⚠️ [titre] — [1 phrase: impact et action]\n\n"
+        f"🟡 A SURVEILLER:\n"
+        f"1. 👁️ [titre] — [1 phrase courte]\n\n"
+        f"Pas de blabla. Direct, technique, actionnable. PAS de markdown, PAS de ** ou #. Texte brut avec emojis.",
         max_tokens=1500,
     )
 
@@ -399,17 +399,17 @@ def cmd_week(chat_id):
     ai_response = call_ai(
         f"Voici les {len(articles)} articles de cybersecurite de la semaine.\n\n"
         f"{articles_text}\n\n"
-        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
-        f"TENDANCES: [2-3 phrases sur les tendances de la semaine]\n\n"
-        f"TOP MENACES:\n"
-        f"1. [titre] — [impact en 1 phrase]\n\n"
-        f"CVE CRITIQUES:\n"
-        f"1. [CVE-ID] — [produit + risque en 1 phrase]\n\n"
-        f"A RETENIR:\n"
-        f"- [point cle 1]\n"
-        f"- [point cle 2]\n"
-        f"- [point cle 3]\n\n"
-        f"Pas de blabla. Direct et technique. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format (utilise les emojis indiques):\n\n"
+        f"📈 TENDANCES:\n[2-3 phrases sur les tendances de la semaine]\n\n"
+        f"🔴 TOP MENACES:\n"
+        f"1. 🚨 [titre] — [impact en 1 phrase]\n\n"
+        f"⚠️ CVE CRITIQUES:\n"
+        f"1. 🎯 [CVE-ID] — [produit + risque en 1 phrase]\n\n"
+        f"🔑 A RETENIR:\n"
+        f"- 💡 [point cle 1]\n"
+        f"- 💡 [point cle 2]\n"
+        f"- 💡 [point cle 3]\n\n"
+        f"Direct et technique. PAS de markdown, PAS de ** ou #. Texte brut avec emojis.",
         max_tokens=1500,
     )
 
@@ -434,20 +434,20 @@ def cmd_month(chat_id):
     ai_response = call_ai(
         f"Voici les {len(articles)} articles de cybersecurite du mois.\n\n"
         f"{articles_text}\n\n"
-        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format:\n\n"
-        f"BILAN: [3-4 phrases sur le mois en cybersecurite]\n\n"
-        f"TOP 5 EVENEMENTS:\n"
-        f"1. [titre] — [impact]\n\n"
-        f"GROUPES ACTIFS: [liste des groupes de hackers mentionnes]\n\n"
-        f"TENDANCES:\n"
-        f"- [tendance 1]\n"
-        f"- [tendance 2]\n"
-        f"- [tendance 3]\n\n"
-        f"RECOMMANDATIONS:\n"
-        f"- [action 1]\n"
-        f"- [action 2]\n"
-        f"- [action 3]\n\n"
-        f"Direct et technique. PAS de markdown, PAS de ** ou de #. Texte brut uniquement.",
+        f"Fais un resume STRUCTURE en francais avec EXACTEMENT ce format (utilise les emojis indiques):\n\n"
+        f"📊 BILAN:\n[3-4 phrases sur le mois en cybersecurite]\n\n"
+        f"🏆 TOP 5 EVENEMENTS:\n"
+        f"1. 🚨 [titre] — [impact]\n\n"
+        f"🎭 GROUPES ACTIFS: [liste des groupes de hackers mentionnes]\n\n"
+        f"📈 TENDANCES:\n"
+        f"- 📌 [tendance 1]\n"
+        f"- 📌 [tendance 2]\n"
+        f"- 📌 [tendance 3]\n\n"
+        f"🛡️ RECOMMANDATIONS:\n"
+        f"- → [action 1]\n"
+        f"- → [action 2]\n"
+        f"- → [action 3]\n\n"
+        f"Direct et technique. PAS de markdown, PAS de ** ou #. Texte brut avec emojis.",
         max_tokens=1500,
     )
 
