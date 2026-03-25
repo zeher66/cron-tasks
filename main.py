@@ -266,7 +266,7 @@ def process_articles():
                 errors += 1
 
         # Stack relevance check
-        full_text = (article.get("title", "") + " " + article.get("content", "") + " " + article.get("summary", ""))
+        full_text = (article.get("title", "") + " " + article.get("content", "") + " " + article.get("summary", "") + " " + article.get("source", ""))
         is_relevant, matched_techs = check_stack_relevance(full_text)
         if is_relevant:
             article["stack_match"] = matched_techs
