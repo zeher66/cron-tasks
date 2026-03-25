@@ -27,6 +27,7 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_API_KEY_2 = os.environ.get("GROQ_API_KEY_2", "")
 CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY", "")
 SAMBANOVA_API_KEY = os.environ.get("SAMBANOVA_API_KEY", "")
+TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "")
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 PORT = int(os.environ.get("PORT", 10000))
 
@@ -93,6 +94,29 @@ def call_ai(prompt, max_tokens=1000):
                 headers={"Authorization": f"Bearer {SAMBANOVA_API_KEY}", "Content-Type": "application/json"},
                 json={
                     "model": "Meta-Llama-3.3-70B-Instruct",
+                    "messages": [
+                        {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": max_tokens,
+                    "temperature": 0.3,
+                },
+                timeout=30,
+            )
+            if response.status_code != 429:
+                response.raise_for_status()
+                return response.json()["choices"][0]["message"]["content"].strip()
+        except Exception:
+            pass
+
+    # Fallback Together AI
+    if TOGETHER_API_KEY:
+        try:
+            response = requests.post(
+                "https://api.together.xyz/v1/chat/completions",
+                headers={"Authorization": f"Bearer {TOGETHER_API_KEY}", "Content-Type": "application/json"},
+                json={
+                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
                     "messages": [
                         {"role": "system", "content": "Tu es un expert en cybersecurite. Reponds en francais."},
                         {"role": "user", "content": prompt},
