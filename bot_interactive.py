@@ -44,26 +44,26 @@ def call_ai(prompt, max_tokens=1000):
     """Appelle les providers IA en cascade."""
     providers = []
 
-    # Groq
-    for key in [GROQ_API_KEY, GROQ_API_KEY_2]:
-        if key:
-            providers.append(("https://api.groq.com/openai/v1/chat/completions", key, "llama-3.3-70b-versatile"))
-
-    # Cerebras
+    # Cerebras en premier (pas utilise par la veille)
     if CEREBRAS_API_KEY:
         providers.append(("https://api.cerebras.ai/v1/chat/completions", CEREBRAS_API_KEY, "llama-3.3-70b"))
 
-    # SambaNova
+    # SambaNova (pas utilise par la veille)
     if SAMBANOVA_API_KEY:
         providers.append(("https://api.sambanova.ai/v1/chat/completions", SAMBANOVA_API_KEY, "Meta-Llama-3.3-70B-Instruct"))
 
-    # Together AI
+    # Together AI (pas utilise par la veille)
     if TOGETHER_API_KEY:
         providers.append(("https://api.together.xyz/v1/chat/completions", TOGETHER_API_KEY, "meta-llama/Llama-3.3-70B-Instruct-Turbo"))
 
-    # OpenRouter
+    # OpenRouter (utilise par la veille en fallback uniquement)
     if OPENROUTER_API_KEY:
         providers.append(("https://openrouter.ai/api/v1/chat/completions", OPENROUTER_API_KEY, "meta-llama/llama-3.3-70b-instruct:free"))
+
+    # Groq en dernier (utilise en priorite par la veille)
+    for key in [GROQ_API_KEY, GROQ_API_KEY_2]:
+        if key:
+            providers.append(("https://api.groq.com/openai/v1/chat/completions", key, "llama-3.3-70b-versatile"))
 
     for url, key, model in providers:
         try:
