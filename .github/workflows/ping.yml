@@ -10,4 +10,6 @@ jobs:
     timeout-minutes: 1
     steps:
       - name: Ping
-        run: curl -s https://cron-tasks.onrender.com > /dev/null
+        run: |
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/12$((RANDOM % 10)).0.0.0 Safari/537.36"
+          curl -s -A "$UA" "https://cron-tasks.onrender.com/?t=$(date +%s)" > /dev/null
