@@ -66,6 +66,12 @@ jobs:
           cp -f source_status.json.bak source_status.json 2>/dev/null || true
           cp -f /tmp/export_*.csv . 2>/dev/null || true
           cp -rf /tmp/exploits_bak/* exploits/ 2>/dev/null || true
+          # Deplacer les fichiers .md mal places a la racine d'une categorie
+          for cat_dir in exploits/*/; do
+            for f in "$cat_dir"*.md; do
+              [ -f "$f" ] && mv "$f" "${cat_dir}important/" 2>/dev/null || true
+            done
+          done
           git add veille.db
           git add -f source_status.json 2>/dev/null || true
           git add -f export_*.csv 2>/dev/null || true
