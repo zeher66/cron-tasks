@@ -405,10 +405,6 @@ def main():
     web_thread = Thread(target=start_web_server, daemon=True)
     web_thread.start()
 
-    # Demarrer le self-ping en background
-    ping_thread = Thread(target=self_ping, daemon=True)
-    ping_thread.start()
-
     # Polling Telegram
     offset = None
     while True:
