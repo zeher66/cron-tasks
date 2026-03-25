@@ -306,22 +306,12 @@ def process_articles():
                 send_message(banner, silent=False, channel="urgent")
                 time.sleep(1)
 
-            # Custom alert = forcer CRITICAL format
+            # Envoi sur le canal principal
             if custom_matches:
                 article["custom_alert"] = custom_matches
-                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if is_france:
-                    send_critical_alert(article, channel="france")
-                if must_read:
-                    send_critical_alert(article, channel="urgent")
             elif severity == "critique":
-                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
                 success = send_critical_alert(article, channel=channel)
-                if is_france:
-                    send_critical_alert(article, channel="france")
-                if must_read:
-                    send_critical_alert(article, channel="urgent")
             else:
                 message = format_article_with_france_tag(article)
                 if is_relevant:
@@ -329,13 +319,26 @@ def process_articles():
                     message += f"\n\u26a1 <b>Stack:</b> {techs_str}"
                 success = send_message(message, silent=silent, channel=channel)
 
-                # France → canal FRANCE
-                is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
-                if is_france:
-                    send_message(message, silent=False, channel="france")
-                # Must read → canal URGENT
-                if must_read:
-                    send_message(message, silent=False, channel="urgent")
+            # TOUJOURS verifier France → canal FRANCE (peu importe le canal principal)
+            is_france = any(kw.lower() in full_text.lower() for kw in FRANCE_KEYWORDS)
+            if is_france:
+                if severity == "critique" or custom_matches:
+                    send_critical_alert(article, channel="france")
+                else:
+                    msg = format_article_with_france_tag(article)
+                    if is_relevant:
+                        msg += f"\n\u26a1 <b>Stack:</b> {', '.join(matched_techs[:3])}"
+                    send_message(msg, silent=False, channel="france")
+
+            # Must read → canal URGENT
+            if must_read:
+                if severity == "critique" or custom_matches:
+                    send_critical_alert(article, channel="urgent")
+                else:
+                    msg = format_article_with_france_tag(article)
+                    if is_relevant:
+                        msg += f"\n\u26a1 <b>Stack:</b> {', '.join(matched_techs[:3])}"
+                    send_message(msg, silent=False, channel="urgent")
 
             if success:
                 # Stocker le message formate pour le digest
