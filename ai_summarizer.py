@@ -82,7 +82,31 @@ def _call_groq(prompt, max_tokens=800):
     if not GROQ_API_KEYS:
         return None
 
-    # Essayer chaque cle
+    # Essayer Cerebras en premier (60/min)
+    cerebras_key = os.environ.get("CEREBRAS_API_KEY", "")
+    if cerebras_key:
+        try:
+            response = requests.post(
+                "https://api.cerebras.ai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {cerebras_key}", "Content-Type": "application/json"},
+                json={
+                    "model": "llama-3.3-70b-instruct",
+                    "messages": [
+                        {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais. Tu es precis, concis et technique."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": max_tokens,
+                    "temperature": 0.3,
+                },
+                timeout=30,
+            )
+            if response.status_code not in (429, 404):
+                response.raise_for_status()
+                return response.json()["choices"][0]["message"]["content"].strip()
+        except Exception as e:
+            logger.warning("Cerebras primaire echoue: %s", e)
+
+    # Puis Groq
     for attempt in range(len(GROQ_API_KEYS)):
         key_index = (_current_key_index + attempt) % len(GROQ_API_KEYS)
         api_key = GROQ_API_KEYS[key_index]
@@ -142,7 +166,7 @@ def _call_groq(prompt, max_tokens=800):
                 "https://api.cerebras.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {cerebras_key}", "Content-Type": "application/json"},
                 json={
-                    "model": "llama-3.3-70b",
+                    "model": "llama-3.3-70b-instruct",
                     "messages": [
                         {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais. Tu es precis, concis et technique."},
                         {"role": "user", "content": prompt},
