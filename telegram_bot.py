@@ -38,8 +38,21 @@ def _send_request(method, data):
         return None
 
 
+def _sanitize_html(text):
+    """Nettoie le HTML invalide qui cause des erreurs Telegram."""
+    import re
+    # Supprimer les tags HTML non supportes par Telegram
+    # Telegram supporte: b, strong, i, em, u, ins, s, strike, del, a, code, pre, tg-spoiler, blockquote
+    supported = r'b|strong|i|em|u|ins|s|strike|del|a|code|pre|tg-spoiler|blockquote'
+    text = re.sub(r'<(?!/?\s*(' + supported + r')\b)[^>]*>', '', text)
+    return text
+
+
 def send_message(text, parse_mode="HTML", disable_preview=False, silent=False, channel="info"):
     """Envoie un message sur le canal Telegram appropriate."""
+    # Nettoyer le HTML avant envoi
+    text = _sanitize_html(text)
+
     if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN == "YOUR_TOKEN_HERE":
         logger.error("Token Telegram non configure")
         return False
