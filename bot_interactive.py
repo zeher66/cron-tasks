@@ -141,7 +141,7 @@ def call_ai(prompt, max_tokens=1000, chat_id=None):
 
     # Cerebras en premier (pas utilise par la veille)
     if CEREBRAS_API_KEY:
-        providers.append(("https://api.cerebras.ai/v1/chat/completions", CEREBRAS_API_KEY, "gpt-oss-120b"))
+        providers.append(("https://api.cerebras.ai/v1/chat/completions", CEREBRAS_API_KEY, "qwen-3-235b-a22b-instruct-2507"))
 
     # SambaNova (pas utilise par la veille)
     if SAMBANOVA_API_KEY:
