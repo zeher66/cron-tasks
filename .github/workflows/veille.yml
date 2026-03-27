@@ -60,12 +60,14 @@ jobs:
           cp -f source_status.json source_status.json.bak 2>/dev/null || true
           cp -f export_*.csv /tmp/ 2>/dev/null || true
           cp -rf exploits /tmp/exploits_bak 2>/dev/null || true
+          cp -rf outils /tmp/outils_bak 2>/dev/null || true
           git fetch origin main
           git reset --hard origin/main
           cp veille.db.bak veille.db
           cp -f source_status.json.bak source_status.json 2>/dev/null || true
           cp -f /tmp/export_*.csv . 2>/dev/null || true
           cp -rf /tmp/exploits_bak/* exploits/ 2>/dev/null || true
+          cp -rf /tmp/outils_bak/* outils/ 2>/dev/null || true
           # Deplacer les fichiers .md mal places a la racine d'une categorie
           for cat_dir in exploits/*/; do
             for f in "$cat_dir"*.md; do
@@ -76,6 +78,7 @@ jobs:
           git add -f source_status.json 2>/dev/null || true
           git add -f export_*.csv 2>/dev/null || true
           git add -f exploits/ 2>/dev/null || true
+          git add -f outils/ 2>/dev/null || true
           git diff --staged --quiet || git commit -m "update: veille.db $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M Paris')"
           git push
 

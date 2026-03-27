@@ -43,6 +43,7 @@ from cve_monitor import get_new_cves, format_cve_message, get_kev_cves, format_k
 from threat_intel import format_abuse_ch_digest, format_github_trending, fetch_new_pocs, format_poc_alert, check_stack_relevance
 from ai_summarizer import is_ai_available, summarize_article, summarize_cve, parse_ai_response, select_daily_important, parse_daily_selection
 from exploit_organizer import save_cve_with_exploit, save_poc
+from tool_monitor import fetch_new_tools, format_tools_alert, save_tool
 
 # --- Logging ---
 logging.basicConfig(
@@ -591,6 +592,24 @@ def process_articles():
         gh_msg = format_github_trending()
         if gh_msg:
             send_message(gh_msg, disable_preview=True)
+
+        # Tool Monitor — nouveaux outils cyber
+        logger.info("Tool Monitor: recherche nouveaux outils")
+        tools = fetch_new_tools()
+        if tools:
+            # Sauvegarder dans outils/
+            for tool in tools:
+                save_tool(
+                    name=tool["name"],
+                    description=tool["description"],
+                    url=tool["url"],
+                    stars=tool["stars"],
+                    language=tool["language"],
+                )
+            # Envoyer sur Telegram canal INFO
+            tools_msg = format_tools_alert(tools)
+            if tools_msg:
+                send_message(tools_msg, disable_preview=True)
 
     # PoC Monitor (toutes les 4h : 8h, 12h, 16h, 20h)
     if now.hour in (8, 12, 16, 20):
