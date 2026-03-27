@@ -133,15 +133,60 @@ def _call_groq(prompt, max_tokens=800):
             logger.warning("Erreur parsing reponse Groq: %s", e)
             return None
 
-    # Groq down → fallback OpenRouter
-    if OPENROUTER_API_KEY:
-        logger.warning("Groq down, bascule sur OpenRouter...")
-        result = _call_openrouter(prompt, max_tokens)
-        if result:
-            return result
+    # Groq down → fallback Cerebras
+    cerebras_key = os.environ.get("CEREBRAS_API_KEY", "")
+    if cerebras_key:
+        logger.warning("Groq down, bascule sur Cerebras...")
+        try:
+            response = requests.post(
+                "https://api.cerebras.ai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {cerebras_key}", "Content-Type": "application/json"},
+                json={
+                    "model": "llama-3.3-70b",
+                    "messages": [
+                        {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais. Tu es precis, concis et technique."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": max_tokens,
+                    "temperature": 0.3,
+                },
+                timeout=30,
+            )
+            if response.status_code != 429:
+                response.raise_for_status()
+                logger.info("Cerebras OK (fallback)")
+                return response.json()["choices"][0]["message"]["content"].strip()
+        except Exception as e:
+            logger.warning("Cerebras echoue: %s", e)
 
-    # OpenRouter aussi down → attendre 65s puis reessayer Groq
-    logger.warning("Groq + OpenRouter down, attente 65s...")
+    # Cerebras down → fallback SambaNova
+    sambanova_key = os.environ.get("SAMBANOVA_API_KEY", "")
+    if sambanova_key:
+        logger.warning("Bascule sur SambaNova...")
+        try:
+            response = requests.post(
+                "https://api.sambanova.ai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {sambanova_key}", "Content-Type": "application/json"},
+                json={
+                    "model": "Meta-Llama-3.3-70B-Instruct",
+                    "messages": [
+                        {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": max_tokens,
+                    "temperature": 0.3,
+                },
+                timeout=30,
+            )
+            if response.status_code != 429:
+                response.raise_for_status()
+                logger.info("SambaNova OK (fallback)")
+                return response.json()["choices"][0]["message"]["content"].strip()
+        except Exception as e:
+            logger.warning("SambaNova echoue: %s", e)
+
+    # Tous down → attendre 65s puis reessayer Groq
+    logger.warning("Tous les providers down, attente 65s...")
     import time
     time.sleep(65)
 
