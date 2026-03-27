@@ -66,6 +66,26 @@ def call_ai(prompt, max_tokens=1000):
         if key:
             providers.append(("https://api.groq.com/openai/v1/chat/completions", key, "llama-3.3-70b-versatile"))
 
+    # Contexte systeme avec date, stack, etc.
+    from datetime import datetime as dt_now
+    from zoneinfo import ZoneInfo
+    now_paris = dt_now.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y %H:%M")
+
+    try:
+        from config import MY_STACK, FRANCE_KEYWORDS
+        stack_str = ", ".join(MY_STACK[:15])
+    except Exception:
+        stack_str = "non configure"
+
+    system_prompt = (
+        f"Tu es un expert en cybersecurite. Tu reponds TOUJOURS et UNIQUEMENT en francais. "
+        f"Tu es precis, concis et technique. Ne reponds JAMAIS en anglais. "
+        f"PAS de markdown (** ## ```). Texte brut avec emojis. "
+        f"Date actuelle: {now_paris}. "
+        f"Stack technique de l'utilisateur: {stack_str}. "
+        f"L'utilisateur vit en France."
+    )
+
     for url, key, model in providers:
         try:
             response = requests.post(
@@ -74,7 +94,7 @@ def call_ai(prompt, max_tokens=1000):
                 json={
                     "model": model,
                     "messages": [
-                        {"role": "system", "content": "Tu es un expert en cybersecurite. Tu reponds TOUJOURS et UNIQUEMENT en francais. Tu es precis, concis et technique. Ne reponds JAMAIS en anglais."},
+                        {"role": "system", "content": system_prompt},
                         {"role": "user", "content": prompt},
                     ],
                     "max_tokens": max_tokens,
@@ -658,6 +678,129 @@ def cmd_scan(chat_id, args):
     send_telegram(chat_id, "\n".join(results))
 
 
+def cmd_tools(chat_id):
+    """Derniers outils cyber detectes."""
+    send_telegram(chat_id, "\U0001f50d Chargement des outils recents...")
+
+    try:
+        import sqlite3
+        import tempfile
+        from datetime import datetime, timedelta, timezone
+
+        response = requests.get(GITHUB_DB_URL, timeout=15)
+        response.raise_for_status()
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".db")
+        tmp.write(response.content)
+        tmp.close()
+
+        # Chercher les outils dans les articles recents
+        conn = sqlite3.connect(tmp.name)
+        cursor = conn.cursor()
+        week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d")
+        cursor.execute(
+            "SELECT title, source FROM articles WHERE sent_at >= ? AND (category = 'outil' OR title LIKE '%tool%' OR title LIKE '%outil%') ORDER BY sent_at DESC LIMIT 20",
+            (week_ago,)
+        )
+        rows = cursor.fetchall()
+        conn.close()
+        os.unlink(tmp.name)
+
+        if rows:
+            tools_text = "\n".join(f"- [{r[1]}] {r[0]}" for r in rows)
+            ai_resp = call_ai(
+                f"Voici les outils et articles outils de la semaine:\n{tools_text}\n\n"
+                f"Classe-les en: offensif, defensif, polyvalent. "
+                f"Pour chaque outil, dis en 1 phrase ce qu'il fait et pourquoi c'est utile."
+            )
+            send_telegram(chat_id, f"\U0001f527 <b>Outils cyber recents</b>\n\n{ai_resp}")
+        else:
+            send_telegram(chat_id, "\U0001f4ed Aucun outil detecte cette semaine.")
+    except Exception as e:
+        send_telegram(chat_id, f"\u274c Erreur: {e}")
+
+
+def cmd_exploit(chat_id, args):
+    """Cherche un exploit/PoC pour une CVE."""
+    if not args:
+        send_telegram(chat_id, "Usage: /exploit CVE-2026-XXXXX")
+        return
+
+    cve_id = args.upper().strip()
+    send_telegram(chat_id, f"\U0001f50d Recherche exploit pour {cve_id}...")
+
+    # 1. Chercher sur GitHub
+    try:
+        response = requests.get(
+            "https://api.github.com/search/repositories",
+            params={"q": f"{cve_id} in:name,description", "sort": "stars", "order": "desc", "per_page": 5},
+            headers={"User-Agent": UA, "Accept": "application/vnd.github.v3+json"},
+            timeout=15,
+        )
+        repos = response.json().get("items", []) if response.status_code == 200 else []
+    except Exception:
+        repos = []
+
+    # 2. Chercher dans NVD
+    nvd_desc = ""
+    nvd_score = "N/A"
+    try:
+        response = requests.get(f"{NVD_API}?cveId={cve_id}", timeout=15)
+        data = response.json()
+        vulns = data.get("vulnerabilities", [])
+        if vulns:
+            cve = vulns[0].get("cve", {})
+            for d in cve.get("descriptions", []):
+                if d.get("lang") == "en":
+                    nvd_desc = d.get("value", "")
+                    break
+            for key in ("cvssMetricV31", "cvssMetricV30", "cvssMetricV40"):
+                metrics = cve.get("metrics", {}).get(key, [])
+                if metrics:
+                    nvd_score = metrics[0].get("cvssData", {}).get("baseScore", "N/A")
+                    break
+    except Exception:
+        pass
+
+    # 3. Construire la reponse
+    lines = [f"\U0001f4a3 <b>Exploit Search: {cve_id}</b>", ""]
+
+    if nvd_desc:
+        lines.append(f"CVSS: {nvd_score}")
+        lines.append("")
+
+    if repos:
+        lines.append(f"\U0001f527 <b>{len(repos)} PoC trouves sur GitHub:</b>")
+        lines.append("")
+        for repo in repos[:5]:
+            name = repo.get("full_name", "")
+            desc = (repo.get("description", "") or "")[:80]
+            stars = repo.get("stargazers_count", 0)
+            url = repo.get("html_url", "")
+            lines.append(f"\u2022 <a href=\"{url}\">{name}</a> \u2b50{stars}")
+            if desc:
+                lines.append(f"  {desc}")
+            lines.append("")
+    else:
+        lines.append("\u274c Aucun PoC public trouve sur GitHub.")
+        lines.append("")
+
+    # 4. IA analyse
+    if nvd_desc:
+        ai_resp = call_ai(
+            f"CVE: {cve_id}\nCVSS: {nvd_score}\nDescription: {nvd_desc[:1000]}\n"
+            f"PoC disponibles: {len(repos)}\n\n"
+            f"Analyse cette CVE: est-elle exploitable ? Comment ? Quels outils utiliser pour tester ?",
+            max_tokens=800,
+        )
+        lines.append(f"\U0001f916 <b>Analyse IA:</b>")
+        lines.append(ai_resp)
+
+    lines.append("")
+    lines.append(f'\U0001f517 <a href="https://nvd.nist.gov/vuln/detail/{cve_id}">NVD</a> | <a href="https://www.exploit-db.com/search?cve={cve_id}">Exploit-DB</a>')
+
+    send_telegram(chat_id, "\n".join(lines))
+
+
 def cmd_help(chat_id):
     """Aide."""
     send_telegram(chat_id, (
@@ -670,6 +813,8 @@ def cmd_help(chat_id):
         "/whois domaine.com \u2014 Info domaine/DNS\n"
         "/shodan IP \u2014 Scanner une IP (ports, vulns)\n"
         "/scan cible \u2014 Scan complet (domaine, IP ou URL)\n"
+        "/exploit CVE-ID \u2014 Chercher un PoC/exploit\n"
+        "/tools \u2014 Nouveaux outils cyber de la semaine\n"
         "/list \u2014 Lister les sources RSS\n"
         "/ask question \u2014 Poser une question libre\n"
         "/help \u2014 Cette aide\n\n"
@@ -739,6 +884,10 @@ def handle_message(data):
         cmd_shodan(chat_id, text[8:].strip())
     elif text.startswith("/scan "):
         cmd_scan(chat_id, text[6:].strip())
+    elif text.startswith("/exploit "):
+        cmd_exploit(chat_id, text[9:].strip())
+    elif text == "/tools":
+        cmd_tools(chat_id)
     elif text == "/list":
         cmd_list(chat_id)
     elif text == "/today":
