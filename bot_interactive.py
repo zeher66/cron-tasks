@@ -34,14 +34,108 @@ SHODAN_API_KEY = os.environ.get("SHODAN_API_KEY", "")
 PORT = int(os.environ.get("PORT", 10000))
 RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://cron-tasks.onrender.com")
 
+GITHUB_CONV_TOKEN = os.environ.get("GITHUB_CONV_TOKEN", "")
 TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 GITHUB_DB_URL = "https://raw.githubusercontent.com/zeher66/cron-tasks/main/veille.db"
+CONV_REPO = "zeher66/cyber-conv_bot_telegrame"
+CONV_FILE = "conversations.json"
+
+
+# --- Memoire conversations (GitHub prive) ---
+
+_conv_cache = {}  # Cache en RAM : {chat_id: [messages]}
+_conv_sha = ""    # SHA du fichier pour les updates
+
+
+def _load_conversations():
+    """Charge les conversations depuis le repo prive GitHub."""
+    global _conv_cache, _conv_sha
+    if not GITHUB_CONV_TOKEN:
+        return
+
+    try:
+        response = requests.get(
+            f"https://api.github.com/repos/{CONV_REPO}/contents/{CONV_FILE}",
+            headers={
+                "Authorization": f"Bearer {GITHUB_CONV_TOKEN}",
+                "Accept": "application/vnd.github.v3+json",
+            },
+            timeout=10,
+        )
+        if response.status_code == 200:
+            data = response.json()
+            _conv_sha = data.get("sha", "")
+            import base64
+            content = base64.b64decode(data["content"]).decode("utf-8")
+            _conv_cache = json.loads(content)
+            logger.info("Conversations chargees: %d chats", len(_conv_cache))
+        elif response.status_code == 404:
+            _conv_cache = {}
+            logger.info("Aucun historique de conversation")
+    except Exception as e:
+        logger.warning("Erreur chargement conversations: %s", e)
+
+
+def _save_conversations():
+    """Sauvegarde les conversations dans le repo prive GitHub."""
+    global _conv_sha
+    if not GITHUB_CONV_TOKEN:
+        return
+
+    try:
+        import base64
+        content = json.dumps(_conv_cache, ensure_ascii=False, indent=2)
+        encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+
+        data = {
+            "message": "update conversations",
+            "content": encoded,
+        }
+        if _conv_sha:
+            data["sha"] = _conv_sha
+
+        response = requests.put(
+            f"https://api.github.com/repos/{CONV_REPO}/contents/{CONV_FILE}",
+            headers={
+                "Authorization": f"Bearer {GITHUB_CONV_TOKEN}",
+                "Accept": "application/vnd.github.v3+json",
+            },
+            json=data,
+            timeout=15,
+        )
+        if response.status_code in (200, 201):
+            _conv_sha = response.json().get("content", {}).get("sha", "")
+            logger.info("Conversations sauvegardees")
+        else:
+            logger.warning("Erreur sauvegarde conversations: %s", response.text[:200])
+    except Exception as e:
+        logger.warning("Erreur sauvegarde conversations: %s", e)
+
+
+def _add_to_history(chat_id, role, content):
+    """Ajoute un message a l'historique."""
+    chat_key = str(chat_id)
+    if chat_key not in _conv_cache:
+        _conv_cache[chat_key] = []
+
+    _conv_cache[chat_key].append({
+        "role": role,
+        "content": content[:500],  # Limiter la taille
+    })
+
+    # Garder les 20 derniers messages
+    _conv_cache[chat_key] = _conv_cache[chat_key][-20:]
+
+
+def _get_history(chat_id):
+    """Recupere l'historique d'un chat."""
+    return _conv_cache.get(str(chat_id), [])
 
 
 # --- IA ---
 
-def call_ai(prompt, max_tokens=1000):
+def call_ai(prompt, max_tokens=1000, chat_id=None):
     """Appelle les providers IA en cascade."""
     providers = []
 
@@ -86,6 +180,14 @@ def call_ai(prompt, max_tokens=1000):
         f"L'utilisateur vit en France."
     )
 
+    # Construire les messages avec historique
+    messages = [{"role": "system", "content": system_prompt}]
+    if chat_id:
+        history = _get_history(chat_id)
+        for msg in history[-10:]:  # 10 derniers messages
+            messages.append({"role": msg["role"], "content": msg["content"]})
+    messages.append({"role": "user", "content": prompt})
+
     for url, key, model in providers:
         try:
             response = requests.post(
@@ -93,10 +195,7 @@ def call_ai(prompt, max_tokens=1000):
                 headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
                 json={
                     "model": model,
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": prompt},
-                    ],
+                    "messages": messages,
                     "max_tokens": max_tokens,
                     "temperature": 0.3,
                 },
@@ -830,10 +929,12 @@ def cmd_ask(chat_id, args):
 
     send_telegram(chat_id, "\U0001f914 Reflexion...")
 
+    # Sauvegarder la question dans l'historique
+    _add_to_history(chat_id, "user", args)
+
     # Chercher dans les articles recents pour donner du contexte
     context = ""
     try:
-        # Chercher dans jour, semaine, mois
         articles = get_today_articles() or []
         if not articles:
             articles = get_week_articles() or []
@@ -856,8 +957,14 @@ def cmd_ask(chat_id, args):
     ai_response = call_ai(
         f"Question: {args}\n{context}\n"
         f"Si le contexte contient des articles pertinents, utilise-les pour donner une reponse precise et actuelle. "
-        f"Sinon reponds avec tes connaissances generales. Sois precis et technique."
+        f"Sinon reponds avec tes connaissances generales. Sois precis et technique.",
+        chat_id=chat_id,
     )
+
+    # Sauvegarder la reponse dans l'historique
+    _add_to_history(chat_id, "assistant", ai_response[:500])
+    _save_conversations()
+
     send_telegram(chat_id, ai_response)
 
 
@@ -946,6 +1053,9 @@ def main():
     if not TELEGRAM_BOT_TOKEN:
         logger.error("TELEGRAM_BOT_TOKEN non configure")
         return
+
+    # Charger les conversations depuis GitHub
+    _load_conversations()
 
     # Configurer le webhook Telegram
     setup_webhook()
