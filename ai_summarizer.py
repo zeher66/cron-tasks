@@ -185,8 +185,8 @@ def _call_groq(prompt, max_tokens=800):
         except Exception as e:
             logger.warning("SambaNova echoue: %s", e)
 
-    # Tous down → attendre 65s puis reessayer Groq
-    logger.warning("Tous les providers down, attente 65s...")
+    # Tous down → attendre 65s puis reessayer
+    logger.warning("Groq + Cerebras + SambaNova down, attente 65s...")
     import time
     time.sleep(65)
 
