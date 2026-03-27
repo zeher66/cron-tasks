@@ -90,7 +90,7 @@ def _call_groq(prompt, max_tokens=800):
                 "https://api.cerebras.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {cerebras_key}", "Content-Type": "application/json"},
                 json={
-                    "model": "llama-3.3-70b-instruct",
+                    "model": "gpt-oss-120b",
                     "messages": [
                         {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais. Tu es precis, concis et technique."},
                         {"role": "user", "content": prompt},
@@ -166,7 +166,7 @@ def _call_groq(prompt, max_tokens=800):
                 "https://api.cerebras.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {cerebras_key}", "Content-Type": "application/json"},
                 json={
-                    "model": "llama-3.3-70b-instruct",
+                    "model": "gpt-oss-120b",
                     "messages": [
                         {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais. Tu es precis, concis et technique."},
                         {"role": "user", "content": prompt},
