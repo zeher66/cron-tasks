@@ -672,7 +672,7 @@ def main():
     try:
         sent, errors = process_articles()
         logger.info("Veille terminee. %d envoyes, %d erreurs.", sent, errors)
-        sys.exit(1 if errors > 5 else 0)  # Seulement si beaucoup d'erreurs
+        sys.exit(0)  # Toujours succes pour sauvegarder la DB et les exploits
     except Exception as e:
         logger.critical("Erreur fatale: %s", e, exc_info=True)
         try:
