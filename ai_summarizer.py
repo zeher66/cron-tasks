@@ -183,33 +183,7 @@ def _call_groq(prompt, max_tokens=800):
         except Exception as e:
             logger.warning("Cerebras echoue: %s", e)
 
-    # Cerebras down → fallback Together AI
-    together_key = os.environ.get("TOGETHER_API_KEY", "")
-    if together_key:
-        logger.warning("Bascule sur Together AI...")
-        try:
-            response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
-                headers={"Authorization": f"Bearer {together_key}", "Content-Type": "application/json"},
-                json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-                    "messages": [
-                        {"role": "system", "content": "Tu es un analyste expert en cybersecurite. Tu reponds UNIQUEMENT en francais."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": max_tokens,
-                    "temperature": 0.3,
-                },
-                timeout=30,
-            )
-            if response.status_code != 429:
-                response.raise_for_status()
-                logger.info("Together AI OK (fallback)")
-                return response.json()["choices"][0]["message"]["content"].strip()
-        except Exception as e:
-            logger.warning("Together AI echoue: %s", e)
-
-    # Together down → fallback SambaNova
+    # Fallback SambaNova
     sambanova_key = os.environ.get("SAMBANOVA_API_KEY", "")
     if sambanova_key:
         logger.warning("Bascule sur SambaNova...")
