@@ -471,15 +471,15 @@ def process_articles():
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT title, url, source, category, severity FROM articles WHERE sent_at >= ? AND category IN ('cve', 'kev') ORDER BY sent_at DESC",
+            "SELECT title, url, source, category, severity FROM articles WHERE sent_at >= ? AND category IN ('cve', 'kev', 'poc') ORDER BY sent_at DESC",
             (week_ago,)
         )
         week_cves = [{"title": r[0], "url": r[1], "source": r[2], "category": r[3], "severity": r[4]} for r in cursor.fetchall()]
         conn.close()
         all_today = week_cves  # Utiliser la semaine au lieu du jour
         for art in all_today:
+            import re as _re
             if art.get("category") in ("cve", "kev"):
-                import re as _re
                 cve_match = _re.search(r'(CVE-\d{4}-\d{4,})', art.get("title", ""))
                 if cve_match:
                     cve_id = cve_match.group(1)
@@ -490,6 +490,18 @@ def process_articles():
                         "cvss_severity": art.get("severity", "moyen").upper(),
                         "ref_url": art.get("url", ""),
                         "affected": [],
+                    })
+                    if result:
+                        exploits_created += 1
+            elif art.get("category") == "poc":
+                cve_match = _re.search(r'(CVE-\d{4}-\d{4,})', art.get("title", ""))
+                if cve_match:
+                    cve_id = cve_match.group(1)
+                    result = save_poc({
+                        "cve_id": cve_id,
+                        "description": art.get("title", ""),
+                        "url": art.get("url", ""),
+                        "name": art.get("title", ""),
                     })
                     if result:
                         exploits_created += 1
