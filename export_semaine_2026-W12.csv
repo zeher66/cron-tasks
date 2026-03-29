@@ -1,0 +1,629 @@
+URL,Titre,Source,Categorie,Severite,Date
+https://nvd.nist.gov/vuln/detail/CVE-2026-5036,CVE-2026-5036,NVD,cve,important,2026-03-29T08:53:24.662699+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5035,CVE-2026-5035,NVD,cve,important,2026-03-29T07:55:52.828824+00:00
+https://github.com/hargabyte/cve-scanner,hargabyte/cve-scanner,GitHub PoC,poc,info,2026-03-29T06:44:00.887910+00:00
+https://github.com/cybermaksxx/CVE-2022-46364-Proof-of-the-concept,cybermaksxx/CVE-2022-46364-Proof-of-the-concept,GitHub PoC,poc,info,2026-03-29T06:44:00.885238+00:00
+https://github.com/xitexploiter96-dot/CVE-2025-23419,xitexploiter96-dot/CVE-2025-23419,GitHub PoC,poc,info,2026-03-29T06:44:00.493063+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5034,CVE-2026-5034,NVD,cve,important,2026-03-29T06:43:46.626447+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5033,CVE-2026-5033,NVD,cve,important,2026-03-29T06:43:41.107644+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5024,CVE-2026-5024,NVD,cve,important,2026-03-29T05:26:01.271399+00:00
+https://seclists.org/fulldisclosure/2026/Mar/16,APPLE-SA-03-24-2026-1 iOS 26.4 and iPadOS 26.4,Full Disclosure,0day,critique,2026-03-29T05:25:47.626585+00:00
+https://seclists.org/fulldisclosure/2026/Mar/17,APPLE-SA-03-24-2026-2 iOS 18.7.7 and iPadOS 18.7.7,Full Disclosure,0day,critique,2026-03-29T05:25:43.845101+00:00
+https://seclists.org/fulldisclosure/2026/Mar/24,APPLE-SA-03-24-2026-9 Safari 26.4,Full Disclosure,0day,important,2026-03-29T05:25:39.965729+00:00
+https://seclists.org/fulldisclosure/2026/Mar/25,APPLE-SA-03-24-2026-10 Xcode 26.4,Full Disclosure,0day,critique,2026-03-29T05:25:36.243191+00:00
+https://seclists.org/fulldisclosure/2026/Mar/18,APPLE-SA-03-24-2026-3 macOS Tahoe 26.4,Full Disclosure,0day,important,2026-03-29T05:25:32.590181+00:00
+https://seclists.org/fulldisclosure/2026/Mar/19,APPLE-SA-03-24-2026-4 macOS Sequoia 15.7.5,Full Disclosure,0day,important,2026-03-29T05:25:28.724449+00:00
+https://seclists.org/fulldisclosure/2026/Mar/20,APPLE-SA-03-24-2026-5 macOS Sonoma 14.8.5,Full Disclosure,0day,important,2026-03-29T05:25:24.820668+00:00
+https://seclists.org/fulldisclosure/2026/Mar/21,APPLE-SA-03-24-2026-6 tvOS 26.4,Full Disclosure,0day,moyen,2026-03-29T05:25:21.042706+00:00
+https://seclists.org/fulldisclosure/2026/Mar/22,APPLE-SA-03-24-2026-7 watchOS 26.4,Full Disclosure,0day,moyen,2026-03-29T05:25:17.427288+00:00
+https://seclists.org/fulldisclosure/2026/Mar/23,APPLE-SA-03-24-2026-8 visionOS 26.4,Full Disclosure,0day,important,2026-03-29T05:25:13.817163+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5021,CVE-2026-5021,NVD,cve,important,2026-03-29T03:24:21.845289+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5019,CVE-2026-5019,NVD,cve,important,2026-03-29T03:24:18.492947+00:00
+https://seclists.org/fulldisclosure/2026/Mar/13,Dovecot Security Advisory OXDC-2026-0001,Full Disclosure,0day,critique,2026-03-29T03:24:08.498835+00:00
+https://seclists.org/fulldisclosure/2026/Mar/15,[KIS-2026-05] MailEnable <= 10.54 Multiple Reflected Cross-Site Scripting Vulnerabilities,Full Disclosure,0day,important,2026-03-29T03:24:04.671311+00:00
+https://seclists.org/fulldisclosure/2026/Mar/12,"CVE-2026-33150, CVE-2026-33179: libfuse io_uring memory safety vulnerabilities (use-after-free, NULL deref)",Full Disclosure,0day,important,2026-03-29T03:23:58.710686+00:00
+https://seclists.org/fulldisclosure/2026/Mar/14,"OpenClaw MEDIA: Protocol Prompt Injection - File Disclosure Bypassing Tool Permissions (Silently Fixed, Report Denied)",Full Disclosure,0day,important,2026-03-29T03:23:54.605061+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5018,CVE-2026-5018,NVD,cve,important,2026-03-28T23:39:30.129867+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5017,CVE-2026-5017,NVD,cve,important,2026-03-28T23:39:26.681404+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5016,CVE-2026-5016,NVD,cve,important,2026-03-28T22:38:06.099954+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5012,CVE-2026-5012,NVD,cve,important,2026-03-28T20:41:00.552361+00:00
+https://labs.watchtowr.com/the-sequels-are-never-as-good-but-were-still-in-pain-citrix-netscaler-cve-2026-3055-memory-overread/,"The Sequels Are Never As Good, But We're Still In Pain (Citrix NetScaler CVE-2026-3055 Memory Overread)",Watchtowr Labs,0day,critique,2026-03-28T20:40:46.273528+00:00
+https://github.com/d3vn0mi/CVE-2026-23744-POC,d3vn0mi/CVE-2026-23744-POC,GitHub PoC,poc,info,2026-03-28T19:37:04.990321+00:00
+https://github.com/bitt0n/CVE-2026-0766,bitt0n/CVE-2026-0766,GitHub PoC,poc,info,2026-03-28T19:37:04.987467+00:00
+https://www.lemondeinformatique.fr/actualites/lire-avec-dynamic-workers-cloudflare-facilite-l-execution-des-agents-ia-99762.html,"Avec Dynamic Workers, Cloudflare facilite l'exécution des agents IA",Le Monde Informatique Secu,veille_fr,info,2026-03-28T19:36:45.195388+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5004,CVE-2026-5004,NVD,cve,important,2026-03-28T18:54:16.499342+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5002,CVE-2026-5002,NVD,cve,important,2026-03-28T18:54:12.709025+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5001,CVE-2026-5001,NVD,cve,important,2026-03-28T18:54:09.193751+00:00
+https://thehackernews.com/2026/03/iran-linked-hackers-breach-fbi.html,"Iran-Linked Hackers Breach FBI Director’s Personal Email, Hit Stryker With Wiper Attack",The Hacker News,cyberattaque,critique,2026-03-28T16:44:12.396241+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-5000,CVE-2026-5000,NVD,cve,important,2026-03-28T15:43:45.754502+00:00
+https://isc.sans.edu/diary/rss/32842,"TeamPCP Supply Chain Campaign: Update 003 - Operational Tempo Shift as Campaign Enters Monetization Phase With No New Compromises in 48 Hours, (Sat, Mar 28th)",SANS ISC,outil,critique,2026-03-28T15:43:30.450889+00:00
+https://github.com/yahiahamza/CVE-2026-25099,yahiahamza/CVE-2026-25099,GitHub PoC,poc,info,2026-03-28T15:00:36.476905+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4998,CVE-2026-4998,NVD,cve,important,2026-03-28T15:00:23.414821+00:00
+https://www.bleepingcomputer.com/news/security/new-infinity-stealer-malware-grabs-macos-data-via-clickfix-lures/,New Infinity Stealer malware grabs macOS data via ClickFix lures,BleepingComputer,cyberattaque,important,2026-03-28T14:59:50.623805+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4996,CVE-2026-4996,NVD,cve,important,2026-03-28T13:13:51.500750+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25225,CVE-2018-25225,NVD,cve,important,2026-03-28T13:13:48.179237+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25224,CVE-2018-25224,NVD,cve,important,2026-03-28T13:13:44.861655+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25222,CVE-2018-25222,NVD,cve,important,2026-03-28T13:13:41.428740+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2017-20228,CVE-2017-20228,NVD,cve,important,2026-03-28T13:13:37.485824+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2017-20226,CVE-2017-20226,NVD,cve,important,2026-03-28T13:13:34.080341+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20048,CVE-2016-20048,NVD,cve,important,2026-03-28T13:13:30.684755+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20047,CVE-2016-20047,NVD,cve,important,2026-03-28T13:13:27.037995+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20046,CVE-2016-20046,NVD,cve,important,2026-03-28T13:13:23.681952+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20045,CVE-2016-20045,NVD,cve,important,2026-03-28T13:13:20.285454+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20044,CVE-2016-20044,NVD,cve,important,2026-03-28T13:13:16.601926+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20043,CVE-2016-20043,NVD,cve,important,2026-03-28T13:13:13.304069+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20042,CVE-2016-20042,NVD,cve,important,2026-03-28T13:13:09.972293+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20041,CVE-2016-20041,NVD,cve,important,2026-03-28T13:13:06.334625+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20040,CVE-2016-20040,NVD,cve,important,2026-03-28T13:13:02.971149+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20039,CVE-2016-20039,NVD,cve,important,2026-03-28T13:12:59.680860+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20038,CVE-2016-20038,NVD,cve,important,2026-03-28T13:12:56.337178+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20037,CVE-2016-20037,NVD,cve,important,2026-03-28T13:12:52.997542+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25223,CVE-2018-25223,NVD,cve,critique,2026-03-28T13:12:47.612474+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25221,CVE-2018-25221,NVD,cve,critique,2026-03-28T13:12:39.352847+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25220,CVE-2018-25220,NVD,cve,critique,2026-03-28T13:12:34.088262+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2017-20229,CVE-2017-20229,NVD,cve,critique,2026-03-28T13:12:28.562108+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2017-20227,CVE-2017-20227,NVD,cve,critique,2026-03-28T13:12:22.970764+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2017-20225,CVE-2017-20225,NVD,cve,critique,2026-03-28T13:12:16.398582+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2016-20049,CVE-2016-20049,NVD,cve,critique,2026-03-28T13:12:10.685455+00:00
+https://www.zataz.com/la-commission-europeenne-sous-menace-de-fuite/,La Commission européenne sous menace de fuite,Zataz,cyberattaque,critique,2026-03-28T13:11:54.611756+00:00
+https://github.com/1numak1/CVE-2025-31337,1numak1/CVE-2025-31337,GitHub PoC,poc,info,2026-03-28T11:35:31.235795+00:00
+https://github.com/Vimash-Dilsara/-CVE-2026-1657,Vimash-Dilsara/-CVE-2026-1657,GitHub PoC,poc,info,2026-03-28T11:35:31.013121+00:00
+https://github.com/4nuxd/CVE-2025-66034,4nuxd/CVE-2025-66034,GitHub PoC,poc,info,2026-03-28T11:35:31.008622+00:00
+https://www.zataz.com/un-outil-zataz-pour-decoder-un-qr-code-localement/,Un outil Zataz pour décoder un QR code localement,Zataz,cyberattaque,critique,2026-03-28T10:41:18.884315+00:00
+https://www.zataz.com/cyber-actualites-zataz-de-la-semaine-du-23-au-29-mars-2026/,Cyber actualités ZATAZ de la semaine du 23 au 29 mars 2026,Zataz,cyberattaque,critique,2026-03-28T10:41:14.831959+00:00
+https://www.zataz.com/le-1er-avril-je-demonte-le-social-engineering-a-incyber/,"Le 1er avril, je démontre le social engineering à InCyber",Zataz,cyberattaque,info,2026-03-28T10:41:02.489263+00:00
+https://www.securityweek.com/cloudflare-themed-clickfix-attack-drops-infiniti-stealer-on-macs/,Cloudflare-Themed ClickFix Attack Drops Infiniti Stealer on Macs,SecurityWeek,cyberattaque,important,2026-03-28T10:40:56.692657+00:00
+https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html,Citrix NetScaler Under Active Recon for CVE-2026-3055 (CVSS 9.3) Memory Overread Bug,The Hacker News,cyberattaque,critique,2026-03-28T10:40:51.127470+00:00
+https://www.zataz.com/faux-lacoste-sur-tiktok-les-signaux-dalerte/,"Faux Lacoste sur TikTok, les signaux d’alerte",Zataz,cyberattaque,moyen,2026-03-28T09:47:55.122974+00:00
+https://www.zataz.com/carecloud-face-a-un-incident-critique-sous-surveillance/,CareCloud face à un incident critique sous surveillance,Zataz,cyberattaque,critique,2026-03-28T09:47:45.519163+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0365/,Multiples vulnérabilités dans Spring AI (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-28T07:49:59.343825+00:00
+https://thehackernews.com/2026/03/ta446-deploys-leaked-darksword-ios.html,TA446 Deploys Leaked DarkSword iOS Exploit Kit in Targeted Spear-Phishing Campaign,The Hacker News,cyberattaque,critique,2026-03-28T07:49:49.258493+00:00
+https://www.darkreading.com/vulnerabilities-threats/critical-flaw-langflow-ai-platform-under-attack,Critical Flaw in Langflow AI Platform Under Attack,Dark Reading,cyberattaque,critique,2026-03-28T07:49:43.785601+00:00
+https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html,CISA Adds CVE-2025-53521 to KEV After Active F5 BIG-IP APM Exploitation,The Hacker News,cyberattaque,critique,2026-03-28T07:49:39.919111+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-12886,CVE-2025-12886,NVD,cve,important,2026-03-28T05:01:15.074701+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4987,CVE-2026-4987,NVD,cve,important,2026-03-28T02:50:28.349488+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4248,CVE-2026-4248,NVD,cve,important,2026-03-27T23:40:51.277230+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4990,CVE-2026-4990,NVD,cve,important,2026-03-27T22:42:06.565678+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-27309,CVE-2026-27309,NVD,cve,important,2026-03-27T22:42:02.891994+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25651,CVE-2019-25651,NVD,cve,important,2026-03-27T22:41:57.542850+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4976,CVE-2026-4976,NVD,cve,important,2026-03-27T21:44:46.574967+00:00
+https://www.bleepingcomputer.com/news/security/backdoored-telnyx-pypi-package-pushes-malware-hidden-in-wav-audio/,Backdoored Telnyx PyPI package pushes malware hidden in WAV audio,BleepingComputer,cyberattaque,critique,2026-03-27T21:44:28.515371+00:00
+https://www.rapid7.com/blog/post/pt-metasploit-wrap-up-03-27-2026,Metasploit Wrap-Up 03/27/2026,Rapid7 Blog,outil,moyen,2026-03-27T21:44:19.488916+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0366/,Multiples vulnérabilités dans Traefik (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:50:06.367130+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0360/,Multiples vulnérabilités dans ISC BIND (26 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:50:00.645134+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-33634,CVE-2026-33634,CISA KEV,kev,critique,2026-03-27T20:45:31.303197+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-53521,CVE-2025-53521,CISA KEV,kev,critique,2026-03-27T20:45:27.588145+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4975,CVE-2026-4975,NVD,cve,important,2026-03-27T20:45:24.134474+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4974,CVE-2026-4974,NVD,cve,important,2026-03-27T20:45:20.703580+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4965,CVE-2026-4965,NVD,cve,important,2026-03-27T20:45:17.343384+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4962,CVE-2026-4962,NVD,cve,important,2026-03-27T20:45:13.619732+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4961,CVE-2026-4961,NVD,cve,important,2026-03-27T20:45:10.296183+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4960,CVE-2026-4960,NVD,cve,important,2026-03-27T20:45:06.741159+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-28369,CVE-2026-28369,NVD,cve,important,2026-03-27T20:45:03.288504+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-28368,CVE-2026-28368,NVD,cve,important,2026-03-27T20:44:59.393702+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-28367,CVE-2026-28367,NVD,cve,important,2026-03-27T20:44:55.913491+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4959,CVE-2026-4959,NVD,cve,important,2026-03-27T20:44:48.607927+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4956,CVE-2026-4956,NVD,cve,important,2026-03-27T20:44:44.836124+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4955,CVE-2026-4955,NVD,cve,important,2026-03-27T20:44:41.493100+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4953,CVE-2026-4953,NVD,cve,important,2026-03-27T20:44:37.996788+00:00
+https://www.lemondeinformatique.fr/actualites/lire-en-assouplissant-l-ia-act-le-parlement-europeen-perturbe-l-agenda-des-dsi-99755.html,"En assouplissant l'IA Act, le Parlement européen perturbe l'agenda des DSI",Le Monde Informatique Secu,veille_fr,critique,2026-03-27T20:44:32.687341+00:00
+https://www.undernews.fr/hacking-hacktivisme/une-etude-met-en-lumiere-les-fuites-de-donnees-qui-ont-fait-le-plus-de-degats-en-2025.html,Une étude met en lumière les fuites de données qui ont fait le plus de dégâts en 2025,UnderNews,veille_fr,critique,2026-03-27T20:44:27.083656+00:00
+https://www.undernews.fr/alertes-securite/le-sdk-de-voix-ia-telnyx-a-ete-compromis-dans-le-cadre-de-la-campagne-teampcp.html,Le SDK de voix IA « Telnyx » a été compromis dans le cadre de la campagne TeamPCP,UnderNews,veille_fr,critique,2026-03-27T20:44:23.080070+00:00
+https://www.securityweek.com/rsac-2026-conference-announcements-summary-days-3-4/,RSAC 2026 Conference Announcements Summary (Days 3-4),SecurityWeek,cyberattaque,critique,2026-03-27T20:44:13.685242+00:00
+https://www.securityweek.com/openai-launches-bug-bounty-program-for-abuse-and-safety-risks/,OpenAI Launches Bug Bounty Program for Abuse and Safety Risks,SecurityWeek,cyberattaque,moyen,2026-03-27T20:44:10.198892+00:00
+https://www.securityweek.com/pro-iranian-hacking-group-claims-credit-for-hack-of-fbi-director-kash-patels-personal-account/,Pro-Iranian Hacking Group Claims Credit for Hack of FBI Director Kash Patel’s Personal Account,SecurityWeek,cyberattaque,important,2026-03-27T20:44:06.506780+00:00
+https://www.darkreading.com/application-security/ai-powered-dependency-decisions-security-bugs,"AI-Powered Dependency Decisions Introduce, Ignore Security Bugs",Dark Reading,cyberattaque,critique,2026-03-27T20:44:02.902452+00:00
+https://www.darkreading.com/vulnerabilities-threats/automotive-cybersecurity-threats-grow-connected-autonomous-vehicles,"Automotive Cybersecurity Threats Grow in Era of Connected, Autonomous Vehicles",Dark Reading,cyberattaque,important,2026-03-27T20:43:59.004687+00:00
+https://www.darkreading.com/endpoint-security/fcc-router-ban-wrong-fix,Is the FCC's Router Ban the Wrong Fix?,Dark Reading,cyberattaque,moyen,2026-03-27T20:43:55.146640+00:00
+https://www.darkreading.com/application-security/google-2029-deadline-quantum-safe-cryptography,Google Sets 2029 Deadline for Quantum-Safe Cryptography,Dark Reading,cyberattaque,important,2026-03-27T20:43:51.556040+00:00
+https://therecord.media/latvia-accuses-russia-of-disinformation-campaign-ukraine-war,Latvia accuses Russia of of disinformation campaign targeting Baltic states,The Record,cyberattaque,important,2026-03-27T20:43:47.987741+00:00
+https://www.bleepingcomputer.com/news/security/uk-sanctions-xinbi-marketplace-linked-to-asian-scam-centers/,UK sanctions Xinbi marketplace linked to Asian scam centers,BleepingComputer,cyberattaque,important,2026-03-27T20:43:43.135761+00:00
+https://www.bleepingcomputer.com/news/security/anti-piracy-coalition-takes-down-animeplay-app-with-5-million-users/,Anti-piracy coalition takes down AnimePlay app with 5 million users,BleepingComputer,cyberattaque,moyen,2026-03-27T20:43:39.228265+00:00
+https://www.bleepingcomputer.com/news/security/agentic-grc-teams-get-the-tech-the-mindset-shift-is-whats-missing/,Agentic GRC: Teams Get the Tech. The Mindset Shift Is What's Missing.,BleepingComputer,cyberattaque,info,2026-03-27T20:43:35.675248+00:00
+https://thehackernews.com/2026/03/we-are-at-war.html,We Are At War,The Hacker News,cyberattaque,critique,2026-03-27T20:43:31.749219+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0372/,Multiples vulnérabilités dans les produits IBM (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:43:28.157411+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0368/,Vulnérabilité dans les produits Microsoft (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:43:24.248281+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0367/,Multiples vulnérabilités dans Zabbix (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:43:18.405423+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0363/,Multiples vulnérabilités dans les produits NetApp (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:43:11.310600+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0362/,Multiples vulnérabilités dans les produits Microsoft (26 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-27T20:43:05.014902+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0361/,Multiples vulnérabilités dans Cisco IOS et IOS XE (26 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:43:00.969223+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0359/,Multiples vulnérabilités dans Grafana (26 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:42:51.585709+00:00
+https://www.lemondeinformatique.fr/actualites/lire-genai-les-dsi-temporisent-pour-eviter-les-risques-99749.html,GenAI : les DSI temporisent pour éviter les risques,Le Monde Informatique Secu,veille_fr,info,2026-03-27T20:42:47.566361+00:00
+https://www.lemondeinformatique.fr/actualites/lire-les-demandes-d-aide-face-aux-cybermenaces-explosent-en-france-99756.html,Les demandes d'aide face aux cybermenaces explosent en France,Le Monde Informatique Secu,veille_fr,important,2026-03-27T20:42:43.220528+00:00
+https://isc.sans.edu/diary/rss/32836,"ISC Stormcast For Friday, March 27th, 2026 https://isc.sans.edu/podcastdetail/9868, (Fri, Mar 27th)",SANS ISC,outil,critique,2026-03-27T20:42:36.348930+00:00
+https://www.darkreading.com/cyber-risk/wartime-usage-of-compromised-ip-cameras-highlight-their-danger,Wartime Usage of Compromised IP Cameras Highlight Their Danger,Dark Reading,cyberattaque,important,2026-03-27T20:42:31.276499+00:00
+https://therecord.media/fbi-confirms-theft-of-directors-personal-emails-iran-group,FBI confirms theft of director’s personal emails by Iran-linked hacking group,The Record,cyberattaque,critique,2026-03-27T20:42:27.640620+00:00
+https://www.bleepingcomputer.com/news/security/ajax-football-club-hack-exposed-fan-data-enabled-ticket-hijack/,"Ajax football club hack exposed fan data, enabled ticket hijack",BleepingComputer,cyberattaque,critique,2026-03-27T20:42:22.671900+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0371/,Multiples vulnérabilités dans le noyau Linux d'Ubuntu (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:42:18.906187+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0370/,Multiples vulnérabilités dans le noyau Linux de Red Hat (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:42:07.405594+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0369/,Multiples vulnérabilités dans le noyau Linux de SUSE (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:42:01.010508+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0364/,Multiples vulnérabilités dans les produits Siemens (27 mars 2026),CERT-FR Avis,alerte,critique,2026-03-27T20:41:55.115241+00:00
+https://www.lemondeinformatique.fr/actualites/lire-l-anssi-publie-un-referentiel-accompagnant-la-conformite-nis2-99753.html,L'Anssi publie un référentiel accompagnant la conformité NIS2,Le Monde Informatique Secu,veille_fr,critique,2026-03-27T20:41:51.356011+00:00
+https://www.lemondeinformatique.fr/actualites/lire-le-spectre-de-citrix-bleed-plane-sur-une-faille-critique-dans-netscaler-99751.html,Le spectre de Citrix Bleed plane sur une faille critique dans NetScaler,Le Monde Informatique Secu,veille_fr,critique,2026-03-27T20:41:43.538716+00:00
+https://www.securityweek.com/coruna-ios-exploit-kit-likely-an-update-to-operation-triangulation/,Coruna iOS Exploit Kit Likely an Update to Operation Triangulation,SecurityWeek,cyberattaque,critique,2026-03-27T20:41:38.867621+00:00
+https://www.securityweek.com/tp-link-patches-high-severity-router-vulnerabilities/,TP-Link Patches High-Severity Router Vulnerabilities,SecurityWeek,cyberattaque,important,2026-03-27T20:41:35.175930+00:00
+https://www.bleepingcomputer.com/news/security/tiktok-for-business-accounts-targeted-in-new-phishing-campaign/,TikTok for Business accounts targeted in new phishing campaign,BleepingComputer,cyberattaque,critique,2026-03-27T20:41:31.759230+00:00
+https://www.bleepingcomputer.com/news/microsoft/windows-11-kb5079391-update-rolls-out-smart-app-control-improvements/,Windows 11 KB5079391 update rolls out Smart App Control improvements,BleepingComputer,cyberattaque,critique,2026-03-27T20:41:27.959028+00:00
+https://www.bleepingcomputer.com/news/security/fake-vs-code-alerts-on-github-spread-malware-to-developers/,Fake VS Code alerts on GitHub spread malware to developers,BleepingComputer,cyberattaque,important,2026-03-27T20:41:22.281274+00:00
+https://thehackernews.com/2026/03/china-linked-red-menshen-uses-stealthy.html,China-Linked Red Menshen Uses Stealthy BPFDoor Implants to Spy via Telecom Networks,The Hacker News,cyberattaque,critique,2026-03-27T20:41:18.391790+00:00
+https://thehackernews.com/2026/03/apple-sends-lock-screen-alerts-to.html,Apple Sends Lock Screen Alerts to Outdated iPhones Over Active Web-Based Exploits,The Hacker News,cyberattaque,critique,2026-03-27T20:41:14.610682+00:00
+https://thehackernews.com/2026/03/open-vsx-bug-let-malicious-vs-code.html,Open VSX Bug Let Malicious VS Code Extensions Bypass Pre-Publish Security Checks,The Hacker News,cyberattaque,important,2026-03-27T20:41:11.036572+00:00
+https://www.securityweek.com/cisa-flags-critical-ptc-vulnerability-that-had-german-police-mobilized/,CISA Flags Critical PTC Vulnerability That Had German Police Mobilized,SecurityWeek,cyberattaque,critique,2026-03-27T20:41:07.459562+00:00
+https://thehackernews.com/2026/03/aitm-phishing-targets-tiktok-business.html,AitM Phishing Targets TikTok Business Accounts Using Cloudflare Turnstile Evasion,The Hacker News,cyberattaque,important,2026-03-27T20:41:03.994084+00:00
+https://www.zataz.com/la-russie-met-la-main-sur-chucky-ladministrateur-de-leakbase/,"La Russie met la main sur Chucky, l’administrateur de LeakBase ?",Zataz,cyberattaque,important,2026-03-27T20:40:59.265478+00:00
+https://www.zataz.com/alliance-vect-blackmarket-menace-annoncee/,"Alliance Vect-blackmarket, menace annoncée",Zataz,cyberattaque,important,2026-03-27T20:40:55.061967+00:00
+https://www.zataz.com/breachforums-chronique-dune-succession-toxique/,"BreachForums, chronique d’une succession toxique",Zataz,cyberattaque,info,2026-03-27T20:40:50.845893+00:00
+https://thehackernews.com/2026/03/teampcp-pushes-malicious-telnyx.html,"TeamPCP Pushes Malicious Telnyx Versions to PyPI, Hides Stealer in WAV Files",The Hacker News,cyberattaque,critique,2026-03-27T20:40:46.476402+00:00
+https://hackaday.com/2026/03/27/this-week-in-security-second-verse-worse-than-the-first/,"This Week in Security: Second Verse, Worse Than the First",Hackaday Security,outil,critique,2026-03-27T20:40:40.433910+00:00
+https://www.securityweek.com/in-other-news-palo-alto-recruiter-scam-anti-deepfake-chip-google-sets-2029-quantum-deadline/,"In Other News: Palo Alto Recruiter Scam, Anti-Deepfake Chip, Google Sets 2029 Quantum Deadline",SecurityWeek,cyberattaque,critique,2026-03-27T20:40:34.323472+00:00
+https://www.darkreading.com/threat-intelligence/infrastructure-attacks-physical-consequences-down,Infrastructure Attacks With Physical Consequences Down 25%,Dark Reading,cyberattaque,critique,2026-03-27T20:40:28.412618+00:00
+https://www.bleepingcomputer.com/news/security/dutch-police-discloses-security-breach-after-phishing-attack/,Dutch Police discloses security breach after phishing attack,BleepingComputer,cyberattaque,critique,2026-03-27T20:40:24.979834+00:00
+https://www.bleepingcomputer.com/news/security/european-commission-investigating-breach-after-amazon-cloud-account-hack/,European Commission investigating breach after Amazon cloud account hack,BleepingComputer,cyberattaque,critique,2026-03-27T20:40:21.466031+00:00
+https://thehackernews.com/2026/03/bearlyfy-hits-70-russian-firms-with.html,Bearlyfy Hits Russian Firms with Custom GenieLocker Ransomware,The Hacker News,cyberattaque,critique,2026-03-27T20:40:15.673493+00:00
+https://www.securityweek.com/hightower-holding-data-breach-impacts-130000/,"Hightower Holding Data Breach Impacts 130,000",SecurityWeek,cyberattaque,critique,2026-03-27T20:40:09.851416+00:00
+https://www.darkreading.com/cybersecurity-operations/blunders-level-up-security-programs,How Organizations Can Use Mistakes to Level Up Their Security Programs,Dark Reading,cyberattaque,moyen,2026-03-27T20:40:06.394296+00:00
+https://www.darkreading.com/endpoint-security/coruna-darksword-democratizing-nation-state-exploit-kits,"Coruna, DarkSword &amp; Democratizing Nation-State Exploit Kits",Dark Reading,cyberattaque,critique,2026-03-27T20:40:02.494025+00:00
+https://www.darkreading.com/threat-intelligence/china-upgrades-backdoor-spy-telcos,China Upgrades the Backdoor It Uses to Spy on Telcos Globally,Dark Reading,cyberattaque,critique,2026-03-27T20:39:58.677802+00:00
+https://isc.sans.edu/diary/rss/32838,"TeamPCP Supply Chain Campaign: Update 002 - Telnyx PyPI Compromise, Vect Ransomware Mass Affiliate Program, and First Named Victim Claim, (Fri, Mar 27th)",SANS ISC,outil,critique,2026-03-27T20:39:54.857947+00:00
+https://therecord.media/dutch-court-threatens-xai-with-fines-grok-nudification,Dutch court threatens xAI with fines over Grok's nonconsensual nude images,The Record,cyberattaque,important,2026-03-27T20:39:42.976632+00:00
+https://therecord.media/eu-parliament-rejects-csam-scanning-extension,European Parliament rejects extension of CSAM scanning rules for tech platforms,The Record,cyberattaque,important,2026-03-27T20:39:37.963629+00:00
+https://thehackernews.com/2026/03/langchain-langgraph-flaws-expose-files.html,"LangChain, LangGraph Flaws Expose Files, Secrets, Databases in Widely Used AI Frameworks",The Hacker News,cyberattaque,important,2026-03-27T20:39:33.779509+00:00
+https://isc.sans.edu/diary/rss/32834,"TeamPCP Supply Chain Campaign: Update 001 - Checkmarx Scope Wider Than Reported, CISA KEV Entry, and Detection Tools Available, (Thu, Mar 26th)",SANS ISC,outil,critique,2026-03-27T20:39:18.484275+00:00
+https://www.bleepingcomputer.com/news/security/cisa-new-langflow-flaw-actively-exploited-to-hijack-ai-workflows/,CISA: New Langflow flaw actively exploited to hijack AI workflows,BleepingComputer,cyberattaque,critique,2026-03-27T20:39:11.993066+00:00
+https://www.tenable.com/blog/uncover-prompt-injection-insider-threats-model-refusal-detection,"Uncover prompt injection, insider threats with the Tenable One Model Refusal Detection",Tenable Blog,alerte,moyen,2026-03-27T20:39:06.028782+00:00
+https://www.rapid7.com/blog/post/em-cvss-and-exposure-management,Why CVSS is No Longer Enough for Exposure Management,Rapid7 Blog,outil,important,2026-03-27T20:39:02.258361+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-1961,CVE-2026-1961,NVD,cve,important,2026-03-26T14:19:38.513542+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25210,CVE-2018-25210,NVD,cve,important,2026-03-26T14:18:29.088961+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25209,CVE-2018-25209,NVD,cve,important,2026-03-26T14:17:18.303066+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25208,CVE-2018-25208,NVD,cve,important,2026-03-26T14:16:09.504185+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25207,CVE-2018-25207,NVD,cve,important,2026-03-26T14:14:59.963170+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25206,CVE-2018-25206,NVD,cve,important,2026-03-26T14:14:55.299902+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25205,CVE-2018-25205,NVD,cve,important,2026-03-26T14:13:43.093647+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25204,CVE-2018-25204,NVD,cve,important,2026-03-26T14:12:33.086847+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25203,CVE-2018-25203,NVD,cve,important,2026-03-26T14:11:24.098408+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25202,CVE-2018-25202,NVD,cve,important,2026-03-26T14:10:14.613528+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25201,CVE-2018-25201,NVD,cve,important,2026-03-26T14:10:10.139267+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25195,CVE-2018-25195,NVD,cve,important,2026-03-26T14:10:05.902474+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25185,CVE-2018-25185,NVD,cve,important,2026-03-26T14:10:01.146706+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2018-25183,CVE-2018-25183,NVD,cve,important,2026-03-26T14:09:56.761881+00:00
+https://www.it-connect.fr/apple-devoile-apple-business-son-mdm-gratuit-pour-les-entreprises/,"Apple dévoile Apple Business, son MDM gratuit pour les entreprises",IT Connect,veille_fr,info,2026-03-26T14:09:50.947196+00:00
+https://thehackernews.com/2026/03/masters-of-imitation-how-hackers-and.html,Masters of Imitation: How Hackers and Art Forgers Perfect the Art of Deception,The Hacker News,cyberattaque,info,2026-03-26T14:09:44.243028+00:00
+https://www.zataz.com/le-fisc-russe-coupe-letranger-pour-contrer-les-ddos/,Le fisc russe coupe l’étranger pour contrer les DDoS,Zataz,cyberattaque,moyen,2026-03-26T14:09:35.345631+00:00
+https://www.darkreading.com/cyber-risk/intermediaries-driving-global-spyware-market-expansion,Intermediaries Driving Global Spyware Market Expansion,Dark Reading,cyberattaque,important,2026-03-26T14:09:30.336972+00:00
+https://therecord.media/xinbi-crypto-marketplace-sanctioned,UK sanctions Chinese crypto marketplace tied to scam compounds,The Record,cyberattaque,important,2026-03-26T14:09:26.098871+00:00
+https://therecord.media/snapchat-child-safety-pornhub-eu,EU investigating Snapchat and pornography sites in child safety crackdown,The Record,cyberattaque,critique,2026-03-26T14:09:21.714770+00:00
+https://www.bleepingcomputer.com/news/security/coruna-ios-exploit-framework-linked-to-triangulation-attacks/,Coruna iOS exploit framework linked to Triangulation attacks,BleepingComputer,cyberattaque,critique,2026-03-26T14:09:10.774401+00:00
+https://www.bleepingcomputer.com/news/security/inside-a-modern-fraud-attack-from-bot-signups-to-account-takeovers/,Inside a Modern Fraud Attack: From Bot Signups to Account Takeovers,BleepingComputer,cyberattaque,critique,2026-03-26T14:09:05.543406+00:00
+https://thehackernews.com/2026/03/threatsday-bulletin-pqc-push-ai-vuln.html,"ThreatsDay Bulletin: PQC Push, AI Vuln Hunting, Pirated Traps, Phishing Kits & 20 More Stories",The Hacker News,cyberattaque,critique,2026-03-26T14:09:00.863951+00:00
+https://thehackernews.com/2026/03/claude-extension-flaw-enabled-zero.html,Claude Extension Flaw Enabled Zero-Click XSS Prompt Injection via Any Website,The Hacker News,cyberattaque,important,2026-03-26T14:08:56.391288+00:00
+https://www.securityweek.com/chinese-hackers-caught-deep-within-telecom-backbone-infrastructure/,Chinese Hackers Caught Deep Within Telecom Backbone Infrastructure,SecurityWeek,cyberattaque,critique,2026-03-26T14:07:43.700212+00:00
+https://www.securityweek.com/bind-updates-patch-high-severity-vulnerabilities-2/,BIND Updates Patch High-Severity Vulnerabilities,SecurityWeek,cyberattaque,critique,2026-03-26T14:07:38.887464+00:00
+https://www.bleepingcomputer.com/news/security/russia-arrests-suspected-owner-and-admin-of-leakbase-cybercrime-forum/,Russia arrests suspected owner of LeakBase cybercrime forum,BleepingComputer,cyberattaque,important,2026-03-26T14:07:34.617011+00:00
+https://www.securityweek.com/cisco-patches-multiple-vulnerabilities-in-ios-software/,Cisco Patches Multiple Vulnerabilities in IOS Software,SecurityWeek,cyberattaque,critique,2026-03-26T14:07:29.937079+00:00
+https://therecord.media/leakbase-russia-admin-arrest-cyber,Russia detains alleged admin of LeakBase cybercrime forum weeks after global crackdown,The Record,cyberattaque,important,2026-03-26T14:07:23.364677+00:00
+https://www.rapid7.com/blog/post/tr-bpfdoor-telecom-networks-sleeper-cells-threat-research-report,BPFdoor in Telecom Networks: Sleeper Cells in the Backbone,Rapid7 Blog,outil,critique,2026-03-26T14:07:18.050177+00:00
+https://www.it-connect.fr/github-va-activer-par-defaut-la-collecte-de-donnees-copilot-pour-entrainer-lia/,GitHub va activer par défaut la collecte de données Copilot pour entraîner l’IA,IT Connect,veille_fr,moyen,2026-03-26T12:11:15.556384+00:00
+https://www.undernews.fr/anonymat-cryptographie/les-telechargements-de-vpn-diminuent-dans-le-monde-en-2025-mais-leur-adoption-globale-se-poursuit.html,Les téléchargements de VPN diminuent dans le monde en 2025 mais leur adoption globale se poursuit,UnderNews,veille_fr,info,2026-03-26T12:11:10.887598+00:00
+https://www.undernews.fr/reseau-securite/vos-outils-de-securite-sont-ils-devenus-vos-pires-ennemis.html,Vos outils de sécurité sont-ils devenus vos pires ennemis ?,UnderNews,veille_fr,critique,2026-03-26T12:11:00.028478+00:00
+https://thehackernews.com/2026/03/webinar-stop-guessing-learn-to-validate.html,[Webinar] Stop Guessing. Learn to Validate Your Defenses Against Real Attacks,The Hacker News,cyberattaque,moyen,2026-03-26T12:10:47.862549+00:00
+https://www.bleepingcomputer.com/news/security/suspected-redline-infostealer-administrator-extradited-to-us/,Suspected RedLine infostealer malware admin extradited to US,BleepingComputer,cyberattaque,critique,2026-03-26T12:10:42.966181+00:00
+https://thehackernews.com/2026/03/coruna-ios-kit-reuses-2023.html,Coruna iOS Kit Reuses 2023 Triangulation Exploit Code in New Mass Attacks,The Hacker News,cyberattaque,critique,2026-03-26T12:09:31.343416+00:00
+https://www.undernews.fr/malwares-virus-antivirus/zimperium-publie-de-nouveaux-indicateurs-de-compromission-lies-au-malware-bancaire-android-taxispy.html,Zimperium publie de nouveaux indicateurs de compromission liés au malware bancaire Android TaxiSpy,UnderNews,veille_fr,critique,2026-03-26T12:09:26.018890+00:00
+https://github.com/febin0x10/Fortinet_FortiClient_Exploit_CVE-2026-24018,febin0x10/Fortinet_FortiClient_Exploit_CVE-2026-24018,GitHub PoC,poc,info,2026-03-26T11:04:11.776435+00:00
+https://github.com/zenniskayy2k4/CVE-2024-36039_PoC,zenniskayy2k4/CVE-2024-36039_PoC,GitHub PoC,poc,info,2026-03-26T11:04:11.772896+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4862,CVE-2026-4862,NVD,cve,important,2026-03-26T11:03:56.583396+00:00
+https://www.lemondeinformatique.fr/actualites/lire-forescout-pousse-la-segmentation-reseau-basee-sur-l-identite-99744.html,Forescout pousse la segmentation réseau basée sur l'identité,Le Monde Informatique Secu,veille_fr,info,2026-03-26T11:03:49.738833+00:00
+https://www.securityweek.com/alleged-redline-malware-administrator-extradited-to-us/,Alleged RedLine Malware Administrator Extradited to US,SecurityWeek,cyberattaque,important,2026-03-26T11:02:30.712151+00:00
+https://www.zataz.com/phishing-clash-of-clans-le-hack-plus-beau-que-le-jeu/,Phishing Clash of Clans : le hack plus beau que le jeu,Zataz,cyberattaque,important,2026-03-26T11:02:23.224431+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4861,CVE-2026-4861,NVD,cve,important,2026-03-26T09:38:33.924318+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4860,CVE-2026-4860,NVD,cve,important,2026-03-26T09:38:29.375487+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4850,CVE-2026-4850,NVD,cve,important,2026-03-26T09:38:24.876021+00:00
+https://www.lemondeinformatique.fr/actualites/lire-l-aide-du-gouvernement-britannique-a-jaguar-land-rover-critiquee-99736.html,L'aide du gouvernement britannique à Jaguar Land Rover critiquée,Le Monde Informatique Secu,veille_fr,critique,2026-03-26T09:38:17.984835+00:00
+https://www.securityweek.com/hp-and-dell-roll-out-quantum-resistant-device-security-and-ai-era-cyber-resilience/,Dell and HP Roll Out Quantum-Resistant Device Security and AI-Era Cyber Resilience,SecurityWeek,cyberattaque,info,2026-03-26T09:38:12.094324+00:00
+https://www.lemondeinformatique.fr/actualites/lire-le-malware-stoatwaffle-cible-les-developpeurs-99743.html,Le malware StoatWaffle cible les développeurs,Le Monde Informatique Secu,veille_fr,critique,2026-03-26T09:36:53.191692+00:00
+https://thehackernews.com/2026/03/webrtc-skimmer-bypasses-csp-to-steal.html,WebRTC Skimmer Bypasses CSP to Steal Payment Data from E-Commerce Sites,The Hacker News,cyberattaque,critique,2026-03-26T09:36:45.036909+00:00
+https://www.lemondeinformatique.fr/actualites/lire-dpo-consulting-integre-le-pole-advisory-de-grant-thornton-france-99738.html,DPO Consulting intÃšgre le pÃŽle Advisory de Grant Thornton France,Le Monde Informatique Secu,veille_fr,info,2026-03-26T08:14:52.752521+00:00
+https://www.it-connect.fr/cve-2026-3055-appliquez-ce-patch-citrix-avant-quil-ne-soit-trop-tard/,CVE-2026-3055 : appliquez ce patch Citrix avant qu’il ne soit trop tard,IT Connect,veille_fr,critique,2026-03-26T08:12:33.771158+00:00
+https://github.com/danieljosmariyan7254/TryHackMe-Solar-exploiting-log4j-,danieljosmariyan7254/TryHackMe-Solar-exploiting-log4j-,GitHub PoC,poc,info,2026-03-26T07:23:14.653291+00:00
+https://github.com/bx33661/CVE-2026-30039,bx33661/CVE-2026-30039,GitHub PoC,poc,info,2026-03-26T07:23:14.651142+00:00
+https://github.com/tracyliving606/RegPwn,tracyliving606/RegPwn,GitHub PoC,poc,info,2026-03-26T07:23:14.648318+00:00
+https://github.com/K4ptor/CVE-2023-22515,K4ptor/CVE-2023-22515,GitHub PoC,poc,info,2026-03-26T07:23:14.488515+00:00
+https://www.it-connect.fr/piratage-de-litellm-des-millions-dutilisateurs-python-sous-la-menace-de-teampcp/,Piratage de LiteLLM : des millions d’utilisateurs Python sous la menace de TeamPCP,IT Connect,veille_fr,important,2026-03-26T07:21:50.173443+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4844,CVE-2026-4844,NVD,cve,important,2026-03-26T05:46:26.397696+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4842,CVE-2026-4842,NVD,cve,important,2026-03-26T05:45:16.492159+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4841,CVE-2026-4841,NVD,cve,important,2026-03-26T05:45:12.249391+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4840,CVE-2026-4840,NVD,cve,important,2026-03-26T05:45:07.967844+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4329,CVE-2026-4329,NVD,cve,important,2026-03-26T05:45:03.713076+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-2931,CVE-2026-2931,NVD,cve,important,2026-03-26T05:44:59.387699+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4839,CVE-2026-4839,NVD,cve,important,2026-03-26T05:44:53.117213+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4838,CVE-2026-4838,NVD,cve,important,2026-03-26T05:44:48.881904+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3328,CVE-2026-3328,NVD,cve,important,2026-03-26T05:44:44.460254+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4758,CVE-2026-4758,NVD,cve,important,2026-03-26T03:38:36.344034+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4484,CVE-2026-4484,NVD,cve,critique,2026-03-26T03:38:32.088135+00:00
+https://isc.sans.edu/diary/rss/32832,"ISC Stormcast For Thursday, March 26th, 2026 https://isc.sans.edu/podcastdetail/9866, (Thu, Mar 26th)",SANS ISC,outil,info,2026-03-26T03:38:23.157990+00:00
+https://www.schneier.com/blog/archives/2026/03/team-mirai-and-democracy.html,Team Mirai and Democracy,Schneier on Security,outil,info,2026-03-26T00:03:47.691202+00:00
+https://www.zataz.com/une-boutique-dediee-aux-fuites-de-donnees-vitrine-dun-marche-noir-methodique/,Une nouvelle boutique dédiée aux fuites de données : vitrine d’un marché noir méthodique,Zataz,cyberattaque,important,2026-03-26T00:02:36.789447+00:00
+https://www.bleepingcomputer.com/news/security/github-adds-ai-powered-bug-detection-to-expand-security-coverage/,GitHub adds AI-powered bug detection to expand security coverage,BleepingComputer,cyberattaque,moyen,2026-03-26T00:01:17.502837+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4824,CVE-2026-4824,NVD,cve,important,2026-03-25T23:07:46.970170+00:00
+https://www.darkreading.com/cyber-risk/rsac-eu-leads-us-officials-sidelined,"At RSAC, the EU Leads While US Officials Are Sidelined",Dark Reading,cyberattaque,info,2026-03-25T23:06:31.799070+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4822,CVE-2026-4822,NVD,cve,important,2026-03-25T22:07:03.258175+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-36258,CVE-2025-36258,NVD,cve,important,2026-03-25T22:05:54.664745+00:00
+https://isc.sans.edu/diary/rss/32830,"Apple Patches (almost) everything again. March 2026 edition., (Wed, Mar 25th)",SANS ISC,outil,critique,2026-03-25T22:04:31.124432+00:00
+https://www.bleepingcomputer.com/news/security/polyshell-attacks-target-56-percent-of-all-vulnerable-magento-stores/,PolyShell attacks target 56% of all vulnerable Magento stores,BleepingComputer,cyberattaque,critique,2026-03-25T22:04:24.038462+00:00
+https://therecord.media/cisa-acting-chief-warns-shutdown-increasing-risks-leading-to-retention-issues,"CISA's acting chief warns shutdown is increasing cyber risks, causing resignations",The Record,cyberattaque,important,2026-03-25T21:04:36.190736+00:00
+https://www.bleepingcomputer.com/news/security/bubble-ai-app-builder-abused-to-steal-microsoft-account-credentials/,Bubble AI app builder abused to steal Microsoft account credentials,BleepingComputer,cyberattaque,critique,2026-03-25T20:04:14.520467+00:00
+https://www.zataz.com/quand-larnaque-amoureuse-change-de-visage/,Quand l’arnaque amoureuse change de visage,Zataz,cyberattaque,moyen,2026-03-25T19:28:39.053059+00:00
+https://www.bleepingcomputer.com/news/security/new-torg-grabber-infostealer-malware-targets-728-crypto-wallets/,New Torg Grabber infostealer malware targets 728 crypto wallets,BleepingComputer,cyberattaque,critique,2026-03-25T19:27:20.629799+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-33017,CVE-2026-33017,CISA KEV,kev,critique,2026-03-25T18:05:35.205895+00:00
+https://www.darkreading.com/cyber-risk/blame-game-public-cyber-attribution-risks,Blame Game: Why Public Cyber Attribution Carries Risks,Dark Reading,cyberattaque,moyen,2026-03-25T18:04:18.968750+00:00
+https://thehackernews.com/2026/03/leakbase-admin-arrested-in-russia-over.html,LeakBase Admin Arrested in Russia Over Massive Stolen Credential Marketplace,The Hacker News,cyberattaque,critique,2026-03-25T18:03:00.783547+00:00
+https://therecord.media/supply-chain-attack-hits-widely-used-ai-package,"Supply chain attack hits widely-used AI package, risks impacting thousands of companies",The Record,cyberattaque,critique,2026-03-25T18:02:55.861709+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-20125,CVE-2026-20125,NVD,cve,important,2026-03-25T16:54:55.992460+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-20086,CVE-2026-20086,NVD,cve,important,2026-03-25T16:53:46.450382+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-20084,CVE-2026-20084,NVD,cve,important,2026-03-25T16:52:36.085342+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-20012,CVE-2026-20012,NVD,cve,important,2026-03-25T16:51:26.425046+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-20004,CVE-2026-20004,NVD,cve,important,2026-03-25T16:50:17.014401+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2024-58341,CVE-2024-58341,NVD,cve,important,2026-03-25T16:50:12.472270+00:00
+https://www.lemondeinformatique.fr/actualites/lire-entretien-christophe-leray-dsi-de-stef--de-serieux-doutes-sur-la-reversibilite-du-saas-99711.html,"Entretien Christophe Leray, DSI de Stef: « De sérieux doutes sur la réversibilité du SaaS »",Le Monde Informatique Secu,veille_fr,info,2026-03-25T16:48:58.000048+00:00
+https://www.lemondeinformatique.fr/actualites/lire-llm-et-agents-ia-quelles-evolutions-a-venir-99726.html,LLM et agents IA : quelles évolutions à venir ?,Le Monde Informatique Secu,veille_fr,info,2026-03-25T16:47:48.602586+00:00
+https://www.lemondeinformatique.fr/actualites/lire-nicolas-mechin-nomme-dg-de-hub-one-99733.html,Nicolas Méchin nommé DG de Hub One,Le Monde Informatique Secu,veille_fr,info,2026-03-25T16:46:39.423924+00:00
+https://www.securityweek.com/onit-security-raises-11-million-for-exposure-management-platform/,Onit Security Raises $11 Million for Exposure Management Platform,SecurityWeek,cyberattaque,info,2026-03-25T16:45:27.848156+00:00
+https://therecord.media/puerto-rico-gov-agency-cancels-driver-license-appointments-cyber-incident,Puerto Rico government agency cancels driver’s license appointments after cyberattack,The Record,cyberattaque,important,2026-03-25T16:45:23.429001+00:00
+https://www.zataz.com/lespionnage-recrute-sur-linkedin-tiktok-ou-sur-votre-blog/,"L’espionnage recrute sur LinkedIn, TikTok ou sur votre blog",Zataz,cyberattaque,important,2026-03-25T16:45:14.060633+00:00
+https://www.darkreading.com/cyberattacks-data-breaches/phishers-pose-palo-alto-networks-recruiters-job-scam,Phishers Pose as Palo Alto Networks' Recruiters for Months in Job Scam,Dark Reading,cyberattaque,critique,2026-03-25T16:45:08.058466+00:00
+https://therecord.media/port-of-vigo-ransomware,Ransomware attack disrupts operation at major Spanish fishing port,The Record,cyberattaque,important,2026-03-25T16:43:50.990930+00:00
+https://www.lemondeinformatique.fr/actualites/lire-palo-alto-networks-renforce-la-securite-des-agents-ia-dans-prisma-airs-99739.html,Palo Alto Networks renforce la sécurité des agents IA dans Prisma Airs,Le Monde Informatique Secu,veille_fr,moyen,2026-03-25T16:43:45.856711+00:00
+https://www.undernews.fr/reseau-securite/les-incidents-critiques-en-net-recul-au-fil-des-ans-selon-les-experts-kaspersky.html,Les incidents critiques en net recul au fil des ans selon les experts Kaspersky,UnderNews,veille_fr,info,2026-03-25T16:43:40.625319+00:00
+https://www.bleepingcomputer.com/news/security/citrix-urges-admins-to-patch-netscaler-flaws-as-soon-as-possible/,Citrix urges admins to patch NetScaler flaws as soon as possible,BleepingComputer,cyberattaque,critique,2026-03-25T16:43:32.880783+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3104,CVE-2026-3104,NVD,cve,important,2026-03-25T15:17:17.792436+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-1519,CVE-2026-1519,NVD,cve,important,2026-03-25T15:17:13.046275+00:00
+https://www.it-connect.fr/darksword-permet-de-pirater-un-iphone-avec-une-simple-page-web/,DarkSword permet de pirater un iPhone avec une simple page web,IT Connect,veille_fr,critique,2026-03-25T15:15:53.351911+00:00
+https://www.securityweek.com/russian-cybercriminal-gets-2-year-prison-sentence-in-us/,Russian Cybercriminal Gets 2-Year Prison Sentence in US,SecurityWeek,cyberattaque,moyen,2026-03-25T15:15:46.702582+00:00
+https://www.darkreading.com/threat-intelligence/sans-most-dangerous-attack-techniques,SANS: Top 5 Most Dangerous New Attack Techniques to Watch,Dark Reading,cyberattaque,important,2026-03-25T15:15:42.488236+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0358/,Vulnérabilité dans Citrix XenServer (25 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-25T15:15:38.024124+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0356/,Vulnérabilité dans ISC Kea (25 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-25T15:15:33.878694+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0355/,Multiples vulnérabilités dans les produits Apple (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:29.493459+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0354/,Multiples vulnérabilités dans les produits Mozilla (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:25.219935+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0353/,Multiples vulnérabilités dans Zabbix (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:21.037403+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0352/,Multiples vulnérabilités dans les produits F5 (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:16.453340+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0351/,Vulnérabilité dans Tenable OT Platform (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:09.576394+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0350/,Multiples vulnérabilités dans Squid (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:15:05.299964+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0357/,Multiples vulnérabilités dans GitLab (25 mars 2026),CERT-FR Avis,alerte,critique,2026-03-25T15:14:56.902429+00:00
+https://www.securityweek.com/ai-speeds-attacks-but-identity-remains-cybersecuritys-weakest-link/,"AI Speeds Attacks, But Identity Remains Cybersecurity’s Weakest Link",SecurityWeek,cyberattaque,critique,2026-03-25T15:14:49.451358+00:00
+https://www.darkreading.com/cyber-risk/experts-near-miss-database-improve-information-sharing,Why a 'Near Miss' Database Is Key to Improving Information Sharing,Dark Reading,cyberattaque,moyen,2026-03-25T15:14:44.883700+00:00
+https://www.bleepingcomputer.com/news/security/paid-ai-accounts-are-now-a-hot-underground-commodity/,Paid AI Accounts Are Now a Hot Underground Commodity,BleepingComputer,cyberattaque,moyen,2026-03-25T15:14:40.780462+00:00
+https://therecord.media/russian-botnet-operator-sentenced-ransomware,Russian botnet operator linked to major ransomware attacks sentenced in US,The Record,cyberattaque,critique,2026-03-25T15:13:30.045357+00:00
+https://thehackernews.com/2026/03/glassworm-malware-uses-solana-dead.html,"GlassWorm Malware Uses Solana Dead Drops to Deliver RAT and Steal Browser, Crypto Data",The Hacker News,cyberattaque,critique,2026-03-25T15:13:22.991923+00:00
+https://www.rapid7.com/blog/post/pt-vectors-verdicts-web-app-testing-vector-command,From Vectors to Verdicts: Web App Testing with Vector Command,Rapid7 Blog,outil,important,2026-03-25T15:13:15.649067+00:00
+https://www.lemondeinformatique.fr/actualites/lire-un-infostealer-contourne-le-chiffrement-abe-de-chrome-99732.html,Un infostealer contourne le chiffrement ABE de Chrome,Le Monde Informatique Secu,veille_fr,critique,2026-03-25T14:00:23.852090+00:00
+https://www.securityweek.com/rsac-2026-conference-announcements-summary-day-2/,RSAC 2026 Conference Announcements Summary (Day 2),SecurityWeek,cyberattaque,info,2026-03-25T14:00:11.354721+00:00
+https://www.securityweek.com/fcc-bans-new-foreign-made-consumer-routers-over-national-security-risks/,FCC Bans New Routers Made Outside the US Over National Security Risks,SecurityWeek,cyberattaque,important,2026-03-25T14:00:05.961482+00:00
+https://www.darkreading.com/cyber-risk/ex-nsa-directors-red-line-offensive-cyberattacks,Ex-NSA Directors Discuss 'Red Line' for Offensive Cyberattacks,Dark Reading,cyberattaque,info,2026-03-25T14:00:00.228811+00:00
+https://therecord.media/uk-cyber-chief-urges-full-court-press-to-counter-risks,UK cyber chief urges ‘full court press’ to counter rising cyber threats,The Record,cyberattaque,critique,2026-03-25T13:59:55.789137+00:00
+https://www.darkreading.com/cybersecurity-operations/ai-native-security-counter-attacks,AI-Native Security Is a Must to Counter AI-Based Attacks,Dark Reading,cyberattaque,critique,2026-03-25T13:59:42.593351+00:00
+https://thehackernews.com/2026/03/the-kill-chain-is-obsolete-when-your-ai.html,The Kill Chain Is Obsolete When Your AI Agent Is the Threat,The Hacker News,cyberattaque,critique,2026-03-25T13:59:37.685932+00:00
+https://www.bleepingcomputer.com/news/linux/kali-linux-20261-released-with-8-new-tools-new-backtrack-mode/,"Kali Linux 2026.1 released with 8 new tools, new BackTrack mode",BleepingComputer,cyberattaque,info,2026-03-25T13:59:32.599063+00:00
+https://www.securityweek.com/ios-macos-26-4-roll-out-with-fresh-security-updates/,"iOS, macOS 26.4 Roll Out With Fresh Security Patches",SecurityWeek,cyberattaque,critique,2026-03-25T13:59:27.851207+00:00
+https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html,Device Code Phishing Hits 340+ Microsoft 365 Orgs Across Five Countries via OAuth Abuse,The Hacker News,cyberattaque,important,2026-03-25T13:58:17.867922+00:00
+https://thehackernews.com/2026/03/russian-hacker-sentenced-to-2-years-for.html,Russian Hacker Sentenced to 2 Years for TA551 Botnet-Driven Ransomware Attacks,The Hacker News,cyberattaque,important,2026-03-25T13:57:04.267268+00:00
+https://www.zataz.com/phishing-massif-ups-les-faux-colis-debarquent-en-force/,Phishing massif UPS : les faux colis débarquent en force,Zataz,cyberattaque,critique,2026-03-25T13:56:56.708845+00:00
+https://www.tenable.com/blog/security-for-ai-guide-managing-vibe-coding-risks-ai-in-software-development,Security for AI: A guide to managing the risks of vibe coding and AI in software development,Tenable Blog,alerte,moyen,2026-03-25T13:56:48.902618+00:00
+https://www.securityweek.com/from-trivy-to-broad-oss-compromise-teampcp-hits-docker-hub-vs-code-pypi/,"From Trivy to Broad OSS Compromise: TeamPCP Hits Docker Hub, VS Code, PyPI",SecurityWeek,cyberattaque,critique,2026-03-25T12:06:44.289790+00:00
+https://www.darkreading.com/cloud-security/csa-launches-csai-ai-security,CSA Launches CSAI Foundation for AI Security,Dark Reading,cyberattaque,info,2026-03-25T12:06:37.466917+00:00
+https://therecord.media/uk-social-media-ban-pilot,UK pilot program to test social media restrictions on families before government decides on ban,The Record,cyberattaque,info,2026-03-25T12:06:32.329806+00:00
+https://github.com/yassertioursi/htb-kobold-writeup,yassertioursi/htb-kobold-writeup,GitHub PoC,poc,info,2026-03-25T11:27:26.217672+00:00
+https://github.com/devianntsec/CVE-2024-30051-DWMHeapOverflow-Masters-Thesis,devianntsec/CVE-2024-30051-DWMHeapOverflow-Masters-Thesis,GitHub PoC,poc,info,2026-03-25T11:27:26.215461+00:00
+https://github.com/devianntsec/CVE-2021-4034-PwnKit-Masters-Thesis,devianntsec/CVE-2021-4034-PwnKit-Masters-Thesis,GitHub PoC,poc,info,2026-03-25T11:27:26.212633+00:00
+https://github.com/devianntsec/CVE-2024-51324-BYOVD-Masters-Thesis,devianntsec/CVE-2024-51324-BYOVD-Masters-Thesis,GitHub PoC,poc,info,2026-03-25T11:27:25.977057+00:00
+https://github.com/devianntsec/CVE-2025-55182-React2Shell-Masters-Thesis,devianntsec/CVE-2025-55182-React2Shell-Masters-Thesis,GitHub PoC,poc,info,2026-03-25T11:27:25.974973+00:00
+https://github.com/adk86/CVE-Vulnerability-Research-Exploit-Analysis,adk86/CVE-Vulnerability-Research-Exploit-Analysis,GitHub PoC,poc,info,2026-03-25T11:27:25.971671+00:00
+https://hackaday.com/2026/03/25/electric-motorcycles-dont-have-to-be-security-nightmares-but-this-one-was/,"Electric Motorcycles Don’t Have To Be Security Nightmares, But This One Was",Hackaday Security,outil,critique,2026-03-25T11:27:00.104022+00:00
+https://www.schneier.com/blog/archives/2026/03/sen-wyden-warns-of-another-section-702-abuse.html,Sen. Wyden Warns of Another Section 702 Abuse,Schneier on Security,outil,important,2026-03-25T11:26:53.652868+00:00
+https://www.lemondeinformatique.fr/actualites/lire-avec-lakewatch-databricks-arrive-sur-le-marche-du-siem-99728.html,"Avec Lakewatch, Databricks arrive sur le marché du SIEM",Le Monde Informatique Secu,veille_fr,info,2026-03-25T11:26:49.011501+00:00
+https://www.bleepingcomputer.com/news/security/tp-link-warns-users-to-patch-critical-router-auth-bypass-flaw/,TP-Link warns users to patch critical router auth bypass flaw,BleepingComputer,cyberattaque,critique,2026-03-25T11:25:32.007543+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3608,CVE-2026-3608,NVD,cve,important,2026-03-25T10:30:48.917420+00:00
+https://www.it-connect.fr/google-chrome-34-vulnerabilites-corrigees-en-quelques-jours/,Google Chrome : 34 vulnérabilités corrigées en quelques jours,IT Connect,veille_fr,moyen,2026-03-25T10:30:37.735568+00:00
+https://www.securityweek.com/us-prisons-russian-access-broker-for-aiding-ransomware-attacks/,US Prisons Russian Access Broker for Aiding Ransomware Attacks,SecurityWeek,cyberattaque,important,2026-03-25T10:28:11.937969+00:00
+https://www.lemondeinformatique.fr/actualites/lire-les-rssi-face-au-defi-de-l-observabilite-des-agents-ia-99721.html,Les RSSI face au défi de l'observabilité des agents IA,Le Monde Informatique Secu,veille_fr,moyen,2026-03-25T09:05:21.026570+00:00
+https://www.lemondeinformatique.fr/actualites/lire-le-commissariat-au-numerique-de-defense-recrute-des-profils-it-a-l-efrei-99722.html,Le Commissariat au numérique de Défense recrute des profils IT à l'Efrei,Le Monde Informatique Secu,veille_fr,info,2026-03-25T09:05:15.932498+00:00
+https://thehackernews.com/2026/03/fcc-bans-new-foreign-made-routers-over.html,FCC Bans New Foreign-Made Routers Over Supply Chain and Cyber Risk Concerns,The Hacker News,cyberattaque,important,2026-03-25T09:03:54.319812+00:00
+https://www.bleepingcomputer.com/news/security/russian-man-sentenced-for-operating-botnet-used-in-ransomware-attacks/,Manager of botnet used in ransomware attacks gets 2 years in prison,BleepingComputer,cyberattaque,important,2026-03-25T09:03:49.760905+00:00
+https://www.it-connect.fr/bug-outlook-microsoft-repare-enfin-la-synchronisation-avec-gmail/,Bug Outlook : Microsoft répare (enfin) la synchronisation avec Gmail,IT Connect,veille_fr,moyen,2026-03-25T08:00:04.853998+00:00
+https://www.it-connect.fr/piratage-du-crous-les-donnees-de-774-000-etudiants-dans-la-nature-mars-2026/,Piratage du CROUS : les données de 774 000 étudiants dans la nature,IT Connect,veille_fr,critique,2026-03-25T07:59:59.453341+00:00
+https://www.securityweek.com/hackerone-employee-data-exposed-in-massive-navia-breach/,HackerOne Employee Data Exposed in Massive Navia Breach,SecurityWeek,cyberattaque,important,2026-03-25T07:58:41.188251+00:00
+https://www.darkreading.com/threat-intelligence/iran-hacktivists-impact-on-war,Iran Hacktivists Make Noise but Have Little Impact on War,Dark Reading,cyberattaque,moyen,2026-03-25T05:03:22.315758+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4784,CVE-2026-4784,NVD,cve,important,2026-03-25T02:51:35.004554+00:00
+https://isc.sans.edu/diary/rss/32826,"SmartApeSG campaign pushes Remcos RAT, NetSupport RAT, StealC, and Sectop RAT (ArechClient2), (Wed, Mar 25th)",SANS ISC,outil,important,2026-03-25T02:51:24.866964+00:00
+https://isc.sans.edu/diary/rss/32828,"ISC Stormcast For Wednesday, March 25th, 2026 https://isc.sans.edu/podcastdetail/9864, (Wed, Mar 25th)",SANS ISC,outil,info,2026-03-25T02:51:19.779068+00:00
+https://www.bleepingcomputer.com/news/security/ptc-warns-of-imminent-threat-from-critical-windchill-flexplm-rce-bug/,"PTC warns of imminent threat from critical Windchill, FlexPLM RCE bug",BleepingComputer,cyberattaque,critique,2026-03-24T23:39:30.890519+00:00
+https://www.bleepingcomputer.com/news/security/popular-litellm-pypi-package-compromised-in-teampcp-supply-chain-attack/,Popular LiteLLM PyPI package compromised in TeamPCP supply chain attack,BleepingComputer,cyberattaque,critique,2026-03-24T22:40:47.889575+00:00
+https://www.darkreading.com/application-security/ai-coding-tools-endpoint-security,How AI Coding Tools Crushed the Endpoint Security Fortress,Dark Reading,cyberattaque,important,2026-03-24T21:47:32.881785+00:00
+https://therecord.media/vibe-coding-uk-security-risk,"Vibe coding could reshape SaaS industry and add security risks, warns UK cyber agency",The Record,cyberattaque,moyen,2026-03-24T21:46:19.464971+00:00
+https://www.darkreading.com/application-security/checkmarx-kics-code-scanner-widening-supply-chain,Checkmarx KICS Code Scanner Targeted in Widening Supply Chain Hit,Dark Reading,cyberattaque,critique,2026-03-24T21:46:14.706632+00:00
+https://www.bleepingcomputer.com/news/security/fcc-bans-new-routers-made-outside-the-usa-over-security-risks/,FCC bans new routers made outside the USA over security risks,BleepingComputer,cyberattaque,important,2026-03-24T20:53:24.690140+00:00
+https://www.securityweek.com/doe-publishes-5-year-energy-security-plan/,DoE Publishes 5-Year Energy Security Plan,SecurityWeek,cyberattaque,info,2026-03-24T20:53:19.532697+00:00
+https://therecord.media/stryker-cyberattack-malware-iran,Stryker says malware was involved in recent cyberattack as production lines reopen,The Record,cyberattaque,critique,2026-03-24T20:52:09.469976+00:00
+https://www.rapid7.com/blog/post/tr-new-whitepaper-exploiting-cellular-based-iot-devices,New Whitepaper: Exploiting Cellular-based IoT Devices,Rapid7 Blog,outil,critique,2026-03-24T20:52:02.485921+00:00
+https://github.com/zebbernCVE/CVE-2026-26831,zebbernCVE/CVE-2026-26831,GitHub PoC,poc,info,2026-03-24T19:37:14.839456+00:00
+https://github.com/zebbernCVE/CVE-2026-26833,zebbernCVE/CVE-2026-26833,GitHub PoC,poc,info,2026-03-24T19:37:14.556663+00:00
+https://github.com/zebbernCVE/CVE-2026-26830,zebbernCVE/CVE-2026-26830,GitHub PoC,poc,info,2026-03-24T19:37:14.193922+00:00
+https://github.com/zebbernCVE/CVE-2026-26832,zebbernCVE/CVE-2026-26832,GitHub PoC,poc,info,2026-03-24T19:37:13.878174+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4775,CVE-2026-4775,NVD,cve,important,2026-03-24T19:36:56.724315+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32647,CVE-2026-32647,NVD,cve,important,2026-03-24T19:36:50.964664+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-30653,CVE-2026-30653,NVD,cve,important,2026-03-24T19:36:46.290716+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-33497,CVE-2026-33497,NVD,cve,important,2026-03-24T19:36:41.173175+00:00
+https://www.securityweek.com/why-agentic-ai-systems-need-better-governance-lessons-from-openclaw/,Why Agentic AI Systems Need Better Governance – Lessons from OpenClaw,SecurityWeek,cyberattaque,important,2026-03-24T19:36:24.971023+00:00
+https://therecord.media/your-data-will-be-used-against-you-author-surveillance-technology,‘Your Data Will Be Used Against You’: Author of new book on the dangers of a surveillance society,The Record,cyberattaque,info,2026-03-24T19:35:14.752113+00:00
+https://thehackernews.com/2026/03/tax-search-ads-deliver-screenconnect.html,Tax Search Ads Deliver ScreenConnect Malware Using Huawei Driver to Disable EDR,The Hacker News,cyberattaque,critique,2026-03-24T19:35:09.841244+00:00
+https://thehackernews.com/2026/03/teampcp-backdoors-litellm-versions.html,TeamPCP Backdoors LiteLLM Versions 1.82.7–1.82.8 Likely via Trivy CI/CD Compromise,The Hacker News,cyberattaque,critique,2026-03-24T19:35:02.051342+00:00
+https://www.securityweek.com/poland-faced-a-surge-in-cyberattacks-in-2025-including-a-major-assault-on-the-energy-sector/,"Poland Faced a Surge in Cyberattacks in 2025, Including a Major Assault on the Energy Sector",SecurityWeek,cyberattaque,critique,2026-03-24T18:02:29.595772+00:00
+https://therecord.media/fcc-routers-banned-security-china,FCC bans foreign-made routers from US market over ‘unacceptable risk’,The Record,cyberattaque,critique,2026-03-24T18:02:24.825981+00:00
+https://www.bleepingcomputer.com/news/security/firefox-now-has-a-free-built-in-vpn-with-50gb-monthly-data-limit/,Firefox now has a free built-in VPN with 50GB monthly data limit,BleepingComputer,cyberattaque,info,2026-03-24T18:02:17.258116+00:00
+https://thehackernews.com/2026/03/hackers-use-fake-resumes-to-steal.html,Hackers Use Fake Resumes to Steal Enterprise Credentials and Deploy Crypto Miner,The Hacker News,cyberattaque,critique,2026-03-24T18:01:06.450569+00:00
+https://kb.cert.org/vuls/id/330121,VU#330121: IDrive for Windows contains local privilege escalation vulnerability,CERT/CC Vulnerability Notes,0day,critique,2026-03-24T18:00:55.660285+00:00
+http://www.zerodayinitiative.com/advisories/ZDI-26-226/,ZDI-26-226: (0Day) Microsoft Azure MCP AzureCliService Command Injection Remote Code Execution Vulnerability,Zero Day Initiative,0day,critique,2026-03-24T18:00:45.306073+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-71275,CVE-2025-71275,NVD,cve,critique,2026-03-24T16:41:01.074309+00:00
+https://www.securityweek.com/rsac-2026-conference-announcements-summary-day-1/,RSAC 2026 Conference Announcements Summary (Day 1),SecurityWeek,cyberattaque,info,2026-03-24T16:40:42.656436+00:00
+https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bug-causing-outlook-sync-issues-for-gmail-users/,Microsoft fixes bug causing Classic Outlook sync issues with Gmail,BleepingComputer,cyberattaque,critique,2026-03-24T16:40:38.419457+00:00
+https://www.darkreading.com/application-security/github-openclaw-deployer-repo-delivers-trojan,GitHub 'OpenClaw Deployer' Repo Delivers Trojan Instead,Dark Reading,cyberattaque,critique,2026-03-24T16:39:22.680335+00:00
+https://www.tenable.com/blog/hexa-ai-agentic-ai-for-exposure-management,Meet Tenable Hexa AI: Agentic AI for exposure management,Tenable Blog,alerte,info,2026-03-24T16:39:11.905368+00:00
+https://github.com/tarunbharathe/Zero-Click-RCE-Incident-Response-CVE-2025-21298,tarunbharathe/Zero-Click-RCE-Incident-Response-CVE-2025-21298,GitHub PoC,poc,info,2026-03-24T15:17:06.736193+00:00
+https://github.com/eagle-nett/React2Shell-PoC-CVE-2025-55182,eagle-nett/React2Shell-PoC-CVE-2025-55182,GitHub PoC,poc,info,2026-03-24T15:17:06.732478+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-27784,CVE-2026-27784,NVD,cve,important,2026-03-24T15:16:52.651411+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-27654,CVE-2026-27654,NVD,cve,important,2026-03-24T15:16:48.710927+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-27651,CVE-2026-27651,NVD,cve,important,2026-03-24T15:16:44.597331+00:00
+https://www.darkreading.com/threat-intelligence/how-large-bank-uses-ai-digital-twins-threat-hunting,How a Large Bank Uses AI Digital Twins for Threat Hunting,Dark Reading,cyberattaque,info,2026-03-24T15:16:32.482355+00:00
+https://www.bleepingcomputer.com/news/security/zero-trust-bridging-the-gap-between-authentication-and-trust/,Zero Trust: Bridging the Gap Between Authentication and Trust,BleepingComputer,cyberattaque,moyen,2026-03-24T15:16:27.672942+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0349/,Multiples vulnérabilités dans Ruby on Rails (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:16:22.609608+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0348/,Vulnérabilité dans Trend Micro Deep Discovery Inspector (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:16:17.671292+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0347/,Vulnérabilité dans Xen (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:16:13.209289+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0346/,Vulnérabilité dans VMware Tanzu pour Postgres (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:16:06.997231+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0345/,Vulnérabilité dans LibreNMS (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:16:00.458872+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0344/,Vulnérabilité dans strongSwan (24 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-24T15:15:55.856007+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0342/,Multiples vulnérabilités dans Google Chrome (24 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-24T15:15:51.634755+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0343/,Vulnérabilité dans Spring Cloud Config (24 mars 2026),CERT-FR Avis,alerte,critique,2026-03-24T15:15:45.095499+00:00
+https://isc.sans.edu/diary/rss/32824,"Detecting IP KVMs, (Tue, Mar 24th)",SANS ISC,outil,critique,2026-03-24T15:15:40.752924+00:00
+https://therecord.media/netherlands-finance-ministry-cyberattack-breach,Dutch Finance Ministry probing cyber breach affecting internal systems,The Record,cyberattaque,important,2026-03-24T15:15:35.878400+00:00
+https://therecord.media/iran-linked-ransomware-gang-targeted-us-healthcare-org,Iran-linked ransomware gang targeted US healthcare org amid military conflict,The Record,cyberattaque,important,2026-03-24T15:14:26.302610+00:00
+https://www.bleepingcomputer.com/news/security/hackerone-discloses-employee-data-breach-after-navia-hack/,HackerOne discloses employee data breach after Navia hack,BleepingComputer,cyberattaque,important,2026-03-24T15:14:21.803136+00:00
+https://kb.cert.org/vuls/id/577436,VU#577436: Hard coded credentials vulnerability in GoHarbor's Harbor,CERT/CC Vulnerability Notes,0day,critique,2026-03-24T15:14:14.741010+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25647,CVE-2019-25647,NVD,cve,important,2026-03-24T14:02:28.280294+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25643,CVE-2019-25643,NVD,cve,important,2026-03-24T14:02:23.623088+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25642,CVE-2019-25642,NVD,cve,important,2026-03-24T14:02:19.302157+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25641,CVE-2019-25641,NVD,cve,important,2026-03-24T14:02:14.912391+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25640,CVE-2019-25640,NVD,cve,important,2026-03-24T14:02:10.235045+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25639,CVE-2019-25639,NVD,cve,important,2026-03-24T14:01:00.808943+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25638,CVE-2019-25638,NVD,cve,important,2026-03-24T14:00:56.552887+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25637,CVE-2019-25637,NVD,cve,important,2026-03-24T14:00:52.239992+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25636,CVE-2019-25636,NVD,cve,important,2026-03-24T14:00:47.502860+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25635,CVE-2019-25635,NVD,cve,important,2026-03-24T14:00:43.216945+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25634,CVE-2019-25634,NVD,cve,important,2026-03-24T14:00:37.866493+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25633,CVE-2019-25633,NVD,cve,important,2026-03-24T14:00:32.960118+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25631,CVE-2019-25631,NVD,cve,important,2026-03-24T14:00:28.314541+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25630,CVE-2019-25630,NVD,cve,important,2026-03-24T14:00:23.953375+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25629,CVE-2019-25629,NVD,cve,important,2026-03-24T14:00:19.583006+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25627,CVE-2019-25627,NVD,cve,important,2026-03-24T14:00:15.123829+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25626,CVE-2019-25626,NVD,cve,important,2026-03-24T14:00:10.389178+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25646,CVE-2019-25646,NVD,cve,critique,2026-03-24T14:00:05.250269+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25628,CVE-2019-25628,NVD,cve,critique,2026-03-24T13:59:57.535894+00:00
+https://www.it-connect.fr/test-ugreen-nas-ups-120w-une-protection-ideale-pour-votre-nas/,Test UGREEN NAS UPS 120W : une protection idéale pour votre NAS ?,IT Connect,veille_fr,moyen,2026-03-24T13:59:45.372128+00:00
+https://www.securityweek.com/extortion-group-claims-it-hacked-astrazeneca/,Extortion Group Claims It Hacked AstraZeneca,SecurityWeek,cyberattaque,important,2026-03-24T13:59:37.081656+00:00
+https://www.darkreading.com/identity-access-management-security/microsoft-proposes-better-identity-guardrails-ai-agents,"Microsoft Proposes Better Identity, Guardrails for AI Agents",Dark Reading,cyberattaque,important,2026-03-24T13:59:32.849030+00:00
+https://www.securityweek.com/iran-built-a-vast-camera-network-to-control-dissent-israel-turned-it-into-a-targeting-tool/,Iran Built a Vast Camera Network to Control Dissent. Israel Turned It Into a Targeting Tool,SecurityWeek,cyberattaque,important,2026-03-24T13:59:26.492007+00:00
+https://www.securityweek.com/chrome-146-update-patches-high-severity-vulnerabilities/,Chrome 146 Update Patches High-Severity Vulnerabilities,SecurityWeek,cyberattaque,moyen,2026-03-24T13:59:22.181528+00:00
+https://therecord.media/hacker-russian-ransomware-sentenced-doj,Russian hacker who helped Yanluowang ransomware gang gets nearly 7-year prison sentence,The Record,cyberattaque,important,2026-03-24T13:59:17.642215+00:00
+https://therecord.media/crunchyroll-hacker-anime-data-theft,Anime streaming giant Crunchyroll says hacker stole data related to customer service tickets,The Record,cyberattaque,important,2026-03-24T13:59:13.137024+00:00
+https://www.bleepingcomputer.com/news/security/yanluowang-ransomware-access-broker-gets-81-months-in-prison/,Yanluowang ransomware access broker gets 81 months in prison,BleepingComputer,cyberattaque,important,2026-03-24T13:59:08.652734+00:00
+https://www.securityweek.com/3-1-million-impacted-by-qualderm-data-breach/,3.1 Million Impacted by QualDerm Data Breach,SecurityWeek,cyberattaque,critique,2026-03-24T13:59:03.576393+00:00
+https://www.bleepingcomputer.com/news/security/infinite-campus-warns-of-breach-after-shinyhunters-claims-data-theft/,Infinite Campus warns of breach after ShinyHunters claims data theft,BleepingComputer,cyberattaque,moyen,2026-03-24T13:58:59.286977+00:00
+https://www.it-connect.fr/lattaque-contre-trivy-setend-jusquau-docker-hub-attention-aux-malwares/,L’attaque contre Trivy s’étend jusqu’au Docker Hub : attention aux malwares,IT Connect,veille_fr,critique,2026-03-24T13:58:53.983648+00:00
+https://www.securityweek.com/webinar-today-putting-cis-controls-and-benchmarks-into-practice/,Webinar Today: Putting CIS Controls and Benchmarks into Practice,SecurityWeek,cyberattaque,info,2026-03-24T13:58:45.620731+00:00
+https://www.lemondeinformatique.fr/actualites/lire-pour-renforcer-la-securite-reseau-ekinops-rachete-la-start-up-chimere-99717.html,"Pour renforcer la sÃ©curitÃ© rÃ©seau, Ekinops rachÃšte la start-up Chimere",Le Monde Informatique Secu,veille_fr,info,2026-03-24T13:58:41.518941+00:00
+https://thehackernews.com/2026/03/5-learnings-from-first-ever-gartner.html,5 Learnings from the First-Ever Gartner Market Guide for Guardian Agents,The Hacker News,cyberattaque,info,2026-03-24T12:08:02.550205+00:00
+https://thehackernews.com/2026/03/ghost-campaign-uses-7-npm-packages-to.html,Ghost Campaign Uses 7 npm Packages to Steal Crypto Wallets and Credentials,The Hacker News,cyberattaque,important,2026-03-24T12:07:57.858289+00:00
+https://www.bleepingcomputer.com/news/security/dutch-ministry-of-finance-discloses-breach-affecting-employees/,Dutch Ministry of Finance discloses breach affecting employees,BleepingComputer,cyberattaque,important,2026-03-24T12:07:51.224681+00:00
+https://www.securityweek.com/critical-citrix-netscaler-vulnerability-poised-for-exploitation-security-firms-warn/,"Critical Citrix NetScaler Vulnerability Poised for Exploitation, Security Firms Warn",SecurityWeek,cyberattaque,critique,2026-03-24T11:27:46.672838+00:00
+https://github.com/fartlover37/CVE-2026-2441-PoC,fartlover37/CVE-2026-2441-PoC,GitHub PoC,poc,info,2026-03-24T11:11:25.993045+00:00
+https://github.com/ashardev002/CVE-2025-32463_chwoot,ashardev002/CVE-2025-32463_chwoot,GitHub PoC,poc,info,2026-03-24T11:11:25.991020+00:00
+https://github.com/404godd/CVE-2026-20841-PoC,404godd/CVE-2026-20841-PoC,GitHub PoC,poc,info,2026-03-24T11:11:25.987773+00:00
+https://github.com/PtechAmanja/CVE-2026-29000-pac4j-jwt-auth-bypass,PtechAmanja/CVE-2026-29000-pac4j-jwt-auth-bypass,GitHub PoC,poc,info,2026-03-24T11:11:25.985852+00:00
+https://github.com/mods20hh/ZeroLogon-PoC-DC-Pwn,mods20hh/ZeroLogon-PoC-DC-Pwn,GitHub PoC,poc,info,2026-03-24T11:11:25.982923+00:00
+https://www.securityweek.com/mazda-says-employee-partner-information-stolen-in-cyberattack/,"Mazda Says Employee, Partner Information Stolen in Cyberattack",SecurityWeek,cyberattaque,important,2026-03-24T11:10:59.786901+00:00
+https://thehackernews.com/2026/03/the-hidden-cost-of-cybersecurity.html,The Hidden Cost of Cybersecurity Specialization: Losing Foundational Skills,The Hacker News,cyberattaque,moyen,2026-03-24T11:10:52.663289+00:00
+https://thehackernews.com/2026/03/teampcp-hacks-checkmarx-github-actions.html,TeamPCP Hacks Checkmarx GitHub Actions Using Stolen CI Credentials,The Hacker News,cyberattaque,critique,2026-03-24T11:10:48.144240+00:00
+https://www.lemondeinformatique.fr/actualites/lire-cisco-renforce-la-securite-des-agents-ia-99718.html,Cisco renforce la sécurité des agents IA,Le Monde Informatique Secu,veille_fr,info,2026-03-24T11:10:40.583136+00:00
+https://www.undernews.fr/reseau-securite/cybersecurite-et-chaine-dapprovisionnement-un-imperatif-strategique-de-confiance.html,Cybersécurité et chaîne d’approvisionnement : un impératif stratégique de confiance,UnderNews,veille_fr,important,2026-03-24T10:28:30.816969+00:00
+https://www.securityweek.com/stryker-says-malicious-file-found-during-probe-into-iran-linked-attack/,Stryker Says Malicious File Found During Probe Into Iran-Linked Attack,SecurityWeek,cyberattaque,important,2026-03-24T10:28:24.004463+00:00
+https://www.undernews.fr/reseau-securite/cybersecurite-et-bonne-gestion-des-donnees-une-composante-cle-dune-transformation-digitale-reussie.html,Cybersécurité et bonne gestion des données : une composante clé d’une transformation digitale réussie,UnderNews,veille_fr,info,2026-03-24T10:28:20.003496+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3509,CVE-2026-3509,NVD,cve,important,2026-03-24T09:05:02.313406+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-41660,CVE-2025-41660,NVD,cve,important,2026-03-24T09:04:57.757176+00:00
+https://www.lemondeinformatique.fr/actualites/lire-piratage-a-l-education-nationale-243-000-agents-concernes-99715.html,"Piratage à l'Education nationale, 243 000 agents concernés",Le Monde Informatique Secu,veille_fr,important,2026-03-24T09:04:49.422718+00:00
+https://github.com/eagle-nett/DAHUA_AUTH-BYPASS-CVE-2021-33044,eagle-nett/DAHUA_AUTH-BYPASS-CVE-2021-33044,GitHub PoC,poc,info,2026-03-24T07:59:40.071876+00:00
+https://github.com/brynax/CVE-2026-30655,brynax/CVE-2026-30655,GitHub PoC,poc,info,2026-03-24T07:59:40.070207+00:00
+https://github.com/RyosukeDTomita/CVE-2025-55182,RyosukeDTomita/CVE-2025-55182,GitHub PoC,poc,info,2026-03-24T07:59:40.067632+00:00
+https://www.lemondeinformatique.fr/actualites/lire-les-deputes-se-penchent-sur-le-choix-de-microsoft-azure-par-le-health-data-hub-99712.html,Les députés se penchent sur le choix de Microsoft Azure par le Health Data Hub,Le Monde Informatique Secu,veille_fr,info,2026-03-24T07:59:28.991777+00:00
+https://thehackernews.com/2026/03/us-sentences-russian-hacker-to-675.html,U.S. Sentences Russian Hacker to 6.75 Years for Role in $9M Ransomware Damage,The Hacker News,cyberattaque,important,2026-03-24T07:59:21.331795+00:00
+https://thehackernews.com/2026/03/citrix-urges-patching-critical.html,Citrix Urges Patching Critical NetScaler Flaw Allowing Unauthenticated Data Leaks,The Hacker News,cyberattaque,critique,2026-03-24T07:59:15.190019+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4662,CVE-2026-4662,NVD,cve,important,2026-03-24T06:41:44.662363+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4640,CVE-2026-4640,NVD,cve,important,2026-03-24T06:41:40.310336+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4639,CVE-2026-4639,NVD,cve,important,2026-03-24T06:41:35.960405+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4632,CVE-2026-4632,NVD,cve,important,2026-03-24T06:41:31.722994+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4627,CVE-2026-4627,NVD,cve,important,2026-03-24T06:41:27.297437+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4283,CVE-2026-4283,NVD,cve,critique,2026-03-24T06:41:23.211218+00:00
+https://www.it-connect.fr/piratage-education-nationale-le-portail-compas-pirate-243-000-enseignants-touches/,"Piratage Éducation nationale : le portail COMPAS piraté, 243 000 enseignants touchés",IT Connect,veille_fr,critique,2026-03-24T06:41:15.141713+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4625,CVE-2026-4625,NVD,cve,important,2026-03-24T05:01:32.837798+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4624,CVE-2026-4624,NVD,cve,important,2026-03-24T05:01:28.551568+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4623,CVE-2026-4623,NVD,cve,important,2026-03-24T05:01:24.332146+00:00
+https://www.bleepingcomputer.com/news/artificial-intelligence/openai-rolls-out-chatgpt-library-to-store-your-personal-files/,OpenAI rolls out ChatGPT Library to store your personal files,BleepingComputer,cyberattaque,info,2026-03-24T05:01:14.985432+00:00
+https://www.darkreading.com/endpoint-security/ransomware-new-era-moving-ai-speed,Ransomware's New Era: Moving at AI Speed,Dark Reading,cyberattaque,critique,2026-03-24T05:01:10.180614+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4617,CVE-2026-4617,NVD,cve,important,2026-03-24T02:52:35.568374+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4615,CVE-2026-4615,NVD,cve,important,2026-03-24T02:52:31.684258+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4613,CVE-2026-4613,NVD,cve,important,2026-03-24T02:52:27.463807+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4021,CVE-2026-4021,NVD,cve,important,2026-03-24T02:52:23.459421+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3533,CVE-2026-3533,NVD,cve,important,2026-03-24T02:52:19.131291+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4001,CVE-2026-4001,NVD,cve,critique,2026-03-24T02:52:14.880907+00:00
+https://isc.sans.edu/diary/rss/32822,"ISC Stormcast For Tuesday, March 24th, 2026 https://isc.sans.edu/podcastdetail/9862, (Tue, Mar 24th)",SANS ISC,outil,info,2026-03-24T02:52:07.954376+00:00
+https://therecord.media/hacker-breaches-resolv-defi-25-million,Hacker walks away with $24.5 million after breaching Resolv DeFi platform,The Record,cyberattaque,critique,2026-03-24T02:51:58.961290+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4306,CVE-2026-4306,NVD,cve,important,2026-03-23T23:57:48.486552+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4612,CVE-2026-4612,NVD,cve,important,2026-03-23T23:03:20.056542+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4611,CVE-2026-4611,NVD,cve,important,2026-03-23T23:03:15.993232+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32910,CVE-2026-32910,NVD,cve,important,2026-03-23T23:03:11.663975+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32908,CVE-2026-32908,NVD,cve,important,2026-03-23T23:03:07.446542+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32907,CVE-2026-32907,NVD,cve,important,2026-03-23T23:03:03.409872+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32902,CVE-2026-32902,NVD,cve,important,2026-03-23T23:02:59.029028+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32066,CVE-2026-32066,NVD,cve,important,2026-03-23T23:02:54.769290+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-22173,CVE-2026-22173,NVD,cve,important,2026-03-23T23:02:50.454033+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32913,CVE-2026-32913,NVD,cve,critique,2026-03-23T23:02:46.241921+00:00
+https://www.darkreading.com/cybersecurity-operations/ai-soc-go-wrong,AI in the SOC: What Could Go Wrong?,Dark Reading,cyberattaque,info,2026-03-23T23:02:36.738525+00:00
+http://www.zerodayinitiative.com/advisories/ZDI-26-223/,ZDI-26-223: (Pwn2Own) Samsung Galaxy S25 Smart Touch Call Application Protection Mechanism Failure Information Disclosure Vulnerability,Zero Day Initiative,0day,moyen,2026-03-23T23:02:32.291062+00:00
+http://www.zerodayinitiative.com/advisories/ZDI-26-225/,ZDI-26-225: (Pwn2Own) Samsung Galaxy S25 Samsung Account Open Redirect Security Bypass Vulnerability,Zero Day Initiative,0day,moyen,2026-03-23T23:02:26.869017+00:00
+https://www.bleepingcomputer.com/news/security/mazda-discloses-security-breach-exposing-employee-and-partner-data/,Mazda discloses security breach exposing employee and partner data,BleepingComputer,cyberattaque,important,2026-03-23T23:02:21.257092+00:00
+http://www.zerodayinitiative.com/advisories/ZDI-26-224/,ZDI-26-224: (Pwn2Own) Samsung Galaxy S25 Samsung Account Cross-Site Scripting Remote Code Execution Vulnerability,Zero Day Initiative,0day,critique,2026-03-23T23:02:14.278999+00:00
+https://www.darkreading.com/application-security/cisos-debate-human-role-ai-powered-security,CISOs Debate Human Role in AI-Powered Security,Dark Reading,cyberattaque,info,2026-03-23T22:05:03.765238+00:00
+https://isc.sans.edu/diary/rss/32820,"Tool updates: lots of security and logic fixes, (Mon, Mar 23rd)",SANS ISC,outil,moyen,2026-03-23T22:04:56.854317+00:00
+https://www.bleepingcomputer.com/news/security/tycoon2fa-phishing-platform-returns-after-recent-police-disruption/,Tycoon2FA phishing platform returns after recent police disruption,BleepingComputer,cyberattaque,important,2026-03-23T22:04:51.837050+00:00
+https://www.darkreading.com/application-security/trivy-supply-chain-attack-targets-ci-cd-secrets,Trivy Supply Chain Attack Targets CI/CD Secrets,Dark Reading,cyberattaque,important,2026-03-23T22:04:44.849668+00:00
+https://therecord.media/russia-iran-cyber-fbi-hacks,"FBI warns of Russian, Iranian cyber activity involving messaging platforms",The Record,cyberattaque,critique,2026-03-23T21:05:51.967475+00:00
+https://www.bleepingcomputer.com/news/security/teampcp-deploys-iran-targeted-wiper-in-kubernetes-attacks/,TeamPCP deploys Iran-targeted wiper in Kubernetes attacks,BleepingComputer,cyberattaque,critique,2026-03-23T21:05:47.690389+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-25075,CVE-2026-25075,NVD,cve,important,2026-03-23T20:04:26.281956+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32845,CVE-2026-32845,NVD,cve,important,2026-03-23T20:04:22.125159+00:00
+https://thehackernews.com/2026/03/north-korean-hackers-abuse-vs-code-auto.html,North Korean Hackers Abuse VS Code Auto-Run Tasks to Deploy StoatWaffle Malware,The Hacker News,cyberattaque,important,2026-03-23T20:04:11.798939+00:00
+https://www.bleepingcomputer.com/news/security/crunchyroll-probes-breach-after-hacker-claims-to-steal-68m-users-data/,Crunchyroll probes breach after hacker claims to steal 6.8M users' data,BleepingComputer,cyberattaque,important,2026-03-23T20:04:07.062528+00:00
+https://www.rapid7.com/blog/post/etr-cve-2026-3055-citrix-netscaler-adc-and-netscaler-gateway-out-of-bounds-read,CVE-2026-3055: Citrix NetScaler ADC and NetScaler Gateway Out-of-Bounds Read,Rapid7 Blog,outil,critique,2026-03-23T20:03:57.690247+00:00
+https://github.com/Mehdi-Ben-Hamou/CVE-2026-30498,Mehdi-Ben-Hamou/CVE-2026-30498,GitHub PoC,poc,info,2026-03-23T19:07:07.283425+00:00
+https://github.com/cypher-21/CVE-2026-23520,cypher-21/CVE-2026-23520,GitHub PoC,poc,info,2026-03-23T19:07:07.281067+00:00
+https://github.com/M4xSec/CVE-2024-2473,M4xSec/CVE-2024-2473,GitHub PoC,poc,info,2026-03-23T19:07:07.277654+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4594,CVE-2026-4594,NVD,cve,important,2026-03-23T19:07:01.191411+00:00
+https://www.zataz.com/billetterie-du-top-14-le-piege-du-faux-site/,"Billetterie du Top 14, le piège du faux site",Zataz,cyberattaque,important,2026-03-23T19:06:56.158361+00:00
+https://therecord.media/kaplan-data-breach-hack-notification,"Education company Kaplan reports data breach impacting more than 230,000",The Record,cyberattaque,important,2026-03-23T19:06:51.503867+00:00
+https://www.it-connect.fr/ia-les-serveurs-openwebui-pirates-pour-miner-des-cryptomonnaies/,IA : les serveurs OpenWebUI piratés pour miner des cryptomonnaies,IT Connect,veille_fr,important,2026-03-23T17:55:59.626998+00:00
+https://www.bleepingcomputer.com/news/security/trivy-supply-chain-attack-spreads-to-docker-github-repos/,"Trivy supply-chain attack spreads to Docker, GitHub repos",BleepingComputer,cyberattaque,critique,2026-03-23T17:55:54.910269+00:00
+https://www.undernews.fr/reseau-securite/gcs-rapport-annuel-m-trends-2026-annonces-de-la-rsa-conference-2026.html,GCS : Rapport annuel M-Trends 2026 & annonces de la RSA Conference 2026,UnderNews,veille_fr,important,2026-03-23T17:55:48.457510+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-33297,CVE-2026-33297,NVD,cve,critique,2026-03-23T16:31:46.044524+00:00
+https://www.securityweek.com/rsac-2026-conference-announcements-summary-pre-event/,RSAC 2026 Conference Announcements Summary (Pre-Event),SecurityWeek,cyberattaque,info,2026-03-23T16:31:38.326143+00:00
+https://www.it-connect.fr/kb5085516-windows-11-mise-a-jour-hors-bande-pour-les-problemes-de-connexion/,KB5085516 : une mise à jour hors bande pour les problèmes de connexion,IT Connect,veille_fr,moyen,2026-03-23T16:31:34.178556+00:00
+https://www.darkreading.com/cyberattacks-data-breaches/attackers-hide-infostealer-copyright-infringement-notices,Attackers Hide Infostealer in Copyright Infringement Notices,Dark Reading,cyberattaque,important,2026-03-23T16:31:27.986875+00:00
+https://therecord.media/ransomware-trio-tech-semiconductor-sec,California-based semiconductor testing company reports ransomware attack to SEC,The Record,cyberattaque,important,2026-03-23T16:31:23.250398+00:00
+https://www.lemondeinformatique.fr/actualites/lire-une-faille-cisco-exploitee-bien-avant-la-publication-d-un-correctif-99713.html,Une faille Cisco exploitée bien avant la publication d'un correctif,Le Monde Informatique Secu,veille_fr,critique,2026-03-23T16:31:17.144007+00:00
+https://krebsonsecurity.com/2026/03/canisterworm-springs-wiper-attack-targeting-iran/,‘CanisterWorm’ Springs Wiper Attack Targeting Iran,Krebs on Security,cyberattaque,critique,2026-03-23T16:31:10.098184+00:00
+https://therecord.media/us-sentences-nigerian-national-to-7-years-fraud,US sentences Nigerian national to 7 years in $6 million email fraud scheme,The Record,cyberattaque,important,2026-03-23T16:31:02.807607+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4645,CVE-2026-4645,NVD,cve,important,2026-03-23T15:08:33.265099+00:00
+https://www.bleepingcomputer.com/news/security/varonis-atlas-securing-ai-and-the-data-that-powers-it/,Varonis Atlas: Securing AI and the Data That Powers It,BleepingComputer,cyberattaque,info,2026-03-23T15:08:27.379586+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0341/,Multiples vulnérabilités dans les produits Microsoft (23 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-23T15:08:22.208392+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0340/,Multiples vulnérabilités dans Microsoft Edge (23 mars 2026),CERT-FR Avis,alerte,moyen,2026-03-23T15:08:18.173026+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0339/,Multiples vulnérabilités dans les produits VMware (23 mars 2026),CERT-FR Avis,alerte,critique,2026-03-23T15:08:14.247859+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0338/,Vulnérabilité dans les produits Synology (23 mars 2026),CERT-FR Avis,alerte,critique,2026-03-23T15:08:08.407712+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0337/,Multiples vulnérabilités dans les produits Citrix (23 mars 2026),CERT-FR Avis,alerte,critique,2026-03-23T15:08:03.846872+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0336/,Multiples vulnérabilités dans les produits Qnap (23 mars 2026),CERT-FR Avis,alerte,critique,2026-03-23T15:07:59.503712+00:00
+https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0335/,Vulnérabilité dans CPython (23 mars 2026),CERT-FR Avis,alerte,important,2026-03-23T15:07:55.338508+00:00
+https://www.securityweek.com/m-trends-2026-initial-access-handoff-shrinks-from-hours-to-22-seconds/,M-Trends 2026: Initial Access Handoff Shrinks From Hours to 22 Seconds,SecurityWeek,cyberattaque,important,2026-03-23T15:07:51.258965+00:00
+https://therecord.media/russia-malware-arrest-clayrat,"Russia-linked malware operation collapses after security failures, developer’s arrest",The Record,cyberattaque,important,2026-03-23T15:07:46.539596+00:00
+https://www.securityweek.com/chip-services-firm-trio-tech-says-subsidiary-hit-by-ransomware/,Chip Services Firm Trio-Tech Says Subsidiary Hit by Ransomware,SecurityWeek,cyberattaque,important,2026-03-23T15:07:41.946786+00:00
+https://thehackernews.com/2026/03/weekly-recap-cicd-backdoor-fbi-buys.html,"⚡ Weekly Recap: CI/CD Backdoor, FBI Buys Location Data, WhatsApp Ditches Numbers & More",The Hacker News,cyberattaque,critique,2026-03-23T15:07:37.446713+00:00
+https://www.undernews.fr/reseau-securite/sauvegardes-stockage-donnees/world-backup-day-pourquoi-la-sauvegarde-des-donnees-est-devenue-un-enjeu-critique-pour-la-resilience-des-pme.html,World Backup Day : pourquoi la sauvegarde des données est devenue un enjeu critique pour la résilience des PME,UnderNews,veille_fr,critique,2026-03-23T15:07:30.961237+00:00
+http://www.zerodayinitiative.com/advisories/ZDI-26-222/,ZDI-26-222: (Pwn2Own) Canon imageCLASS MF654Cdw BJNP Memory Corruption Remote Code Execution Vulnerability,Zero Day Initiative,0day,critique,2026-03-23T15:07:25.978866+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32969,CVE-2026-32969,NVD,cve,important,2026-03-23T13:57:40.230432+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4585,CVE-2026-4585,NVD,cve,critique,2026-03-23T13:57:35.800841+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-32968,CVE-2026-32968,NVD,cve,critique,2026-03-23T13:57:30.579010+00:00
+https://www.lemondeinformatique.fr/actualites/lire-avec-inbound-sse-versa-analyse-le-trafic-entrant-dans-one-99708.html,"Avec Inbound SSE, Versa analyse le trafic entrant dans One",Le Monde Informatique Secu,veille_fr,info,2026-03-23T13:57:22.815921+00:00
+https://www.darkreading.com/cybersecurity-operations/ai-dominates-rsac-innovation-sandbox,AI Dominates RSAC Innovation Sandbox,Dark Reading,cyberattaque,info,2026-03-23T13:57:18.307738+00:00
+https://www.undernews.fr/hacking-hacktivisme/hpe-etude-in-the-wild-sur-le-paysage-des-cyberattaques.html,HPE : étude ‘In the Wild » sur le paysage des cyberattaques,UnderNews,veille_fr,critique,2026-03-23T13:57:14.077132+00:00
+https://www.bleepingcomputer.com/news/microsoft/new-exchange-online-virtual-account-blocks-email-access-via-mobile-mac-apps/,Microsoft Exchange Online service change causes email access issues,BleepingComputer,cyberattaque,moyen,2026-03-23T13:57:07.700672+00:00
+https://www.lemondeinformatique.fr/actualites/lire-le-conseil-d-etat-valide-l-hebergement-du-health-data-hub-dans-azure-99707.html,Le Conseil d'Etat valide l'hébergement du Health Data Hub dans Azure,Le Monde Informatique Secu,veille_fr,info,2026-03-23T13:57:02.677586+00:00
+https://www.securityweek.com/aquas-trivy-vulnerability-scanner-hit-by-supply-chain-attack/,Aqua’s Trivy Vulnerability Scanner Hit by Supply Chain Attack,SecurityWeek,cyberattaque,critique,2026-03-23T13:56:57.507038+00:00
+https://thehackernews.com/2026/03/we-found-eight-attack-vectors-inside.html,We Found Eight Attack Vectors Inside AWS Bedrock. Here's What Attackers Can Do with Them,The Hacker News,cyberattaque,important,2026-03-23T13:56:51.948940+00:00
+https://www.tenable.com/blog/secure-ai-attack-surface-exposure-management,The hidden cost of AI speed: Unmanaged cyber risk,Tenable Blog,alerte,important,2026-03-23T13:56:47.186137+00:00
+https://thehackernews.com/2026/03/microsoft-warns-irs-phishing-hits-29000.html,"Microsoft Warns IRS Phishing Hits 29,000 Users, Deploys RMM Malware",The Hacker News,cyberattaque,important,2026-03-23T11:35:18.481938+00:00
+https://therecord.media/us-soldier-sentencer-for-helping-nk-it-workers,US soldier sentenced for helping North Korean IT workers,The Record,cyberattaque,info,2026-03-23T11:28:06.373269+00:00
+https://www.schneier.com/blog/archives/2026/03/microsoft-xbox-hacked.html,Microsoft Xbox One Hacked,Schneier on Security,outil,moyen,2026-03-23T11:28:00.837580+00:00
+https://www.securityweek.com/qnap-patches-four-vulnerabilities-exploited-at-pwn2own/,QNAP Patches Four Vulnerabilities Exploited at Pwn2Own,SecurityWeek,cyberattaque,moyen,2026-03-23T11:27:56.356179+00:00
+https://github.com/z3r0h3ro/cve-2026-3587-poc,z3r0h3ro/cve-2026-3587-poc,GitHub PoC,poc,info,2026-03-23T11:01:19.601941+00:00
+https://github.com/showy-headteacher114/cve-2025-66398,showy-headteacher114/cve-2025-66398,GitHub PoC,poc,info,2026-03-23T11:01:19.599440+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4581,CVE-2026-4581,NVD,cve,important,2026-03-23T11:01:14.181913+00:00
+https://www.lemondeinformatique.fr/actualites/lire-sasety-l-ascension-discrete-d-un-mssp-francais-99698.html,"Sasety, l'ascension discrÃšte d'un MSSP franÃ§ais",Le Monde Informatique Secu,veille_fr,info,2026-03-23T11:01:07.103173+00:00
+https://www.lemondeinformatique.fr/actualites/lire-reco-analyse-les-risques-lies-aux-agents-ia-99704.html,Reco analyse les risques liés aux agents IA,Le Monde Informatique Secu,veille_fr,info,2026-03-23T11:01:04.345999+00:00
+https://www.bleepingcomputer.com/news/security/fbi-warns-of-handala-hackers-using-telegram-in-malware-attacks/,FBI warns of Handala hackers using Telegram in malware attacks,BleepingComputer,cyberattaque,moyen,2026-03-23T11:01:00.891569+00:00
+https://www.securityweek.com/tycoon-2fa-fully-operational-despite-law-enforcement-takedown/,Tycoon 2FA Fully Operational Despite Law Enforcement Takedown,SecurityWeek,cyberattaque,critique,2026-03-23T11:00:56.607280+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4580,CVE-2026-4580,NVD,cve,info,2026-03-23T09:39:57.485648+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4579,CVE-2026-4579,NVD,cve,info,2026-03-23T09:39:53.890935+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-3587,CVE-2026-3587,NVD,cve,info,2026-03-23T09:39:50.308519+00:00
+https://next.ink/brief_article/samsung-introduit-la-prise-en-charge-dairdrop-sur-ses-galaxy-s26/,☕️ Samsung introduit la prise en charge d’AirDrop sur ses Galaxy S26,Next INpact Securite,veille_fr,info,2026-03-23T09:39:45.517375+00:00
+https://next.ink/216687/cest-quoi-le-stockage-s3/,C’est quoi le stockage S3 ?,Next INpact Securite,veille_fr,info,2026-03-23T09:39:42.380847+00:00
+https://www.it-connect.fr/phishing-mefiez-vous-de-ces-fausses-alertes-envoyees-depuis-microsoft-azure-monitor/,Phishing : méfiez-vous de ces fausses alertes envoyées depuis Microsoft Azure Monitor,IT Connect,veille_fr,info,2026-03-23T09:39:38.812733+00:00
+https://www.bleepingcomputer.com/news/security/cisa-orders-feds-to-patch-darksword-ios-flaws-exploited-attacks/,CISA orders feds to patch DarkSword iOS flaws exploited attacks,BleepingComputer,cyberattaque,info,2026-03-23T09:39:36.148224+00:00
+https://thehackernews.com/2026/03/trivy-hack-spreads-infostealer-via.html,"Trivy Hack Spreads Infostealer via Docker, Triggers Worm and Kubernetes Wiper",The Hacker News,cyberattaque,info,2026-03-23T09:39:31.849638+00:00
+https://next.ink/brief_article/just-setting-up-my-twittr-le-premier-tweet-a-20-ans/,☕️ « just setting up my twittr » : le premier tweet a 20 ans,Next INpact Securite,veille_fr,info,2026-03-23T08:06:02.813132+00:00
+https://next.ink/brief_article/vmware-nouvelle-plainte-contre-broadcom-le-cispe-demande-des-actions-immediates/,"☕️ VMware : nouvelle plainte contre Broadcom, le CISPE demande des actions immédiates",Next INpact Securite,veille_fr,info,2026-03-23T08:05:59.698002+00:00
+https://next.ink/229934/windows-11-le-patch-tuesday-nen-finit-plus-de-provoquer-des-bugs/,[MàJ] Windows 11 : Microsoft corrige le bug de connexion à Teams et OneDrive,Next INpact Securite,veille_fr,info,2026-03-23T08:05:56.582559+00:00
+https://www.bleepingcomputer.com/news/microsoft/new-kb5085516-emergency-update-fixes-microsoft-account-sign-in/,New KB5085516 emergency update fixes Microsoft account sign-in,BleepingComputer,cyberattaque,info,2026-03-23T08:05:52.788089+00:00
+https://thehackernews.com/2026/03/hackers-exploit-cve-2025-32975-cvss-100.html,Hackers Exploit CVE-2025-32975 (CVSS 10.0) to Hijack Unpatched Quest KACE SMA Systems,The Hacker News,cyberattaque,info,2026-03-23T08:05:48.029399+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2025-10679,CVE-2025-10679,NVD,cve,info,2026-03-23T06:49:32.211563+00:00
+https://www.securityweek.com/oracle-releases-emergency-patch-for-critical-identity-manager-vulnerability/,Oracle Releases Emergency Patch for Critical Identity Manager Vulnerability,SecurityWeek,cyberattaque,info,2026-03-23T06:49:27.250164+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4566,CVE-2026-4566,NVD,cve,info,2026-03-23T05:10:56.454926+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4567,CVE-2026-4567,NVD,cve,info,2026-03-23T05:10:52.770466+00:00
+https://blog.qualys.com/category/product-tech,"Bringing Continuous Assessment to Harbor: Scan on Push, Stay Secure Over Time",Qualys Threat Research,0day,info,2026-03-23T05:10:47.624224+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4565,CVE-2026-4565,NVD,cve,info,2026-03-23T02:55:00.239172+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4562,CVE-2026-4562,NVD,cve,info,2026-03-23T02:54:56.642433+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-2580,CVE-2026-2580,NVD,cve,info,2026-03-23T02:54:53.746401+00:00
+https://isc.sans.edu/diary/rss/32818,"ISC Stormcast For Monday, March 23rd, 2026 https://isc.sans.edu/podcastdetail/9860, (Mon, Mar 23rd)",SANS ISC,outil,info,2026-03-23T02:54:48.683180+00:00
+https://github.com/snapdowgg/CVE-2021-41773,snapdowgg/CVE-2021-41773,GitHub PoC,poc,info,2026-03-22T19:37:20.931283+00:00
+https://github.com/victor-romero-martinez/cverium-feedback,victor-romero-martinez/cverium-feedback,GitHub PoC,poc,info,2026-03-22T19:37:20.929569+00:00
+https://github.com/EnvCommons/CVEBench,EnvCommons/CVEBench,GitHub PoC,poc,info,2026-03-22T19:37:20.927657+00:00
+https://github.com/eagle-nett/FORTIWEB_CVE-2025-64446-58034,eagle-nett/FORTIWEB_CVE-2025-64446-58034,GitHub PoC,poc,info,2026-03-22T19:37:20.925635+00:00
+https://github.com/AhndreWalters/CVEs-and-the-National-Vulnerability-Databse,AhndreWalters/CVEs-and-the-National-Vulnerability-Databse,GitHub PoC,poc,info,2026-03-22T19:37:20.923502+00:00
+https://github.com/Vozec/mcp-cve,Vozec/mcp-cve,GitHub PoC,poc,info,2026-03-22T19:37:20.921828+00:00
+https://github.com/cdn-exploredance/cveawsge,cdn-exploredance/cveawsge,GitHub PoC,poc,info,2026-03-22T19:37:20.920057+00:00
+https://github.com/hhfeng/cve_agent_dev,hhfeng/cve_agent_dev,GitHub PoC,poc,info,2026-03-22T19:37:20.918437+00:00
+https://github.com/GarethMSheldon/cve-2026-22557-unifi-detection,GarethMSheldon/cve-2026-22557-unifi-detection,GitHub PoC,poc,info,2026-03-22T19:37:20.916730+00:00
+https://github.com/abasagoitia/cvec,abasagoitia/cvec,GitHub PoC,poc,info,2026-03-22T19:37:20.913636+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4558,CVE-2026-4558,NVD,cve,info,2026-03-22T18:49:39.756603+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4555,CVE-2026-4555,NVD,cve,info,2026-03-22T17:33:31.924782+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4553,CVE-2026-4553,NVD,cve,info,2026-03-22T16:26:49.232818+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4552,CVE-2026-4552,NVD,cve,info,2026-03-22T15:35:18.379863+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4551,CVE-2026-4551,NVD,cve,info,2026-03-22T15:35:15.113577+00:00
+https://next.ink/brief_article/lidd-un-traducteur-linkedin-speak-pour-des-kpi-en-folie/,"☕️ #LIDD Un traducteur LinkedIn Speak, pour des KPI en folie",Next INpact Securite,veille_fr,info,2026-03-22T15:35:10.586118+00:00
+https://next.ink/230035/flock-lendorciste/,#Flock : L’Endorciste,Next INpact Securite,veille_fr,info,2026-03-22T15:35:08.186204+00:00
+https://next.ink/230063/windows-11-apres-la-chienlit-de-2025-la-revolution-en-2026/,"Windows 11 : après la chienlit de 2025, la « révolution » en 2026 ?",Next INpact Securite,veille_fr,info,2026-03-22T15:35:05.839480+00:00
+https://www.rapid7.com/blog/post/pt-metasploit-wrap-up-03-20-2026,Metasploit Wrap-Up 03/20/2026,Rapid7 Blog,outil,info,2026-03-22T15:35:03.492181+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4546,CVE-2026-4546,NVD,cve,info,2026-03-22T15:04:47.725055+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25619,CVE-2019-25619,NVD,cve,info,2026-03-22T15:04:44.328618+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25615,CVE-2019-25615,NVD,cve,info,2026-03-22T15:04:40.560549+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25613,CVE-2019-25613,NVD,cve,info,2026-03-22T15:04:36.616060+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25612,CVE-2019-25612,NVD,cve,info,2026-03-22T15:04:32.535593+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25611,CVE-2019-25611,NVD,cve,info,2026-03-22T15:04:28.591552+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25609,CVE-2019-25609,NVD,cve,info,2026-03-22T15:04:24.721500+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25608,CVE-2019-25608,NVD,cve,info,2026-03-22T15:04:20.850323+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25607,CVE-2019-25607,NVD,cve,info,2026-03-22T15:04:16.992845+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25605,CVE-2019-25605,NVD,cve,info,2026-03-22T15:04:13.290327+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25604,CVE-2019-25604,NVD,cve,info,2026-03-22T15:04:09.418529+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25603,CVE-2019-25603,NVD,cve,info,2026-03-22T15:04:05.486478+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2026-4545,CVE-2026-4545,NVD,cve,info,2026-03-22T15:04:01.605848+00:00
+https://nvd.nist.gov/vuln/detail/CVE-2019-25614,CVE-2019-25614,NVD,cve,info,2026-03-22T15:03:57.763480+00:00
+https://www.zataz.com/le-c4-alerte-sur-le-ciblage-des-messageries-instantanees/,Le C4 alerte sur le ciblage des messageries instantanées,Zataz,cyberattaque,info,2026-03-22T15:03:52.528478+00:00
+https://www.zataz.com/une-base-sensible-vendue-apres-une-fuite-presumee/,Une base sensible vise des maternités vendue après une fuite présumée,Zataz,cyberattaque,info,2026-03-22T15:03:49.924280+00:00
+https://www.zataz.com/un-courtier-du-credit-cible-par-un-pirate/,Un courtier du crédit français ciblé par un pirate,Zataz,cyberattaque,info,2026-03-22T15:03:47.414161+00:00
+https://www.zataz.com/iptv-pirate-la-lfp-frappe-aussi-les-abonnes/,IPTV pirate : la LFP frappe aussi les abonnés,Zataz,cyberattaque,info,2026-03-22T15:03:44.826828+00:00
+https://www.bleepingcomputer.com/news/security/google-adds-advanced-flow-for-safe-apk-sideloading-on-android/,Google adds ‘Advanced Flow’ for safe APK sideloading on Android,BleepingComputer,cyberattaque,info,2026-03-22T15:03:42.244325+00:00
+https://www.schneier.com/blog/archives/2026/03/friday-squid-blogging-jumbo-flying-squid-in-the-south-pacific.html,Friday Squid Blogging: Jumbo Flying Squid in the South Pacific,Schneier on Security,outil,info,2026-03-22T15:03:39.678848+00:00
+https://www.zataz.com/world-monitor-losint-temps-reel-en-acces-libre/,"World Monitor, l’OSINT temps réel en accès libre",Zataz,cyberattaque,info,2026-03-22T15:03:37.123206+00:00
+https://www.it-connect.fr/windows-11-kb5079473-mise-a-jour-de-mars-perturbe-la-connexion-a-teams-onedrive-etc/,"Windows 11 : la mise à jour de mars perturbe la connexion à Teams, OneDrive, etc.",IT Connect,veille_fr,info,2026-03-22T15:03:34.597479+00:00
+https://www.bleepingcomputer.com/news/security/fbi-links-signal-phishing-attacks-to-russian-intelligence-services/,FBI links Signal phishing attacks to Russian intelligence services,BleepingComputer,cyberattaque,info,2026-03-22T15:03:20.529702+00:00
+https://www.bleepingcomputer.com/news/security/microsoft-azure-monitor-alerts-abused-in-callback-phishing-campaigns/,Microsoft Azure Monitor alerts abused for callback phishing attacks,BleepingComputer,cyberattaque,info,2026-03-22T15:03:18.008064+00:00
+https://www.bleepingcomputer.com/news/security/voidstealer-malware-steals-chrome-master-key-via-debugger-trick/,VoidStealer malware steals Chrome master key via debugger trick,BleepingComputer,cyberattaque,info,2026-03-22T15:03:15.479864+00:00
+https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html,"FBI Warns Russian Hackers Target Signal, WhatsApp in Mass Phishing Attacks",The Hacker News,cyberattaque,info,2026-03-22T15:03:12.925398+00:00
+https://www.bleepingcomputer.com/news/security/cisa-orders-feds-to-patch-max-severity-cisco-flaw-by-sunday/,CISA orders feds to patch max-severity Cisco flaw by Sunday,BleepingComputer,cyberattaque,info,2026-03-22T15:03:10.426099+00:00
+https://thehackernews.com/2026/03/cisa-flags-apple-craft-cms-laravel-bugs.html,"CISA Flags Apple, Craft CMS, Laravel Bugs in KEV, Orders Patching by April 3, 2026",The Hacker News,cyberattaque,info,2026-03-22T15:03:07.891012+00:00
+https://www.zataz.com/cyber-actualites-zataz-de-la-semaine-du-16-au-21-mars-2026/,Cyber actualités ZATAZ de la semaine du 16 au 21 mars 2026,Zataz,cyberattaque,info,2026-03-22T15:03:05.336371+00:00
+https://www.securityweek.com/in-other-news-new-android-safeguards-operation-alice-uk-toughens-cyber-reporting/,"In Other News: New Android Safeguards, Operation Alice, UK Toughens Cyber Reporting",SecurityWeek,cyberattaque,info,2026-03-22T15:03:02.800445+00:00
+https://therecord.media/fbi-takes-down-leak-sites-iran-mois,FBI takes down leak sites tied to Iran’s Ministry of Intelligence and Security,The Record,cyberattaque,info,2026-03-22T15:03:00.262159+00:00
+https://therecord.media/california-city-reports-ransomware-attack-la-metro,California city reports ransomware attack as LA transit agency finds ‘unauthorized activity’,The Record,cyberattaque,info,2026-03-22T15:02:57.715488+00:00
+https://www.darkreading.com/threat-intelligence/opsec-beast-gang-exposes-ransomware-server,Cyber OpSec Fail: Beast Gang Exposes Ransomware Server,Dark Reading,cyberattaque,info,2026-03-22T15:02:55.193444+00:00
+https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html,Trivy Supply Chain Attack Triggers Self-Spreading CanisterWorm Across 47 npm Packages,The Hacker News,cyberattaque,info,2026-03-22T15:02:52.675221+00:00
+https://www.bleepingcomputer.com/news/security/trivy-vulnerability-scanner-breach-pushed-infostealer-via-github-actions/,Trivy vulnerability scanner breach pushed infostealer via GitHub Actions,BleepingComputer,cyberattaque,info,2026-03-22T15:02:50.057419+00:00
+https://www.bleepingcomputer.com/news/security/police-take-down-373-000-fake-csam-sites-in-operation-alice/,"Police take down 373,000 fake CSAM sites in Operation Alice",BleepingComputer,cyberattaque,info,2026-03-22T15:02:47.565481+00:00
+https://www.darkreading.com/vulnerabilities-threats/patch-oracle-fusion-middleware-rce-flaw,Patch Now: Oracle's Fusion Middleware Has Critical RCE Flaw,Dark Reading,cyberattaque,info,2026-03-22T15:02:45.017396+00:00
+https://www.securityweek.com/critical-quest-kace-vulnerability-potentially-exploited-in-attacks/,Critical Quest KACE Vulnerability Potentially Exploited in Attacks,SecurityWeek,cyberattaque,info,2026-03-22T15:02:42.480220+00:00
+https://thehackernews.com/2026/03/critical-langflow-flaw-cve-2026-33017.html,Critical Langflow Flaw CVE-2026-33017 Triggers Attacks within 20 Hours of Disclosure,The Hacker News,cyberattaque,info,2026-03-22T15:02:39.936027+00:00
+https://www.bleepingcomputer.com/news/security/oracle-pushes-emergency-fix-for-critical-identity-manager-rce-flaw/,Oracle pushes emergency fix for critical Identity Manager RCE flaw,BleepingComputer,cyberattaque,info,2026-03-22T15:02:37.368431+00:00
+https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html,"Trivy Security Scanner GitHub Actions Breached, 75 Tags Hijacked to Steal CI/CD Secrets",The Hacker News,cyberattaque,info,2026-03-22T15:02:34.864356+00:00
+https://thehackernews.com/2026/03/oracle-patches-critical-cve-2026-21992.html,Oracle Patches Critical CVE-2026-21992 Enabling Unauthenticated RCE in Identity Manager,The Hacker News,cyberattaque,info,2026-03-22T15:02:32.343566+00:00
