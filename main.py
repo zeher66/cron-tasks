@@ -463,8 +463,20 @@ def process_articles():
 
     try:
         exploits_created = 0
-        # Recuperer toutes les CVE du jour depuis la DB
-        all_today = get_today_all_articles()
+        # Recuperer toutes les CVE de la semaine depuis la DB (rattrapage)
+        from database import get_connection
+        import sqlite3
+        from datetime import datetime, timedelta, timezone as tz
+        week_ago = (datetime.now(tz.utc) - timedelta(days=7)).strftime("%Y-%m-%d")
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT title, url, source, category, severity FROM articles WHERE sent_at >= ? AND category IN ('cve', 'kev') ORDER BY sent_at DESC",
+            (week_ago,)
+        )
+        week_cves = [{"title": r[0], "url": r[1], "source": r[2], "category": r[3], "severity": r[4]} for r in cursor.fetchall()]
+        conn.close()
+        all_today = week_cves  # Utiliser la semaine au lieu du jour
         for art in all_today:
             if art.get("category") in ("cve", "kev"):
                 import re as _re
