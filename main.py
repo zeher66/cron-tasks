@@ -420,8 +420,6 @@ def process_articles():
                 sent += 1
                 must_tag = " ⚠️MUST READ" if cve_must_read else ""
                 logger.info("CVE envoye: %s (CVSS %s)%s", cve_id, cve_data.get("cvss_score", "N/A"), must_tag)
-                # Sauvegarder dans exploits/
-                save_cve_with_exploit(cve_data)
                 time.sleep(2)
             else:
                 errors += 1
@@ -455,6 +453,35 @@ def process_articles():
     except Exception as e:
         logger.error("Erreur CISA KEV: %s", e)
         errors += 1
+
+    # === Exploits : 2eme passage pour fichiers manquants ===
+    logger.info("=" * 50)
+    logger.info("Verification fichiers exploits manquants")
+    logger.info("=" * 50)
+
+    try:
+        exploits_created = 0
+        # Recuperer toutes les CVE du jour depuis la DB
+        all_today = get_today_all_articles()
+        for art in all_today:
+            if art.get("category") in ("cve", "kev"):
+                import re as _re
+                cve_match = _re.search(r'(CVE-\d{4}-\d{4,})', art.get("title", ""))
+                if cve_match:
+                    cve_id = cve_match.group(1)
+                    result = save_cve_with_exploit({
+                        "cve_id": cve_id,
+                        "description": art.get("title", ""),
+                        "cvss_score": "N/A",
+                        "cvss_severity": art.get("severity", "moyen").upper(),
+                        "ref_url": art.get("url", ""),
+                        "affected": [],
+                    })
+                    if result:
+                        exploits_created += 1
+        logger.info("Exploits: %d fichiers manquants crees", exploits_created)
+    except Exception as e:
+        logger.error("Erreur creation exploits manquants: %s", e)
 
     # === Stats ===
     update_stats(processed, sent, duplicates, errors, sources_active, sources_total)
