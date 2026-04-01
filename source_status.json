@@ -1,56 +1,56 @@
 {
   "CERT-FR Alertes": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:31.482492+00:00",
+    "last_success": "2026-04-01T16:33:15.737947+00:00",
     "url": "https://www.cert.ssi.gouv.fr/alerte/feed/",
     "disabled": false
   },
   "CERT-FR Avis": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:31.541176+00:00",
+    "last_success": "2026-04-01T16:33:15.793096+00:00",
     "url": "https://www.cert.ssi.gouv.fr/avis/feed/",
     "disabled": false
   },
   "CERT-FR CTI": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:31.598159+00:00",
+    "last_success": "2026-04-01T16:33:15.839063+00:00",
     "url": "https://www.cert.ssi.gouv.fr/cti/feed/",
     "disabled": false
   },
   "Tenable Blog": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:31.727471+00:00",
+    "last_success": "2026-04-01T16:33:16.074511+00:00",
     "url": "https://www.tenable.com/blog/feed",
     "disabled": false
   },
   "Exploit-DB": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:31.880767+00:00",
+    "last_success": "2026-04-01T16:33:16.411359+00:00",
     "url": "https://www.exploit-db.com/rss.xml",
     "disabled": false,
     "last_failure": "2026-03-29T19:38:56.539549+00:00"
   },
   "Google Project Zero": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:33.575565+00:00",
+    "last_success": "2026-04-01T16:33:18.040906+00:00",
     "url": "https://googleprojectzero.blogspot.com/feeds/posts/default?alt=rss",
     "disabled": false
   },
   "Zero Day Initiative": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:35.109288+00:00",
+    "last_success": "2026-04-01T16:33:19.466622+00:00",
     "url": "https://www.zerodayinitiative.com/rss/published/",
     "disabled": false
   },
   "Full Disclosure": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:35.674940+00:00",
+    "last_success": "2026-04-01T16:33:19.792404+00:00",
     "url": "https://seclists.org/rss/fulldisclosure.rss",
     "disabled": false
   },
   "Watchtowr Labs": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:35.979734+00:00",
+    "last_success": "2026-04-01T16:33:20.089467+00:00",
     "url": "https://labs.watchtowr.com/rss/",
     "disabled": false
   },
@@ -62,98 +62,98 @@
   },
   "CERT/CC Vulnerability Notes": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:36.811885+00:00",
+    "last_success": "2026-04-01T16:33:21.028802+00:00",
     "url": "https://www.kb.cert.org/vuls/atomfeed/",
     "disabled": false,
     "last_failure": "2026-03-29T19:01:46.416836+00:00"
   },
   "The Hacker News": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:36.993972+00:00",
+    "last_success": "2026-04-01T16:33:21.268587+00:00",
     "url": "https://feeds.feedburner.com/TheHackersNews",
     "disabled": false
   },
   "BleepingComputer": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:37.105134+00:00",
+    "last_success": "2026-04-01T16:33:21.468785+00:00",
     "url": "https://www.bleepingcomputer.com/feed/",
     "disabled": false
   },
   "The Record": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:37.331862+00:00",
+    "last_success": "2026-04-01T16:33:21.608301+00:00",
     "url": "https://therecord.media/feed",
     "disabled": false,
     "last_failure": "2026-03-22T19:35:59.976061+00:00"
   },
   "Dark Reading": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:38.407493+00:00",
+    "last_success": "2026-04-01T16:33:22.293740+00:00",
     "url": "https://www.darkreading.com/rss.xml",
     "disabled": false,
     "last_failure": "2026-03-25T09:03:39.963139+00:00"
   },
   "SecurityWeek": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:38.918087+00:00",
+    "last_success": "2026-04-01T16:33:22.648626+00:00",
     "url": "https://feeds.feedburner.com/securityweek",
     "disabled": false
   },
   "Zataz": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:39.527915+00:00",
+    "last_success": "2026-04-01T16:33:23.254950+00:00",
     "url": "https://www.zataz.com/feed/",
     "disabled": false
   },
   "Krebs on Security": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:39.644919+00:00",
+    "last_success": "2026-04-01T16:33:23.474669+00:00",
     "url": "https://krebsonsecurity.com/feed/",
     "disabled": false
   },
   "Schneier on Security": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:39.803896+00:00",
+    "last_success": "2026-04-01T16:33:23.636110+00:00",
     "url": "https://www.schneier.com/feed/atom/",
     "disabled": false
   },
   "PortSwigger Research": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:40.259293+00:00",
+    "last_success": "2026-04-01T16:33:24.114008+00:00",
     "url": "https://portswigger.net/research/rss",
     "disabled": false
   },
   "Rapid7 Blog": {
     "url": "https://blog.rapid7.com/rss/",
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:40.607475+00:00",
+    "last_success": "2026-04-01T16:33:24.471663+00:00",
     "disabled": false
   },
   "Hackaday Security": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:40.773493+00:00",
+    "last_success": "2026-04-01T16:33:24.638450+00:00",
     "url": "https://hackaday.com/category/security-hacks/feed/",
     "disabled": false
   },
   "SANS ISC": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:41.087291+00:00",
+    "last_success": "2026-04-01T16:33:24.832224+00:00",
     "url": "https://isc.sans.edu/rssfeed.xml",
     "disabled": false,
     "last_failure": "2026-03-31T22:04:41.881684+00:00"
   },
   "IT Connect": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:42.488123+00:00",
+    "last_success": "2026-04-01T16:33:26.162208+00:00",
     "url": "https://www.it-connect.fr/feed/",
     "disabled": false
   },
   "UnderNews": {
-    "consecutive_failures": 0,
+    "consecutive_failures": 1,
     "last_success": "2026-04-01T15:19:43.276168+00:00",
     "url": "https://www.undernews.fr/feed",
     "disabled": false,
-    "last_failure": "2026-03-31T15:11:53.047443+00:00"
+    "last_failure": "2026-04-01T16:39:36.248082+00:00"
   },
   "Next INpact Securite": {
     "consecutive_failures": 0,
@@ -163,14 +163,14 @@
   },
   "Le Monde Informatique Secu": {
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:43.772282+00:00",
+    "last_success": "2026-04-01T16:39:36.905003+00:00",
     "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml",
     "disabled": false
   },
   "Project Discovery Blog": {
     "url": "https://blog.projectdiscovery.io/rss/",
     "consecutive_failures": 0,
-    "last_success": "2026-04-01T15:19:36.407317+00:00",
+    "last_success": "2026-04-01T16:33:20.644223+00:00",
     "disabled": false
   }
 }
