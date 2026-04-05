@@ -1,4 +1,5 @@
 URL,Titre,Source,Categorie,Severite,Date
+https://nvd.nist.gov/vuln/detail/CVE-2026-5551,CVE-2026-5551,NVD,cve,important,2026-04-05T09:51:00.184318+00:00
 https://nvd.nist.gov/vuln/detail/CVE-2026-5550,CVE-2026-5550,NVD,cve,important,2026-04-05T08:56:56.945621+00:00
 https://nvd.nist.gov/vuln/detail/CVE-2026-5548,CVE-2026-5548,NVD,cve,important,2026-04-05T08:56:52.862755+00:00
 https://github.com/pedro-lucas-melo/Estudo-de-Caso-CVE-2024-21413,pedro-lucas-melo/Estudo-de-Caso-CVE-2024-21413,GitHub PoC,poc,info,2026-04-05T06:49:08.210521+00:00
